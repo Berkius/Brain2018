@@ -5,6 +5,7 @@ import pyautogui
 
 Xpos=806
 Ypos=950
+nmbr_tabs=10
 
 pyautogui.PAUSE = 1			#Wait 1 second pause after each function call	
 pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
@@ -23,7 +24,7 @@ time.sleep(5)
 
 pyautogui.press('enter')
 
-for x in range(1,10):
+for x in range(1,nmbr_tabs):
 	pyautogui.press('tab')
 
 pyautogui.press('down')
