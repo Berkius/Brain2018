@@ -5,9 +5,9 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 class MyHandler(FileSystemEventHandler):
-	#patterns = ["*.raw16", "*.bin"]
+	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
 
-	def process(self, event):
+	def process(self, event):						#Check the API for the watchdog for more information
 	    """
 	    event.event_type 
 	        'modified' | 'created' | 'moved' | 'deleted'
@@ -17,7 +17,7 @@ class MyHandler(FileSystemEventHandler):
 	        path/to/observed/file
 	    """
 	    # the file will be processed there
-	    print(event.src_path, event.event_type)  # print now only for degug
+	    print(event.src_path, event.event_type)  	# print now only for degug
 
 	def on_modified(self, event):
 	    self.process(event)
@@ -25,8 +25,8 @@ class MyHandler(FileSystemEventHandler):
 	def on_created(self, event):
 	    self.process(event)
 
-	def on_any_event(self,event):
-		self.process(event)    
+	#def on_any_event(self,event):					#add if more information about the folder then just pattern files are needed
+		#self.process(event)    
 
 if __name__ == '__main__':
 	args = sys.argv[1:] 											#take argument as the second line in the system input

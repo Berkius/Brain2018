@@ -1,6 +1,8 @@
 
 import os 
 
+#look for file in folder with EventHandler
+#if file wait 15 minutes after opening delete everything except 
 i=0
 
 file = open("C:\\Users\\Rickard\\Desktop\\Brains2018\\PassList.txt", "r") 
@@ -8,7 +10,7 @@ lines=file.readlines()
 
 for i in range(0,len(lines)):
 
-	#look for file in folder
+	#look for file in folder with event handler 
 	#Maybe write code to skip line to when overlapping
 		
 		if 'FENG' in lines[i]:
