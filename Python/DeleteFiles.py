@@ -4,6 +4,7 @@ import glob
 #Set global var. if open var. is hrp, C10 or raw16 delete all other files except that one 
 #Compare date and on top of that compare the time if the same type satelites comes after eachother
 class DeleteFiles()
+	
 	def remove_when_metop():
 		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
 		  os.remove(bin)

@@ -11,24 +11,24 @@ class ReadPassList():
 	        globvar = arg
 	    trick(globvar)
 	
-	def print_globvar():   
+	def print_globvar(self):   
 		print(globvar) 
 
-	def ReadFile():					#As arg: self,Path
+	def ReadFile(self):					#As arg: self,Path
 		i=0
 		file = open("C:\\Users\\Rickard\\Desktop\\Brains2018\\PassList.txt", "r") 	#put path as argument 
 		lines=file.readlines()
 
-		for i in range(0,len(lines)):
+		#for i in range(0,len(lines)):
 
 			#look for file in folder with event handler 
 				
-				if 'FENG' in lines[0]:
-					self.set_globvar(2)
-					self.print_globvar()
-					print(lines[0])
+		if 'FENG' in lines[0]:
+			self.set_globvar(2)
+			self.print_globvar()
+			print(lines[0])
 
-				'''	
+		'''	
 				#do function for proccessing
 					#DeleteFiles
 					 
@@ -64,7 +64,8 @@ class ReadPassList():
 #			print("sorry")
 '''
 if __name__ == '__main__':
-	ReadFile()
+	rpl=ReadPassList()
+	rpl.ReadFile()
 	#hämta class och printa imorgon
 	
 
