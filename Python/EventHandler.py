@@ -7,6 +7,12 @@ from watchdog.events import FileSystemEventHandler
 class MyHandler(FileSystemEventHandler):
 	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
 
+	def set_globvar(self,globvar):
+	    def trick(arg):							#A small function to set the global variable to the argument
+	        global globvar
+	        globvar = arg
+	    trick(globvar)
+
 	def process(self, event):						#Check the API for the watchdog for more information
 	    """
 	    event.event_type 
@@ -17,7 +23,17 @@ class MyHandler(FileSystemEventHandler):
 	        path/to/observed/file
 	    """
 	    # the file will be processed there
-	    print(event.src_path, event.event_type)  	# print now only for degug
+	    if 'Metop' in event.src_path and event.event_type=='created':
+	    	print('Nu ser det lovande ut')
+	    	self.set_globvar(1)
+	    	print(globvar)
+
+	    if 'FY' in event.src_path and event.event_type=='created':
+	    	print('Jajamensan')
+	    	self.set_globvar(2)
+	    	print(globvar)
+
+	    #print(event.src_path, event.event_type)  	# print now only for degug
 
 	def on_modified(self, event):
 	    self.process(event)

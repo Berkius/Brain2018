@@ -25,9 +25,7 @@ class OpenReader():
 
 		time.sleep(5)
 
-		p
-
-	def OpenNewFile(self):	
+	def OpenNewFile(self):													#Hacksolution if time try to solve better 
 		
 		Xpos=806
 		Ypos=950
@@ -46,4 +44,4 @@ class OpenReader():
 if __name__ == '__main__':
 	openreader=OpenReader()
 	openreader.OpenProgram()
-	openreader.OpenNewFile()
+	#openreader.OpenNewFile()
