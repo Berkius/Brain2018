@@ -50,7 +50,7 @@ class OpenMetFy():
 		time.sleep(3)
 		pyautogui.click(Xproc, Yproc)				#Mouse click for 
 
-		time.sleep(20)								#Adjust depending on process time could be different long depending on file
+		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill() 									#kills the MetFY program
 

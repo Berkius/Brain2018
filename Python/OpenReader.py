@@ -44,4 +44,4 @@ class OpenReader():
 if __name__ == '__main__':
 	openreader=OpenReader()
 	openreader.OpenProgram()
-	#openreader.OpenNewFile()
+	openreader.OpenNewFile()

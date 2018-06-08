@@ -45,7 +45,7 @@ class OpenReader():
 		pyautogui.press('enter')
 		#pyautogui.press('enter')
 
-class DeleteFiles()
+class DeleteFiles():
 	
 	def remove_when_metop():
 		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
@@ -103,15 +103,27 @@ class DeleteFiles()
 		#Here there is going to be a small problem with taking away the older one maybe 
 		#Compare dates then time in the file names
 
-class MyHandler(FileSystemEventHandler):
+class EventHandler(FileSystemEventHandler):
 	
 	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
+
+	def set_globtemp(self,globtemp):
+	    def trick(arg):							#A small function to set the global variable to the argument
+	        global globtemp
+	        globtemp = arg
+	    trick(globtemp)
+
+	def return_globtemp(self):
+		return globtemp    
 
 	def set_globvar(self,globvar):
 	    def trick(arg):							#A small function to set the global variable to the argument
 	        global globvar
 	        globvar = arg
 	    trick(globvar)
+
+	def return_globvar(self):
+		return globvar    
 
 	def process(self, event):						#Check the API for the watchdog for more information
 	    """
@@ -127,11 +139,13 @@ class MyHandler(FileSystemEventHandler):
 	    	print('Nu ser det lovande ut')
 	    	self.set_globvar(1)
 	    	print(globvar)
+	    	self.set_globtemp(1)
 
 	    if 'FY' in event.src_path and event.event_type=='created':
 	    	print('Jajamensan')
 	    	self.set_globvar(2)
 	    	print(globvar)
+	    	self.set_globtemp(1)
 
 	    #print(event.src_path, event.event_type)  	# print now only for degug
 
@@ -190,7 +204,7 @@ class OpenMetFy():
 		time.sleep(3)
 		pyautogui.click(Xproc, Yproc)				#Mouse click for 
 
-		time.sleep(20)								#Adjust depending on process time could be different long depending on file
+		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill() 									#kills the MetFY program
 

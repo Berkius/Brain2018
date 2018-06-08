@@ -4,7 +4,7 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-class MyHandler(FileSystemEventHandler):
+class EventHandler(FileSystemEventHandler):
 	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
 
 	def set_globvar(self,globvar):
@@ -12,6 +12,19 @@ class MyHandler(FileSystemEventHandler):
 	        global globvar
 	        globvar = arg
 	    trick(globvar)
+
+	def return_globvar(self,globvar):
+		return globvar    
+
+	def set_globtemp(self,globtemp):
+	    def trick(arg):							#A small function to set the global variable to the argument
+	        global globtemp
+	        globtemp = arg
+	    trick(globtemp)
+
+	def return_globtemp(self):
+		return globtemp    
+    
 
 	def process(self, event):						#Check the API for the watchdog for more information
 	    """
@@ -27,11 +40,13 @@ class MyHandler(FileSystemEventHandler):
 	    	print('Nu ser det lovande ut')
 	    	self.set_globvar(1)
 	    	print(globvar)
+	    	self.set_globtemp(1)
 
 	    if 'FY' in event.src_path and event.event_type=='created':
 	    	print('Jajamensan')
 	    	self.set_globvar(2)
 	    	print(globvar)
+	    	self.set_globtemp(1)
 
 	    #print(event.src_path, event.event_type)  	# print now only for degug
 
@@ -47,7 +62,7 @@ class MyHandler(FileSystemEventHandler):
 if __name__ == '__main__':
 	args = sys.argv[1:] 											#take argument as the second line in the system input
 	observer = Observer()											#create an observer object
-	observer.schedule(MyHandler(), path=args[0], recursive=False)	#take the first line in the argument as a path
+	observer.schedule(EventHandler(), path=args[0], recursive=False)	#take the first line in the argument as a path
 	observer.start()												#Start observing that folder
 
 	try:
