@@ -1,6 +1,6 @@
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 
-SoftwareSerial mySerial(11,10 );   //RX, TX
+SoftwareSerial mySerial(12,13);   //RX, TX
 
 String inputString = "";
 boolean stringComplete = false;   // used to determine when the string is complete
