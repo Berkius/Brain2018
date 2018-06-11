@@ -1,36 +1,61 @@
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 
-SoftwareSerial mySerial(11,10 );   //RX, TX
+SoftwareSerial mySerial(10,11);   //RX, TX
 
 String inputString = "";
-boolean stringComplete = false;   // used to determine when the string is complete
-const byte numChars = 20;           // just to have a maximum of chars
+boolean stringComplete = false;     // used to determine when the string is complete
+const byte numChars = 30;           // just to have a maximum of chars
 char receivedChars[numChars];       // array of chars to store the values in
-int Az_0, Az_End;                 // Aximuth, refering to the index in the string that you get, the first interesting number and the last
-int El_0, El_End;                 // Elevation, refering to the index in the string that you get, the first interesting number and the last
-int AZ_degree, EL_degree;         // The values to be sent to the motors
+int Az_0, Az_End;                   // Aximuth, refering to the index in the string that you get, the first interesting number and the last
+int El_0, El_End;                   // Elevation, refering to the index in the string that you get, the first interesting number and the last
+int AZ_degree, EL_degree;           // The values to be sent to the motors
 
 void setup() {
   // put your setup code here, to run once:
   // initialize serial
-  Serial.begin(9600);             // opens serial port, sets data rate to 9600 bps
+  Serial.begin(57600);             // opens serial port, sets data rate to 9600 bps
+  mySerial.begin(57600);     // second comport
   inputString.reserve(200);       // reserve 200 bytes for the inputString
 }
 
 void loop() {
+  
+  
   // put your main code here, to run repeatedly:
-
+  //Serial.print("test1");
   serialEvent();      // Creates the array of information from
 
   //showNewData();      // Runs the show data function
 
 
+
+  
+  mySerial.listen();
+  uint8_t char1 = mySerial.read();
+  Serial.print(char1, HEX);
+  /*
+  char testbyte = mySerial.read();
+  mySerial.end();
+  delay(1000);
+  Serial.print(testbyte);
+  
+  for (int i=0; i <= numChars; i++) {
+    char testbyte = mySerial.read();
+    Serial.print(testbyte);
+  }
+
+  Serial.print("end of session");
+  */
+   
   if (stringComplete == true) {
+    
     Extract_Datas();
     stringComplete = false;
   }
+
+  delay(500);
  
- 
+
 }
 
 
@@ -45,12 +70,22 @@ loop can delay response. Multiple bytes of data may be available.
 
 void serialEvent() {
 
-    static byte ndx = 0;                
-    char endMarker = '\n';
-    char inChar;                        // the char that is coming in
-    while (Serial.available() > 0 && stringComplete == false) {
-        inChar = Serial.read();
+  mySerial.listen();      // listen to the second port
+    
+  static byte ndx = 0;  
 
+
+     // LOOOK AT THISSSSSSS             
+    char endMarker = '\r';
+
+
+    
+    char inChar;                        // the char that is coming in
+    while (mySerial.available() > 0 && stringComplete == false) {
+        inChar = mySerial.read();
+
+        delay(500);
+        
         if (inChar != endMarker) {
             receivedChars[ndx] = inChar;
             ndx++;
@@ -64,6 +99,7 @@ void serialEvent() {
             stringComplete = true;
         }
     }
+    mySerial.close();
 }
 
 
@@ -118,6 +154,7 @@ We extract only the numbers to send to the motors
    // converts strings to integer for motors later
   AZ_degree = Azimut.toInt();                           //makes int of the azimut
   EL_degree = El.toInt();                               //makes int of the elevation 
+
     
   
 }
