@@ -14,7 +14,7 @@ class OpenReader():
 		Ypos=950
 		nmbr_tabs=10
 
-		pyautogui.PAUSE = 1			#Wait 1 second pause after each function call	
+		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
 		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
 		path_to_Hrpt_Reader = 'C:\\Tools\\Satsignal\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
@@ -48,6 +48,22 @@ class OpenReader():
 class DeleteFiles():
 	
 	def remove_when_metop():
+		
+		eventhandler.return_globPath()
+		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.HPT")				#Byt ut den här pathen
+		print(pathlist)
+		length_of_pathlist=len(pathlist)
+		print(length_of_pathlist)
+		eventhandler.set_globtemp(0)
+
+		if (length_of_pathlist>1):									
+			for x in range(0,length_of_pathlist):
+				#print('en kvar')
+				if(pathlist[0]!=eventhandler.return_globPath()):
+					os.remove(pathlist[x])
+					#print('Success!!!')
+
+
 		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
 		  os.remove(bin)
 
@@ -73,6 +89,20 @@ class DeleteFiles():
 		  os.remove(MPD) 
 
 	def remove_when_fengyun():
+
+		eventhandler.return_globPath()
+		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.C10")				#Byt ut den här pathen
+		print(pathlist)
+		length_of_pathlist=len(pathlist)
+		print(length_of_pathlist)
+		eventhandler.set_globtemp(0)
+
+		if (length_of_pathlist>1):									
+			for x in range(0,length_of_pathlist):
+				#print('en kvar')
+				if(pathlist[0]!=eventhandler.return_globPath()):
+					os.remove(pathlist[x])
+					#print('Success!!!')
 		
 		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
 		  os.remove(BIN)
@@ -100,11 +130,22 @@ class DeleteFiles():
 
 
 	def remove_when_noaa():
-		#Here there is going to be a small problem with taking away the older one maybe 
-		#Compare dates then time in the file names
+
+		eventhandler.return_globPath()
+		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.RAW16")				#Byt ut den här pathen
+		print(pathlist)
+		length_of_pathlist=len(pathlist)
+		print(length_of_pathlist)
+		eventhandler.set_globtemp(0)
+
+		if (length_of_pathlist>1):									
+			for x in range(0,length_of_pathlist):
+				#print('en kvar')
+				if(pathlist[0]!=eventhandler.return_globPath()):
+					os.remove(pathlist[x])
+					#print('Success!!!')
 
 class EventHandler(FileSystemEventHandler):
-	
 	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
 
 	def set_globtemp(self,globtemp):
@@ -125,6 +166,15 @@ class EventHandler(FileSystemEventHandler):
 	def return_globvar(self):
 		return globvar    
 
+	def set_globPath(self,globPath):
+	    def trick(arg):							#A small function to set the global variable to the argument
+	        global globPath
+	        globPath = arg
+	    trick(globPath)
+
+	def return_globPath(self):
+		return globPath    	
+
 	def process(self, event):						#Check the API for the watchdog for more information
 	    """
 	    event.event_type 
@@ -140,13 +190,16 @@ class EventHandler(FileSystemEventHandler):
 	    	self.set_globvar(1)
 	    	print(globvar)
 	    	self.set_globtemp(1)
+	    	while (self.return_globtemp()==1):
+	    		pass
 
 	    if 'FY' in event.src_path and event.event_type=='created':
 	    	print('Jajamensan')
 	    	self.set_globvar(2)
 	    	print(globvar)
 	    	self.set_globtemp(1)
-
+	    	while (self.return_globtemp()==1):
+	    		pass
 	    #print(event.src_path, event.event_type)  	# print now only for degug
 
 	def on_modified(self, event):
@@ -163,16 +216,16 @@ class OpenMetFy():
 	def OpenForMetop(self):
 
 		nmbr_tabs=8				#Numbers of tabs for the metfy
-		Xfile=326					#Cordinates for file tab
-		Yfile=242					#Cordinates for file tab
-		Xopen=335					#Cordinates for open folder where the files after
-		Yopen=275					#Cordinates for open folder where the files after
-		Xbin=1297					#Cordinates for the file at the top in the folder
-		Ybin=460					#Cordinates for the file at the top in the folder
-		Xproc=1039					#Cordinates for the process button	
-		Yproc=280					#Cordinates for the process button	
+		X_file=326					#Coordinates for file tab
+		Y_file=242					#Coordinates for file tab
+		X_open=335					#Coordinates for open folder where the files after
+		Y_open=275					#Coordinates for open folder where the files after
+		X_bin=1297					#Coordinates for the file at the top in the folder
+		Y_bin=460					#Coordinates for the file at the top in the folder
+		X_proc=1039					#Coordinates for the process button	
+		Y_proc=280					#Coordinates for the process button	
 
-		pyautogui.PAUSE = 1			#Wait 1 second pause after each function call	
+		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
 		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
 		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'							#Path to the HRPT Reader
@@ -180,7 +233,7 @@ class OpenMetFy():
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
 		time.sleep(5)
-		pyautogui.click(Xfile, Yfile)
+		pyautogui.click(X_file, Y_file)
 
 		time.sleep(3)
 		#pyautogui.click(Xopen, Yopen)
@@ -202,10 +255,60 @@ class OpenMetFy():
 		pyautogui.press('enter')
 
 		time.sleep(3)
-		pyautogui.click(Xproc, Yproc)				#Mouse click for 
+		pyautogui.click(X_proc, Y_proc)				#Mouse click for 
 
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill() 									#kills the MetFY program
 
+	def OpenForFengyun(self):
+
+		nmbr_tabs=8					#Numbers of tabs for the metfy
+		X_file=326					#Coordinates for file tab
+		Y_file=242					#Coordinates for file tab
+		X_open=335					#Coordinates for open folder where the files after
+		Y_open=275					#Coordinates for open folder where the files after
+		X_bin=1297					#Coordinates for the file at the top in the folder
+		Y_bin=460					#Coordinates for the file at the top in the folder
+		X_deRand=792				#Coordinates for DeRandomizer alternativ box
+		Y_deRand=279				#Coordinates for DeRandomizer alternativ box
+		X_proc=1039					#Coordinates for the process button	
+		Y_proc=280					#Coordinates for the process button	
+
+		pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
+		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+
+		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'							#Path to the HRPT Reader
+
+		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
+
+		time.sleep(5)
+		pyautogui.click(X_file, Y_file)
+
+		time.sleep(3)
+		#pyautogui.click(Xopen, Yopen)
+		pyautogui.press('down')
+		pyautogui.press('enter')
+
+		time.sleep(3)
+
+		for x in range(1,nmbr_tabs):
+			pyautogui.press('tab')
+		
+		pyautogui.press('down')
+		pyautogui.press('up')
+		pyautogui.press('enter')	
+			
+		time.sleep(3)
+		#pyautogui.click(Xbin, Ybin)
+
+		pyautogui.press('enter')
+
+		time.sleep(3)
+		pyautogui.click(X_deRand,Y_deRand)
+		pyautogui.click(X_proc, Y_proc)				#Mouse click for 
+
+		time.sleep(30)								#Adjust depending on process time could be different long depending on file
+		
+		p.kill()	
 
