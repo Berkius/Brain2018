@@ -10,16 +10,16 @@ from watchdog.events import FileSystemEventHandler
 class OpenReader():
 	
 	def OpenProgram(self):
-		Xpos=806
-		Ypos=950
+		#Xpos=806
+		#Ypos=950
 		nmbr_tabs=10
 
 		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
 		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
-		path_to_Hrpt_Reader = 'C:\\Tools\\Satsignal\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
-		path_to_file1 = 'C:\\Users\\Rickard\\Downloads\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
-		path_to_file2 = 'C:\\Users\\Rickard\\Downloads\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
+		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
+		#path_to_file2 = 'C:\\Users\\Rickard\\Downloads\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
 
 
 		p=subprocess.Popen([path_to_Hrpt_Reader, path_to_file1]) 			#Opens a subprocess and then goes directly to the next line in the code
@@ -31,8 +31,8 @@ class OpenReader():
 
 	def OpenNewFile(self):													#Hacksolution if time try to solve better 
 		
-		Xpos=806
-		Ypos=950
+		#Xpos=806
+		#Ypos=950
 		nmbr_tabs=10
 
 		pyautogui.press('enter')
@@ -50,7 +50,7 @@ class DeleteFiles():
 	def remove_when_metop():
 		
 		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.HPT")				#Byt ut den här pathen
+		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.HPT")				#Byt ut den här pathen
 		print(pathlist)
 		length_of_pathlist=len(pathlist)
 		print(length_of_pathlist)
@@ -91,7 +91,7 @@ class DeleteFiles():
 	def remove_when_fengyun():
 
 		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.C10")				#Byt ut den här pathen
+		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.C10")				#Byt ut den här pathen
 		print(pathlist)
 		length_of_pathlist=len(pathlist)
 		print(length_of_pathlist)
@@ -132,7 +132,7 @@ class DeleteFiles():
 	def remove_when_noaa():
 
 		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Users\\Rickard\\Downloads\\*.RAW16")				#Byt ut den här pathen
+		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.RAW16")				#Byt ut den här pathen
 		print(pathlist)
 		length_of_pathlist=len(pathlist)
 		print(length_of_pathlist)
@@ -216,19 +216,19 @@ class OpenMetFy():
 	def OpenForMetop(self):
 
 		nmbr_tabs=8				#Numbers of tabs for the metfy
-		X_file=326					#Coordinates for file tab
-		Y_file=242					#Coordinates for file tab
-		X_open=335					#Coordinates for open folder where the files after
-		Y_open=275					#Coordinates for open folder where the files after
-		X_bin=1297					#Coordinates for the file at the top in the folder
-		Y_bin=460					#Coordinates for the file at the top in the folder
-		X_proc=1039					#Coordinates for the process button	
-		Y_proc=280					#Coordinates for the process button	
+		X_file=214					#Coordinates for file tab
+		Y_file=159					#Coordinates for file tab
+		#X_open=335					#Coordinates for open folder where the files after
+		#Y_open=275					#Coordinates for open folder where the files after
+		#X_bin=1297					#Coordinates for the file at the top in the folder
+		#Y_bin=460					#Coordinates for the file at the top in the folder
+		X_proc=692					#Coordinates for the process button	
+		Y_proc=186					#Coordinates for the process button	
 
 		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
 		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
-		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'							#Path to the HRPT Reader
+		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
@@ -264,21 +264,21 @@ class OpenMetFy():
 	def OpenForFengyun(self):
 
 		nmbr_tabs=8					#Numbers of tabs for the metfy
-		X_file=326					#Coordinates for file tab
-		Y_file=242					#Coordinates for file tab
-		X_open=335					#Coordinates for open folder where the files after
-		Y_open=275					#Coordinates for open folder where the files after
-		X_bin=1297					#Coordinates for the file at the top in the folder
-		Y_bin=460					#Coordinates for the file at the top in the folder
-		X_deRand=792				#Coordinates for DeRandomizer alternativ box
-		Y_deRand=279				#Coordinates for DeRandomizer alternativ box
-		X_proc=1039					#Coordinates for the process button	
-		Y_proc=280					#Coordinates for the process button	
+		X_file=214					#Coordinates for file tab
+		Y_file=159					#Coordinates for file tab
+		#X_open=335					#Coordinates for open folder where the files after
+		#Y_open=275					#Coordinates for open folder where the files after
+		#X_bin=1297					#Coordinates for the file at the top in the folder
+		#Y_bin=460					#Coordinates for the file at the top in the folder
+		X_deRand=527				#Coordinates for DeRandomizer alternativ box
+		Y_deRand=185				#Coordinates for DeRandomizer alternativ box
+		X_proc=692					#Coordinates for the process button	
+		Y_proc=186					#Coordinates for the process button	
 
 		pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
 		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
-		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'							#Path to the HRPT Reader
+		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
