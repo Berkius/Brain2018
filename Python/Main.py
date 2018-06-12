@@ -4,6 +4,7 @@ from Superfile import OpenReader
 from Superfile import DeleteFiles
 from Superfile import EventHandler
 from Superfile import OpenMetFy
+from Superfile import CheckFiles	
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -11,7 +12,8 @@ if __name__ == '__main__':
 
 	open_reader=OpenReader()
 	delete_files=DeleteFiles()
-	openmetfy=OpenMetFy()													
+	openmetfy=OpenMetFy()
+	checkfiles=CheckFiles()													
 	args = sys.argv[1:] 												#take argument as the second line in the system input
 	observer = Observer()												
 	observer.schedule(EventHandler(), path=args[0], recursive=False)	#take the first line in the argument as a path
@@ -33,7 +35,9 @@ if __name__ == '__main__':
 			if (eventhandler.return_globtemp()==1):						#If new file
 				print(eventhandler.return_globtemp())
 				#Wait and delete files that comes in during the wait, can i in someway se when the file is done?
-				time.sleep(30) 	#change to 20 min in real application 
+
+				checkfiles.check_file_size(eventhandler.return_globPath()) 	#checks the size of the file and when it has stopped growing it lets it go 
+
 				if (eventhandler.return_globvar()==1):					#For Metop	
 					print('Jag är inne på riktigt')
 					openmetfy.OpenForMetop()

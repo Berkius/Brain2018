@@ -58,7 +58,7 @@ class DeleteFiles():
 		if (length_of_pathlist>1):									
 			for x in range(0,length_of_pathlist):
 				
-				if(pathlist[0]!=globpath):
+				if(pathlist[x]!=globpath):
 					os.remove(pathlist[x])
 					
 	def remove_when_metop(self):
@@ -304,3 +304,13 @@ class OpenMetFy():
 		
 		p.kill()	
 
+class CheckFiles():
+
+	def check_file_size(self,filepath):
+
+		while True:
+			file_size_1=os.path.getsize(filepath)
+			time.sleep(5)
+			file_size_2=os.path.getsize(filepath)
+			if (file_size_1==file_size_2):
+				break
