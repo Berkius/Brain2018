@@ -9,13 +9,17 @@ from watchdog.events import FileSystemEventHandler
 
 class OpenReader():
 	
+	nmbr_tabs=10
+	pyautogui.PAUSE = 0.01			#Wait 1 second pause after each function call	
+	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+
 	def OpenProgram(self):
 		#Xpos=806
 		#Ypos=950
-		nmbr_tabs=10
+		#nmbr_tabs=10
 
-		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
-		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+		#pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
+		#pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
 		path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
 		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
@@ -30,120 +34,111 @@ class OpenReader():
 		time.sleep(5)
 
 	def OpenNewFile(self):													#Hacksolution if time try to solve better 
-		
-		#Xpos=806
-		#Ypos=950
-		nmbr_tabs=10
 
 		pyautogui.press('enter')
+		time.sleep(2)
 
-		for x in range(1,nmbr_tabs):
+		for x in range(1,self.nmbr_tabs):
 			pyautogui.press('tab')
 
 		pyautogui.press('down')
 		pyautogui.press('up')
 		pyautogui.press('enter')
-		#pyautogui.press('enter')
+		pyautogui.press('enter')
 
 class DeleteFiles():
 	
-	def remove_when_metop():
+	def remove_previous(self, path, globpath):
 		
-		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.HPT")				#Byt ut den här pathen
+		pathlist=glob.glob(path) 				
 		print(pathlist)
 		length_of_pathlist=len(pathlist)
 		print(length_of_pathlist)
-		eventhandler.set_globtemp(0)
 
 		if (length_of_pathlist>1):									
 			for x in range(0,length_of_pathlist):
-				#print('en kvar')
-				if(pathlist[0]!=eventhandler.return_globPath()):
+				
+				if(pathlist[0]!=globpath):
 					os.remove(pathlist[x])
-					#print('Success!!!')
+					
+	def remove_when_metop(self):
 
-
-		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
-		  os.remove(bin)
-
-		for RAW16 in glob.glob("*.RAW16"):		#glob.glob creates a list, with the specified file name
-		  os.remove(raw16)
-
-		for C10 in glob.glob("*.C10"):		#glob.glob creates a list, with the specified file name
-		  os.remove(C10)
-
-		for RS in glob.glob("*.RS"):		#glob.glob creates a list, with the specified file name
-		  os.remove(RS)
-
-		for VCD in glob.glob("*.VCD"):		#glob.glob creates a list, with the specified file name
-		  os.remove(VCD)
-
-		for PN in glob.glob("*.PN"):		#glob.glob creates a list, with the specified file name
-		  os.remove(PN)
-
-		for PK in glob.glob("*.PKT"):		#glob.glob creates a list, with the specified file name
-		  os.remove(PKT)
-
-		for MPD in glob.glob("*.MPD"):		#glob.glob creates a list, with the specified file name
-		  os.remove(MPD) 
-
-	def remove_when_fengyun():
-
-		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.C10")				#Byt ut den här pathen
-		print(pathlist)
-		length_of_pathlist=len(pathlist)
-		print(length_of_pathlist)
-		eventhandler.set_globtemp(0)
-
-		if (length_of_pathlist>1):									
-			for x in range(0,length_of_pathlist):
-				#print('en kvar')
-				if(pathlist[0]!=eventhandler.return_globPath()):
-					os.remove(pathlist[x])
-					#print('Success!!!')
-		
-		for BIN in glob.glob("*.BIN"):		#glob.glob creates a list, with the specified file name
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
 		  os.remove(BIN)
 
-		for RAW16 in glob.glob("*.RAW16"):		#glob.glob creates a list, with the specified file name
+		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):		
 		  os.remove(RAW16)
 
-		for C10 in glob.glob("*.HPT"):		#glob.glob creates a list, with the specified file name
+		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):		
 		  os.remove(C10)
 
-		for RS in glob.glob("*.RS"):		#glob.glob creates a list, with the specified file name
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
 		  os.remove(RS)
 
-		for VCD in glob.glob("*.VCD"):		#glob.glob creates a list, with the specified file name
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
 		  os.remove(VCD)
 
-		for PN in glob.glob("*.PN"):		#glob.glob creates a list, with the specified file name
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
 		  os.remove(PN)
 
-		for MPD in glob.glob("*.MPD"):		#glob.glob creates a list, with the specified file name
+		for PK in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PKT"):		
+		  os.remove(PKT)
+
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
+		  os.remove(MPD) 
+
+	def remove_when_fengyun(self):
+		
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
+		  os.remove(BIN)
+
+		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):		
+		  os.remove(RAW16)
+
+		for HPT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):		
+		  os.remove(HPT)
+
+		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):		
+		  os.remove(C10)
+
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
+		  os.remove(RS)
+
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
+		  os.remove(VCD)
+
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
+		  os.remove(PN)
+
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
 		  os.remove(MPD)
 
-		for FY3 in glob.glob("*.FY3"):		#glob.glob creates a list, with the specified file name
+		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):		
 		  os.remove(FY3)  
 
 
-	def remove_when_noaa():
+	def remove_when_noaa(self):
 
-		eventhandler.return_globPath()
-		pathlist=glob.glob("C:\\Ruag_program\\pictures\\*.RAW16")				#Byt ut den här pathen
-		print(pathlist)
-		length_of_pathlist=len(pathlist)
-		print(length_of_pathlist)
-		eventhandler.set_globtemp(0)
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
+		  os.remove(BIN)
 
-		if (length_of_pathlist>1):									
-			for x in range(0,length_of_pathlist):
-				#print('en kvar')
-				if(pathlist[0]!=eventhandler.return_globPath()):
-					os.remove(pathlist[x])
-					#print('Success!!!')
+		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):		
+		  os.remove(C10)
+
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
+		  os.remove(RS)
+
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
+		  os.remove(VCD)
+
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
+		  os.remove(PN)
+
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
+		  os.remove(MPD)
+
+		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):		
+		  os.remove(FY3)  
 
 class EventHandler(FileSystemEventHandler):
 	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
@@ -186,20 +181,32 @@ class EventHandler(FileSystemEventHandler):
 	    """
 	    # the file will be processed there
 	    if 'Metop' in event.src_path and event.event_type=='created':
-	    	print('Nu ser det lovande ut')
+	    	print('METOP')
 	    	self.set_globvar(1)
 	    	print(globvar)
 	    	self.set_globtemp(1)
+	    	self.set_globPath(event.src_path)
 	    	while (self.return_globtemp()==1):
 	    		pass
 
 	    if 'FY' in event.src_path and event.event_type=='created':
-	    	print('Jajamensan')
+	    	print('FENG')
 	    	self.set_globvar(2)
 	    	print(globvar)
 	    	self.set_globtemp(1)
+	    	self.set_globPath(event.src_path)
 	    	while (self.return_globtemp()==1):
 	    		pass
+	    
+	    if 'NO' in event.src_path and event.event_type=='created':
+	    	print('NOAA')
+	    	self.set_globvar(3)
+	    	print(globvar)
+	    	self.set_globtemp(1)
+	    	self.set_globPath(event.src_path)
+	    	while (self.return_globtemp()==1):
+	    		pass
+
 	    #print(event.src_path, event.event_type)  	# print now only for degug
 
 	def on_modified(self, event):
@@ -212,28 +219,28 @@ class EventHandler(FileSystemEventHandler):
 		#self.process(event)    
 
 class OpenMetFy():
-	
+
+	nmbr_tabs=8				#Numbers of tabs for the metfy
+	X_file=214					#Coordinates for file tab
+	Y_file=159					#Coordinates for file tab
+	X_proc=692					#Coordinates for the process button	
+	Y_proc=186					#Coordinates for the process button	
+	X_deRand=527				#Coordinates for DeRandomizer alternativ box
+	Y_deRand=185				#Coordinates for DeRandomizer alternativ box
+
+	pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
+	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+
 	def OpenForMetop(self):
 
-		nmbr_tabs=8				#Numbers of tabs for the metfy
-		X_file=214					#Coordinates for file tab
-		Y_file=159					#Coordinates for file tab
-		#X_open=335					#Coordinates for open folder where the files after
-		#Y_open=275					#Coordinates for open folder where the files after
-		#X_bin=1297					#Coordinates for the file at the top in the folder
-		#Y_bin=460					#Coordinates for the file at the top in the folder
-		X_proc=692					#Coordinates for the process button	
-		Y_proc=186					#Coordinates for the process button	
-
-		pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
-		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
-
-		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
+		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader CHANGE THIS
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
+		#This part underneeth needs to be more developed and fitted to the final computer when we get real files in  
+		
 		time.sleep(5)
-		pyautogui.click(X_file, Y_file)
+		pyautogui.click(self.X_file, self.Y_file)
 
 		time.sleep(3)
 		#pyautogui.click(Xopen, Yopen)
@@ -242,7 +249,7 @@ class OpenMetFy():
 
 		time.sleep(3)
 
-		for x in range(1,nmbr_tabs):
+		for x in range(1,self.nmbr_tabs):
 			pyautogui.press('tab')
 		
 		pyautogui.press('down')
@@ -255,7 +262,7 @@ class OpenMetFy():
 		pyautogui.press('enter')
 
 		time.sleep(3)
-		pyautogui.click(X_proc, Y_proc)				#Mouse click for 
+		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
 
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
@@ -263,27 +270,12 @@ class OpenMetFy():
 
 	def OpenForFengyun(self):
 
-		nmbr_tabs=8					#Numbers of tabs for the metfy
-		X_file=214					#Coordinates for file tab
-		Y_file=159					#Coordinates for file tab
-		#X_open=335					#Coordinates for open folder where the files after
-		#Y_open=275					#Coordinates for open folder where the files after
-		#X_bin=1297					#Coordinates for the file at the top in the folder
-		#Y_bin=460					#Coordinates for the file at the top in the folder
-		X_deRand=527				#Coordinates for DeRandomizer alternativ box
-		Y_deRand=185				#Coordinates for DeRandomizer alternativ box
-		X_proc=692					#Coordinates for the process button	
-		Y_proc=186					#Coordinates for the process button	
-
-		pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
-		pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
-
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
 		time.sleep(5)
-		pyautogui.click(X_file, Y_file)
+		pyautogui.click(self.X_file, self.Y_file)
 
 		time.sleep(3)
 		#pyautogui.click(Xopen, Yopen)
@@ -292,7 +284,7 @@ class OpenMetFy():
 
 		time.sleep(3)
 
-		for x in range(1,nmbr_tabs):
+		for x in range(1,self.nmbr_tabs):
 			pyautogui.press('tab')
 		
 		pyautogui.press('down')
@@ -305,8 +297,8 @@ class OpenMetFy():
 		pyautogui.press('enter')
 
 		time.sleep(3)
-		pyautogui.click(X_deRand,Y_deRand)
-		pyautogui.click(X_proc, Y_proc)				#Mouse click for 
+		pyautogui.click(self.X_deRand,self.Y_deRand)
+		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
 
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
