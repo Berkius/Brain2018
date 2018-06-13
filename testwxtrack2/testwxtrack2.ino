@@ -1,23 +1,50 @@
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
+#include <Wire.h>
+#include <ADXL345.h>  // ADXL345 Accelerometer Library
 
 SoftwareSerial mySerial(10,11);   //RX, TX
 
 String inputString = "";            // String to save the input in 
 boolean stringComplete = false;     // used to determine when the string is complete
-const byte numChars = 25;           // just to have a maximum of chars (normally 23 + extra zero)
+const byte numChars = 28;           // just to have a maximum of chars (normally 23 + extra zero)
 char receivedChars[numChars];       // array of chars to store the values in
 int Az_0, Az_End;                   // Aximuth, refering to the index in the string that you get, the first interesting number and the last
 int El_0, El_End;                   // Elevation, refering to the index in the string that you get, the first interesting number and the last
 int AZ_degree, EL_degree;           // The values to be sent to the motors
 boolean errorVariable = false;      // error vaiable
 
+ADXL345 acc; //variable adxl is an instance of the ADXL345 library
+int ax,ay,az;  
+int rawX, rawY, rawZ;
+float X, Y, Z;
+float rollrad, pitchrad;
+float rolldeg, pitchdeg;
+float aoffsetX, aoffsetY, aoffsetZ;
+
+int Az_move,El_move;
+
 
 
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);             // opens serial port, sets data rate to 9600 bps
-   mySerial.begin(9600);           // second comport
+   mySerial.begin(9600); // second comport
 
+  //accelerometer function setup
+   acc.powerOn();
+   for (int i = 0; i <= 200; i++) {
+    acc.readAccel(&ax, &ay, &az);
+    if (i == 0) {
+      aoffsetX = ax;
+      aoffsetY = ay;
+      aoffsetZ = az;
+    }
+    if (i > 1) {
+      aoffsetX = (ax + aoffsetX) / 2;
+      aoffsetY = (ay + aoffsetY) / 2;
+      aoffsetZ = (az + aoffsetZ) / 2;
+    }
+   }
 }
 
 void loop() {
@@ -35,6 +62,15 @@ void loop() {
     stringComplete = false;
     errorVariable = false;
    }
+   //Serial.println(AZ_degree);
+   //Serial.println(EL_degree);
+
+   //Accelerometer function
+  getCurrentAngles();
+
+  //moving angles for motors
+  anglesComp();
+
   }
 
 /*
@@ -129,5 +165,40 @@ We extract only the numbers to send to the motors
    // converts strings to integer for motors later
   AZ_degree = Azimut.toInt();                           //makes int of the azimut
   EL_degree = El.toInt();                               //makes int of the elevation 
+}
+
+
+void getCurrentAngles(){
+
+
+  // code fragment for Accelerometer angles (roll and pitch)
+  acc.readAccel(&ax, &ay, &az); //read the accelerometer values and store them in variables  x,y,z
+  rawX = ax - aoffsetX;
+  rawY = ay - aoffsetY;
+  rawZ = az  - (255 - aoffsetZ);
+  
+  X = rawX/256.00; // used for angle calculations
+  Y = rawY/256.00; // used for angle calculations
+  Z = rawZ/256.00; // used for angle calculations
+  
+  rollrad = atan(Y/sqrt(X*X+Z*Z));  // calculated angle in radians
+  pitchrad = atan(X/sqrt(Y*Y+Z*Z)); // calculated angle in radians
+  rolldeg = 180*(atan(Y/sqrt(X*X+Z*Z)))/PI; // calculated angle in degrees
+  pitchdeg = 180*(atan(X/sqrt(Y*Y+Z*Z)))/PI; // calculated angle in degrees
+
+  delay(2000);
+
+  Serial.print("Roll angle: ");
+  Serial.println(rolldeg);
+  Serial.print("Pitch angle: ");
+  Serial.println(pitchdeg);
+}
+
+void anglesComp(){
+  Az_move = (int) AZ_degree - (int) rolldeg;
+  El_move= (int) EL_degree - (int) pitchdeg;
+  
+  Serial.println(Az_move);
+  Serial.println(El_move);
 }
 
