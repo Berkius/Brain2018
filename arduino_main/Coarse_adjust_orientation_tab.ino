@@ -10,8 +10,9 @@
  void Coarse_adjust_orientation(){
 
    // Print initial delta_roll and delta_pitch for debugging
-   Serial.println(delta_roll);
-   Serial.println(delta_pitch);
+   //Serial.println(delta_roll);
+   //Serial.println(delta_pitch);
+   //Serial.println('one');
   
   int angular_velocity = 14; // We probebly have to measure this by ourself
   int Speed = 200; // "CHANGE SPEED" //PWM setting 0-255
@@ -73,6 +74,7 @@
   // Print final delta_roll and delta_pitch for debugging
   Serial.println(delta_roll);
   Serial.println(delta_pitch);
+  Serial.println('two');
   
 }
 

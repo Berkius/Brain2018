@@ -36,13 +36,13 @@ int tol_coarse = 15; // How off the delta angle is okay to be before we run the 
 
 
 // Define pins for motorcontroller
-const int roll_IN1=5;
-const int roll_IN2=4;
-const int roll_PWM=6;
+const int roll_IN1=12;
+const int roll_IN2=9;
+const int roll_PWM=3;
 
-const int pitch_IN1=9; // CHANGE
+const int pitch_IN1=13; // CHANGE
 const int pitch_IN2=8;
-const int pitch_PWM=7;
+const int pitch_PWM=11;
 
 void setup() {
   // put your setup code here, to run once:
@@ -88,9 +88,6 @@ void loop() {
 
     // Make a coarse adjustment of the angle
     Coarse_adjust_orientation();
-
-    // Get angles for accelerometer
-    getCurrentAngles();
 
     // Moving angles for motors, tune
     Tune_orientation();

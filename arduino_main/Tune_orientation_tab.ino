@@ -11,9 +11,8 @@
 
   // SHOULD WE UPDATE SATEOLITE POS EVERYTIME ASWELL?
   
-  // %%%%%%%%%%%%%%%%
-   //GET rolldeg and pitchdeg HERE
-   // %%%%%%%%%%%%%%%%%
+  // Get angles for accelerometer
+    getCurrentAngles();
    
   
   delta_roll = AZ_degree-rolldeg;
@@ -49,7 +48,8 @@
     delta_roll = AZ_degree-rolldeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
-    Serial.println(delta_roll);
+    //Serial.println(delta_roll);
+    //Serial.println('three');
   }
   // Break roll velocity after reaching wanted orientation
   Pitch_Brake();
@@ -75,7 +75,8 @@
     delta_pitch = EL_degree-pitchdeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
-    Serial.println(delta_roll);
+    //Serial.println('changing angle');
+    //Serial.println(delta_roll);
   }
   // Break pitch velocity after reaching wanted orientation
   Pitch_Brake();

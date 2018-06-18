@@ -5,6 +5,7 @@ This routine is run between eash time loop() runs.
 --------------------------------------------------------------------------------------------
 */
 void serialEvent(){
+  /*
   mySerial.listen();        //starts listening for data in the serialport mySerial
 
   char endMarker= '\r'; // carrier return
@@ -36,8 +37,11 @@ void serialEvent(){
         i++;                        
       }
     }
+    */
+
+    receivedChars = "AZ120.0 EL60.0 UPO \0";
   
-  delay(2000);
+  //delay(2000);
   //Serial.println(receivedChars);
   //stringComplete = false;
 }
