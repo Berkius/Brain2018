@@ -27,14 +27,14 @@ void Roll_Brake(){
 
 // PITCH
 // Create a positive pitch motion (upper motor)
-void Roll_Positzive(int Speed) {
+void Pitch_Positive(int Speed) {
      digitalWrite(pitch_IN1,HIGH); 
      digitalWrite(pitch_IN2,LOW);  
      analogWrite(pitch_PWM,Speed);
 }
 
 // Create a negative pitch motion (upper motor)
-void Roll_Negative(int Speed) {    
+void Pitch_Negative(int Speed) {    
      digitalWrite(pitch_IN1,LOW); 
      digitalWrite(pitch_IN2,HIGH);  
      analogWrite(pitch_PWM,Speed);

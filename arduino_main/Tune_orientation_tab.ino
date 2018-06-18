@@ -16,26 +16,29 @@
    // %%%%%%%%%%%%%%%%%
    
   
-  double delta_roll = AZ_degree-rolldeg
-  double delta_pitch = EL_degree-pitchdeg
+  delta_roll = AZ_degree-rolldeg;
+  delta_pitch = EL_degree-pitchdeg;
   
   // Tolerance: How big is delta_roll/delta_pitch allowed to be
-  int tol = 0.5 // [degree] - CHANGE TO WANTED VALUE
+  int tol = 0.5; // [degree] - CHANGE TO WANTED VALUE
   
   // Speed of the motors, PWM setting 0-255
-  int Speed = 100 // CHANGE VELOCITY
+  int Speed = 100; // CHANGE VELOCITY
+
+  int time_roll = 20; // How long to run the motor for roll [ms]
+  int time_pitch = 20; // How long to run the motor for roll [ms]
   
   // Run roll motor while outside the tolerance
-  while delta_roll > tol{
+  while (delta_roll > tol){
   
      // If we want positive or negative roll
-    if delta_roll > 0{
-      Roll_Positive(time_roll)}
+    if (delta_roll > 0){
+      Roll_Positive(time_roll);}
     else{
-      Roll_Negative(time_roll)}
+      Roll_Negative(time_roll);}
   
      // For how long time we should drive the roll motor before updating values
-     delay(100)
+     delay(100);
   
     // Update roll angle
     // %%%%%%%%%%%%%%%%%%%
@@ -43,38 +46,38 @@
     // %%%%%%%%%%%%%%%
     
     // Calculate new delta roll angle
-    delta_roll = AZ_degree-rolldeg
+    delta_roll = AZ_degree-rolldeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
     Serial.println(delta_roll);
   }
   // Break roll velocity after reaching wanted orientation
   Pitch_Brake();
-  delay(100)
+  delay(100);
   
   // Run pitch motor until within the tolerance
-  while delta_pitch > tol{
+  while (delta_pitch > tol){
   
      // If we want positive or negative roll
-    if delta_pitch > 0{
-      Roll_Positive(time_pitch)}
+    if (delta_pitch > 0){
+      Roll_Positive(time_pitch);}
     else{
-      Roll_Negative(time_pitch)}
+      Roll_Negative(time_pitch);}
   
     // For how long time we should drive the pitch motor before updating values
-    delay(100)
+    delay(100);
     
   
     // Update roll angle, send in the adress for the pitchdeg and rolldeg
-    getCurrentAngles(&pitchdeg, &rolldeg)
+    getCurrentAngles();
     
     // Calculate new delta pitcj angle
-    delta_pitch = EZ_degree-pitchdeg
+    delta_pitch = EL_degree-pitchdeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
     Serial.println(delta_roll);
   }
   // Break pitch velocity after reaching wanted orientation
   Pitch_Brake();
-  delay(100)
+  delay(100);
 }

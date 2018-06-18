@@ -28,8 +28,9 @@ float X, Y, Z;
 float rollrad, pitchrad;
 float rolldeg, pitchdeg;
 float aoffsetX, aoffsetY, aoffsetZ;
+float delta_roll, delta_pitch;
 
-int Az_move,El_move;
+int Az_move, El_move;
 
 int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
 
@@ -39,9 +40,9 @@ const int roll_IN1=5;
 const int roll_IN2=4;
 const int roll_PWM=6;
 
-const int pitch_IN1=?;
-const int pitch_IN2=?;
-const int pitch_PWM=?;
+const int pitch_IN1=9; // CHANGE
+const int pitch_IN2=8;
+const int pitch_PWM=7;
 
 void setup() {
   // put your setup code here, to run once:
@@ -80,23 +81,22 @@ void loop() {
   // Get angles for accelerometer
   getCurrentAngles();
 
-  delta_roll = AZ_degree-rolldeg
-  delta_pitch = EL_degree-pitchdeg
+  delta_roll = AZ_degree-rolldeg;
+  delta_pitch = EL_degree-pitchdeg;
 
-  if delta_roll > tol_coarse or delta_pitch > tol_coarse{
+  if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
 
     // Make a coarse adjustment of the angle
-    Coarse_adjust_orientation()
+    Coarse_adjust_orientation();
 
     // Get angles for accelerometer
     getCurrentAngles();
 
     // Moving angles for motors, tune
-    Tune_orientation()
+    Tune_orientation();
   }
-  else if {
+  else {
     // Moving angles for motors, tune
-    Tune_orientation()
-    }
+    Tune_orientation();    }
   }
 
