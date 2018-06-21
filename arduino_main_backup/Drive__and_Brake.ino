@@ -15,14 +15,14 @@ void Roll_Positive(int Speed) {
 // Create a negative roll motion (lower motor)
 void Roll_Negative(int Speed) {    
      digitalWrite(roll_IN1,LOW); 
-     digitalWrite(roll_IN2,HIGH);  
+     digitalWrite(roll_IN2,LOW);  
      analogWrite(roll_PWM,Speed);
 }
 
 // Breake the roll motion (lower motor)
 void Roll_Brake(){
      digitalWrite(roll_IN1,LOW); 
-     digitalWrite(roll_IN2,LOW); 
+     digitalWrite(roll_IN2,HIGH); 
 }
 
 // PITCH

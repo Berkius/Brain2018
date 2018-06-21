@@ -26,7 +26,7 @@
   int Speed = 100; // CHANGE VELOCITY
 
   int time_roll = 20; // How long to run the motor for roll [ms]
-  int time_pitch = 20; // How long to run the motor for roll [ms]
+  int time_pitch = 20; // How long to run the motor for pitch [ms]
   
   // Run roll motor while outside the tolerance
   while (delta_roll > tol){

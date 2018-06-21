@@ -1,4 +1,10 @@
-// Testprogram for the motors and the microswtiches 
+/*
+* @file Motor driver arduino_main.ino
+*
+* @date  2018-6-15
+*/
+
+// Include
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 #include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
@@ -24,6 +30,11 @@ float rolldeg, pitchdeg;
 float aoffsetX, aoffsetY, aoffsetZ;
 float delta_roll, delta_pitch;
 
+int Az_move, El_move;
+
+int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
+
+
 // Define pins for motorcontroller
 const int sensor_Pin_1 = A0; //Microswitches 
 const int sensor_Pin_2 = A1; //Microswitches   
@@ -34,6 +45,7 @@ const int roll_PWM=11;//3;       //PWM, velocity for A
 const int pitch_IN1=12;//13;     //Direction for motor conneced to channel B
 const int pitch_IN2=9;//8;      //Break
 const int pitch_PWM=3;//11;     //PWM, velocity for B
+
 int sensorValue_1=0;        //         
 int sensorValue_2=0;        //
 int setupSpeed=100;         //Speed between 0-255
@@ -46,45 +58,65 @@ int azimuth_min=0;
 int azimuth_max=0;
 int azimuth_center=0;
 int offset_az=0;
-int offset_el=0;   
+int offset_el=0; 
+int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
+int safe_marg=1; 
 
-  
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);             // opens serial port, sets data rate to 9600 bps
    mySerial.begin(9600); // second comport
-   pinMode(roll_IN1, OUTPUT);
-   pinMode(roll_IN2, OUTPUT);
-   pinMode(roll_PWM, OUTPUT);
 
-   pinMode(pitch_IN1, OUTPUT);
-   pinMode(pitch_IN2, OUTPUT);
-   pinMode(pitch_PWM, OUTPUT);
-   acc.powerOn(); 
-   for (int i = 0; i <= 200; i++) {
-    acc.readAccel(&ax, &ay, &az);
-    
-    if (i == 0) {
-      aoffsetX = ax;
-      aoffsetY = ay;
-      aoffsetZ = az;
-    }
-    if (i > 1) {
-      aoffsetX = (ax + aoffsetX) / 2;
-      aoffsetY = (ay + aoffsetY) / 2;
-      aoffsetZ = (az + aoffsetZ) / 2;
-    }  
-   }
-   Calibration();
+     pinMode(roll_IN1, OUTPUT);
+     pinMode(roll_IN2, OUTPUT);
+     pinMode(roll_PWM, OUTPUT);
+
+     pinMode(pitch_IN1, OUTPUT);
+     pinMode(pitch_IN2, OUTPUT);
+     pinMode(pitch_PWM, OUTPUT);
+
+  //accelerometer function setup
+  accelerometer_setup();
+  Calibration();
+  
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
-  Serial.println(elevation_min);
-  Serial.println(elevation_max);
-  Serial.println("we are done");
-  
-    
+  serialEvent();                // Goes into the serial event function and saves the data in an array 
 
-}
+// if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
+  if (stringComplete == true  && errorVariable == false) {
+    // HERE WE WANT TO SEND IN THE RIGHT DATA AND CREATE POINTERS 
+    Extract_Datas();
+    stringComplete = false;
+  }
+// if something is wrong with the data length it will not go to the extract datas function and instead go here  
+  else if (stringComplete == true && errorVariable == true) {
+    stringComplete = false;
+    errorVariable = false;
+   }
+   //Serial.println(AZ_degree);
+   //Serial.println(EL_degree);
+
+  // Get angles for accelerometer
+  getCurrentAngles();
+
+  delta_roll = AZ_degree-rolldeg;
+  delta_pitch = EL_degree-pitchdeg;
+
+  if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
+
+    // Make a coarse adjustment of the angle
+    Coarse_adjust_orientation();
+
+    // Get angles for accelerometer
+    getCurrentAngles();
+
+    // Moving angles for motors, tune
+    Tune_orientation();
+  }
+  else {
+    // Moving angles for motors, tune
+    Tune_orientation();    }
+  }
+
