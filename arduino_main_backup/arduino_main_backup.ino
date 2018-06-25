@@ -36,8 +36,8 @@ int tol_coarse = 15; // How off the delta angle is okay to be before we run the 
 
 
 // Define pins for motorcontroller
-const int sensor_Pin_1 = A0; //Microswitches 
-const int sensor_Pin_2 = A1; //Microswitches   
+const int sensor_el = A0; //Microswitches 
+const int sensor_az = A1; //Microswitches   
 const int roll_IN1=13;//12;      //Direction for motor conneced to channel A
 const int roll_IN2=8;//9;       //Break
 const int roll_PWM=11;//3;       //PWM, velocity for A
@@ -60,7 +60,8 @@ int azimuth_center=0;
 int offset_az=0;
 int offset_el=0; 
 int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
-int safe_marg=1; 
+int safe_marg=1;
+ 
 
 void setup() {
   // put your setup code here, to run once:
@@ -82,41 +83,44 @@ void setup() {
 }
 
 void loop() {
-  serialEvent();                // Goes into the serial event function and saves the data in an array 
-
-// if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
-  if (stringComplete == true  && errorVariable == false) {
-    // HERE WE WANT TO SEND IN THE RIGHT DATA AND CREATE POINTERS 
-    Extract_Datas();
-    stringComplete = false;
-  }
-// if something is wrong with the data length it will not go to the extract datas function and instead go here  
-  else if (stringComplete == true && errorVariable == true) {
-    stringComplete = false;
-    errorVariable = false;
+  
+  while((sensor_el==LOW) && (sensor_az==LOW)){
+      serialEvent();                // Goes into the serial event function and saves the data in an array 
+    
+    // if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
+      if (stringComplete == true  && errorVariable == false) {
+        // HERE WE WANT TO SEND IN THE RIGHT DATA AND CREATE POINTERS 
+        Extract_Datas();
+        stringComplete = false;
+      }
+    // if something is wrong with the data length it will not go to the extract datas function and instead go here  
+      else if (stringComplete == true && errorVariable == true) {
+        stringComplete = false;
+        errorVariable = false;
+       }
+       //Serial.println(AZ_degree);
+       //Serial.println(EL_degree);
+    
+      // Get angles for accelerometer
+      getCurrentAngles();
+    
+      delta_roll = AZ_degree-rolldeg;
+      delta_pitch = EL_degree-pitchdeg;
+    
+      if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
+    
+        // Make a coarse adjustment of the angle
+        Coarse_adjust_orientation();
+    
+        // Get angles for accelerometer
+        getCurrentAngles();
+    
+        // Moving angles for motors, tune
+        Tune_orientation();
+      }
+      else {
+        // Moving angles for motors, tune
+        Tune_orientation();    }
    }
-   //Serial.println(AZ_degree);
-   //Serial.println(EL_degree);
-
-  // Get angles for accelerometer
-  getCurrentAngles();
-
-  delta_roll = AZ_degree-rolldeg;
-  delta_pitch = EL_degree-pitchdeg;
-
-  if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
-
-    // Make a coarse adjustment of the angle
-    Coarse_adjust_orientation();
-
-    // Get angles for accelerometer
-    getCurrentAngles();
-
-    // Moving angles for motors, tune
-    Tune_orientation();
-  }
-  else {
-    // Moving angles for motors, tune
-    Tune_orientation();    }
-  }
-
+   End_switches();
+}

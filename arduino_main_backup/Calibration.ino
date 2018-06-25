@@ -3,7 +3,7 @@ void Calibration(){
    if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){ 
        Serial.println("inside if");
       //FOR THE UPPER MOTOR CONTROLLING THE ELEVATION
-      while (digitalRead(sensor_Pin_1)==LOW){
+      while (digitalRead(sensor_el)==LOW){
         Pitch_Positive(setupSpeed);
         delay(DelayVar);
         getCurrentAngles();
@@ -18,7 +18,7 @@ void Calibration(){
           offset_el=abs(elevation_min-pitchdeg); //perhaps check function
           }  
         elevation_min=pitchdeg-offset_el; 
-      while(digitalRead(sensor_Pin_1)==HIGH){  
+      while(digitalRead(sensor_el)==HIGH){  
         Serial.println("offset_el: ");
         Serial.println(offset_el);
         delay(1000);
@@ -26,7 +26,7 @@ void Calibration(){
         delay(DelayVar);
         Pitch_Brake();
       }
-      while(digitalRead(sensor_Pin_1)==LOW){
+      while(digitalRead(sensor_el)==LOW){
         Pitch_Negative(setupSpeed);
         delay(DelayVar);
         getCurrentAngles();
@@ -36,7 +36,7 @@ void Calibration(){
         getCurrentAngles();            //Get current angle from the accelerometer
         elevation_max=pitchdeg-offset_el;   //The offset up and down is the same we assume 
                  
-      while (digitalRead(sensor_Pin_1)==HIGH){
+      while (digitalRead(sensor_el)==HIGH){
         Pitch_Positive(pushSpeed);
         delay(DelayVar);
         getCurrentAngles();

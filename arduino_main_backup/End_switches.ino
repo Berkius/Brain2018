@@ -2,14 +2,14 @@ void End_switches(){
   Roll_Brake();
   Pitch_Brake();
   getCurrentAngles();
-  if (motor_direction==1){
+  if (motor_direction==1){ //when going in Pitch positive
         offset_el=abs(elevation_min-pitchdeg);
         while((pitchdeg-offset_el)!=(elevation_min+safe_marg)){         //As long as the angle is out of the interval keep on going
           Pitch_Negativ(setupSpeed);
           getCurrentAngles();
           delay(1000);          //Ta bort ev.
         }
-  if (motor_direction==2){
+  if (motor_direction==2){  //when going in Pitch negative
         offset_el=abs(elevation_max-pitchdeg);
         getCurrentAngles();
         while((pitchdeg-offset_el)!=(elevation_max-safe_marg)){         //As long as the angle is out of the interval keep on going
