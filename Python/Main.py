@@ -1,10 +1,12 @@
 import time
+from time import gmtime, strftime
 import sys
 from Superfile import OpenReader 
 from Superfile import DeleteFiles
 from Superfile import EventHandler
 from Superfile import OpenMetFy
-from Superfile import CheckFiles	
+from Superfile import CheckFiles
+from Superfile import TimePause	
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -18,6 +20,7 @@ if __name__ == '__main__':
 	observer = Observer()												
 	observer.schedule(EventHandler(), path=args[0], recursive=False)	#take the first line in the argument as a path
 	eventhandler=EventHandler()
+	timepause=TimePause()
 	path_metop="C:\\Ruag_program\\xhrpt_decoder\\*.HPT"
 	path_fengyun="C:\\Ruag_program\\xhrpt_decoder\\*.C10"
 	path_noaa="C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"
@@ -29,9 +32,12 @@ if __name__ == '__main__':
 
 	#Here the constant loop starts
 	observer.start()
+	update_time="11:34:00"
 
 	try:
 		while True:
+			if(strftime("%H:%M:%S")==update_time):
+				timepause.pause_file()	
 			if (eventhandler.return_globtemp()==1):						#If new file
 				print(eventhandler.return_globtemp())
 				#Wait and delete files that comes in during the wait, can i in someway se when the file is done?
@@ -61,8 +67,8 @@ if __name__ == '__main__':
 					time.sleep(10)
 					open_reader.OpenNewFile()
 
-			eventhandler.set_globtemp(0)								#unlock the eventhandler 
-			time.sleep(1)		
+				eventhandler.set_globtemp(0)								#unlock the eventhandler 
+				time.sleep(1)		
 	except KeyboardInterrupt:
 	    observer.stop()
 

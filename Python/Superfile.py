@@ -314,3 +314,9 @@ class CheckFiles():
 			file_size_2=os.path.getsize(filepath)
 			if (file_size_1==file_size_2):
 				break
+
+class TimePause():
+
+	def pause_file(self):
+		time.sleep(4)
+		print("testing")
