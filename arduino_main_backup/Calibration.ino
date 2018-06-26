@@ -1,57 +1,50 @@
+//Calibrating the the end switches and the offset of the accelerometer 
+
 void Calibration(){
    
-   if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){ 
-       Serial.println("inside if");
-      //FOR THE UPPER MOTOR CONTROLLING THE ELEVATION
-      while (digitalRead(sensor_el)==LOW){
-        Pitch_Positive(setupSpeed);
-        delay(DelayVar);
-        getCurrentAngles();
-        delay(1000);
+   if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){      //If the end switches pins are low(not activated)    
+       Serial.println("inside if");                       //For testing in serial monitor
+      //FOR THE UPPER MOTOR CONTROLLING THE ELEVATION     
+      while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
+        Pitch_Positive(setupSpeed);                       //drive positive direetion
+        delay(DelayVar);                                  //Was needed to know for how long to run
+        getCurrentAngles();                               //gets the angles from accelerometer 
         }
-        Serial.println("first while");
-        Pitch_Brake();
-        getCurrentAngles();              //Get current angle from the accelerometer 
-        delay(1000);
-        Serial.println(pitchdeg);   
-        if (elevation_min!=pitchdeg){
-          offset_el=abs(elevation_min-pitchdeg); //perhaps check function
-          }  
-        elevation_min=pitchdeg-offset_el; 
+      Serial.println("first while");                    //for testing
+      Pitch_Brake();                                    //When Sensor_el turns to High, brake
+      getCurrentAngles();                               //Get current angle from the accelerometer 
+      Serial.println(pitchdeg);   
+      if (elevation_min!=pitchdeg){                     //If they are not equal save the offset 
+          offset_el=abs(elevation_min-pitchdeg);        
+          }   
       while(digitalRead(sensor_el)==HIGH){  
-        Serial.println("offset_el: ");
-        Serial.println(offset_el);
-        delay(1000);
-        Pitch_Negative(pushSpeed);
+        Serial.println("offset_el: ");              //for testing purpose 
+        Serial.println(offset_el);                  //for testing porpuse
+        Pitch_Negative(pushSpeed);                  //Drive Backwords
         delay(DelayVar);
-        Pitch_Brake();
+        Pitch_Brake();                              //Dosen't konw if we need this it was an original thought but can be removed 
       }
-      while(digitalRead(sensor_el)==LOW){
-        Pitch_Negative(setupSpeed);
-        delay(DelayVar);
-        getCurrentAngles();
-        delay(1000);
+      while(digitalRead(sensor_el)==LOW){           //When low again dirve backwards  
+        Pitch_Negative(setupSpeed);                 //Drive Backwards 
+        delay(DelayVar);                    
+        getCurrentAngles();                         //Get angles from accelerometer  
         }
-        Pitch_Brake();
-        getCurrentAngles();            //Get current angle from the accelerometer
-        elevation_max=pitchdeg-offset_el;   //The offset up and down is the same we assume 
-                 
-      while (digitalRead(sensor_el)==HIGH){
-        Pitch_Positive(pushSpeed);
-        delay(DelayVar);
-        getCurrentAngles();
-        delay(1000);
-        Pitch_Brake();
+      Pitch_Brake();
+      getCurrentAngles();                           //Get current angle from the accelerometer 
+      while (digitalRead(sensor_el)==HIGH){         //When switch is set high from the other direction  
+        Pitch_Positive(pushSpeed);                  // drive forward
+        delay(DelayVar);            
+        getCurrentAngles();                         //Get angles from accelerometer
+        Pitch_Brake();                              //Dosen't konw if we need this it was an original thought but can be removed
         } 
-        elevation_center=abs((elevation_min+elevation_max)/2);   //Reletiv centered coordinate
-        Serial.println("finish");
-      while(!(pitchdeg<=(elevation_center+2) && pitchdeg>=(elevation_center-2))){         //As long as the angle is out of the interval keep on going
+        elevation_center=abs((elevation_min+elevation_max)/2);   //Get centered coordinate
+        //THE CALIBRATION IS NOW DONE AND THE NEXT WHILE LOOP WILL JUST PLACE THE ANTENNA IN THE CENTER.
+      while(!((pitchdeg-offset_el)<=(elevation_center+2) && (pitchdeg-offset_el)>=(elevation_center-2))){         //As long as the angle is out of the interval keep on going
           getCurrentAngles();
-          delay(1000);
           Pitch_Positive(setupSpeed);
           delay(DelayVar);
-          Serial.println("before loop function");
-          Serial.println(elevation_center);
+          Serial.println("before loop function");       //For testing in serial monitor
+          Serial.println(elevation_center);             //For testing in serial monitor
           }
       Pitch_Brake();
       
