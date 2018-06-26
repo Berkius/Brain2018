@@ -44,7 +44,9 @@ class OpenReader():
 		app.Open.Open.Click()
 		app.Open.WaitNot('visible')			
 		#pyautogui.press('enter')			#Remove with better alternativ, Open select eller liknande
-		app.Open.Process.Click()
+		app.MetFY3x_Processor_v.Derandomize.Click()
+		app.MetFY3x_Processor_v.Process.Click()
+		
 		time.sleep(5)
 		#app['HRPT Reader - '].MenuSelect('File->Open')			#Programmet ändrar namn beroende på vilken fil som öppnas
 		#app.Open.Edit.SetText('FY3B_2012-05-01_1419.C10')
