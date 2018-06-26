@@ -232,7 +232,17 @@ class OpenMetFy():
 	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
 	def OpenForMetop(self):
-
+		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'
+		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
+		path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
+		app.MetFY3x_Processor_v.MenuSelect('File->Open')
+		app.Öppna.Edit.SetText('MetopA_2012-09-22_113446')
+		app.Öppna.Öppna.Click()
+		app.MetFY3x_Processor_v.Process.Click()
+		time.sleep(30)
+		app.kill()
+		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader CHANGE THIS
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
@@ -267,9 +277,21 @@ class OpenMetFy():
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill() 									#kills the MetFY program
-
+		'''
 	def OpenForFengyun(self):
-
+		path_to_MetFy3x = 'C:\\Users\\Rickard\\Downloads\\MetFy3x'
+		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
+		path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
+		app.MetFY3x_Processor_v.MenuSelect('File->Open')
+		app.Öppna.Edit.SetText('MetopA_2012-09-22_113446')
+		app.Öppna.Öppna.Click()
+		app.MetFY3x_Processor_v.derandomize.Click()
+		app.MetFY3x_Processor_v.Process.Click()
+		time.sleep(30)
+		app.kill()
+		
+		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
@@ -303,7 +325,7 @@ class OpenMetFy():
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill()	
-
+		'''
 class CheckFiles():
 
 	def check_file_size(self,filepath):

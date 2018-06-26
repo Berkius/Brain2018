@@ -2,7 +2,7 @@
 
 void Calibration(){
    
-   if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){      //If the end switches pins are low(not activated)    
+   if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){      //If the end switches pins are low(not activated), so we do not start to drive in one direction when we are at an end swtich     
        Serial.println("inside if");                       //For testing in serial monitor
       //FOR THE UPPER MOTOR CONTROLLING THE ELEVATION     
       while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
