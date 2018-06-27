@@ -8,7 +8,7 @@
 
  
  void Coarse_adjust_orientation(){
-  Serial.println('Entering Coarse_adjust_orientation');
+  Serial.println("Entering Coarse_adjust_orientation");
 
    // Print initial delta_roll and delta_pitch for debugging
    Serial.println(delta_roll);
@@ -75,7 +75,7 @@
   Serial.println(delta_roll);
   Serial.println(delta_pitch);
 
-  Serial.println('Ending Coarse_adjust_orientation');
+  Serial.println("Ending Coarse_adjust_orientation");
   
 }
 

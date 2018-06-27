@@ -3,6 +3,8 @@ void End_switches(){
  This Function is to use the Brake when hiting the endswitches 
  */
 
+ int safe_marg=1;
+
   Pitch_Brake();                
   getCurrentAngles();
   if (motor_direction==1){                                              //when going in Pitch positive

@@ -60,6 +60,7 @@ int offset_az=0;
 int offset_el=0; 
 int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
 
+int setupSpeed=100;         //Speed between 0-255
  
 
 void setup() {

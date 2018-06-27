@@ -16,4 +16,4 @@ void UpdateSateliteAngles(){
      //Serial.println(AZ_degree);
      //Serial.println(EL_degree);
   
-  }
+}

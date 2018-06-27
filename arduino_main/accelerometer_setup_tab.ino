@@ -1,10 +1,10 @@
+void accelerometer_setup{
 /*
  * Calibrate the accelerometer
  * 
  * Date: 2018-06-16
  */
 
-void accelerometer_setup{
  acc.powerOn();
  
  for (int i = 0; i <= 200; i++) {

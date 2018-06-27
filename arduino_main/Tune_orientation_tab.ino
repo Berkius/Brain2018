@@ -15,7 +15,7 @@
    getCurrentAngles();
 
    // Update angles satelite, EL/AZ [degree]
-   Extract_Datas_tab();
+   Extract_Datas();
 
   // Get the delta angle between motor position and satelite position
   delta_roll = AZ_degree-rolldeg;            // [degree]

@@ -24,11 +24,4 @@ void delay_s(int total_delay){
     
     
     }
-
-  
-  
-  
-  
-  
-  
   }
