@@ -4,7 +4,8 @@ void UpdateSateliteAngles(){
   
   // if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
     if (stringComplete == true  && errorVariable == false) {
-      // HERE WE WANT TO SEND IN THE RIGHT DATA AND CREATE POINTERS 
+
+      // Remake received satelite coordinates to elevation angle
       Extract_Datas();
       stringComplete = false;
     }

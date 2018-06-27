@@ -9,7 +9,9 @@
 
  void Tune_orientation(){
 
-  // WE UPDATE SATEOLITE POS EVERYTIME ASWELL?
+   // Update satelite angles
+   //UpdateSateliteAngles();
+   WriteSateliteAngles();
   
     // Update angles motor, roll/pitch [degree]
    getCurrentAngles();
@@ -42,10 +44,8 @@
      // For how long time we should drive the roll motor before updating values
      delay(100);
   
-    // Update roll angle
-    // %%%%%%%%%%%%%%%%%%%
-    // UPDATE ANGLES HERE
-    // %%%%%%%%%%%%%%%
+    // Update angles motor, roll/pitch [degree]
+    getCurrentAngles();
     
     // Calculate new delta roll angle
     delta_roll = AZ_degree-rolldeg;

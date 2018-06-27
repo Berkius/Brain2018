@@ -3,6 +3,7 @@ void End_switches(){
  This Function is to use the Brake when hiting the endswitches 
  Looks at which switch was activated and which direction we we ran latest. Then update offset to motor angle
  */
+ Serial.println("Entering End_switches");
 
  int safe_marg=1;
 
@@ -28,4 +29,5 @@ void End_switches(){
   if (motor_direction==2){
         //offset_az=abs(azimuth_max-rolldeg); Vad har vi för feedback i Azimuth
         }
+   Serial.println("Ending End_switches");
 }

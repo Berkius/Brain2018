@@ -84,6 +84,8 @@ void setup() {
   //accelerometer function setup
   accelerometer_setup();
   Calibration();
+
+  
   
 }
 
@@ -95,7 +97,8 @@ void loop() {
       }
   
     // Update the satelite angles from WX-track and make an convertion 
-    UpdateSateliteAngles();
+    //UpdateSateliteAngles();
+    WriteSateliteAngles();
   
     // Get angles for accelerometer
     getCurrentAngles();
