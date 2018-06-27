@@ -27,15 +27,15 @@
   
     // If we want positive or negative roll
     if (delta_roll > 0){
-      Roll_Positive(time_roll);}
+      Roll_Positive(Speed);}
     else{
-      Roll_Negative(time_roll);}
+      Roll_Negative(Speed);}
     
     // If we want positive or negative pitch
     if (delta_pitch > 0){
-      Pitch_Positive(time_pitch);}
+      Pitch_Positive(Speed);}
     else {
-      Pitch_Negative(time_pitch);}
+      Pitch_Negative(Speed);}
     
     delay(time_pitch);
     Pitch_Brake();
@@ -52,15 +52,15 @@
   
     // If we want positive or negative roll
     if (delta_roll > 0){
-      Roll_Positive(time_roll);}
+      Roll_Positive(Speed);}
     else{
-      Roll_Negative(time_roll);}
+      Roll_Negative(Speed);}
   
     // If we want positive or negative pitch
     if (delta_pitch > 0){
-      Pitch_Positive(time_pitch);}
+      Pitch_Positive(Speed);}
     else {
-      Pitch_Negative(time_pitch);}
+      Pitch_Negative(Speed);}
   
     delay(time_roll);
     Roll_Brake();

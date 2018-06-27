@@ -56,10 +56,15 @@ int elevation_center=0;
 int azimuth_min=0;  
 int azimuth_max=0;
 int azimuth_center=0;
+
+// 
+// Motor offset (from accelerometer)
 int offset_az=0;
 int offset_el=0; 
+
 int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
 
+// The motor speed in calibration and accelerometer_setup
 int setupSpeed=100;         //Speed between 0-255
  
 
