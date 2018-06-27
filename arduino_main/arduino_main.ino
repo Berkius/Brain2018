@@ -4,10 +4,12 @@
 * @date  2018-6-15
 */
 
-// Include
+// #########################################
+// INCLUDE LIBARIES
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 #include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
+// #########################################
 
 SoftwareSerial mySerial(10,11);   //RX, TX
 
@@ -21,6 +23,8 @@ int El_0, El_End;                   // Elevation, refering to the index in the s
 int AZ_degree, EL_degree;           // The values to be sent to the motors
 boolean errorVariable = false;      // error vaiable
 
+// ##############################################
+// Define varibales to acceleromter
 ADXL345 acc; //variable adxl is an instance of the ADXL345 library
 int ax,ay,az;  
 int rawX, rawY, rawZ;
@@ -30,63 +34,76 @@ float rolldeg, pitchdeg;
 float aoffsetX, aoffsetY, aoffsetZ;
 float delta_roll, delta_pitch;
 
+// ################################################
+
 int Az_move, El_move;
 
-int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
 
 
-// Define pins for motorcontroller
-const int sensor_el = A0; //Microswitches 
-const int sensor_az = A1; //Microswitches   
-const int roll_IN1=13;//12;      //Direction for motor conneced to channel A
-const int roll_IN2=8;//9;       //Break
-const int roll_PWM=11;//3;       //PWM, velocity for A
+// #################################################
+// DEFINE PINS FOR MICROCONTROLLER
+// Microswitches 
+const int sensor_el = A2;        // Switch for elevtion
+const int sensor_az = A3;        // Switch for azimuth
 
-const int pitch_IN1=12;//13;     //Direction for motor conneced to channel B
-const int pitch_IN2=9;//8;      //Break
-const int pitch_PWM=3;//11;     //PWM, velocity for B
+// Motor 1
+const int roll_IN1=7;            // Motor pin A1, positive
+const int roll_IN2=8;            // Motor pin B1, positive
+const int roll_PWM=5;            // PWM, "velocity"
+
+// Motor 2
+const int pitch_IN1=4;          // Motor pin A2, positive
+const int pitch_IN2=9;          // Motor pin B2, negative
+const int pitch_PWM=6;          // PWM, "velocity"
+
+// #################################################
 
 int sensorValue_1=0;        //         
 int sensorValue_2=0;        //
 int pushSpeed=100;
-int elevation_min=5;
-int elevation_max=85;
-int DelayVar=50;           //Delay in milliseconds
-int elevation_center=0;  
+
+// LOCATION OF SWITCHES (MIGHT WANNA DO LOCAL?!)
+int elevation_min=5;       // Elevation lower switch
+int elevation_max=85;      // Elevation upper switch
+  
+
+int DelayVar=50;           //Delay in milliseconds  
 int azimuth_min=0;  
 int azimuth_max=0;
-int azimuth_center=0;
 
-// 
 // Motor offset (from accelerometer)
 int offset_az=0;
 int offset_el=0; 
 
-int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
+// Which direction are we driving
+int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
 
-// The motor speed in calibration and accelerometer_setup
-int setupSpeed=100;         //Speed between 0-255
- 
+// ##############################################
+// MOTOR SPEED
+//int fastSpeed = 200; 
+//int slowSpeed = 100;
+int setupSpeed=250;         //Speed between 0-255 // The motor speed in calibration and accelerometer_setup
 
+// ##############################################
+// OTHER 
+int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
+
+// ##############################################
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);             // opens serial port, sets data rate to 9600 bps
    mySerial.begin(9600);           // second comport
-
-     pinMode(roll_IN1, OUTPUT);
-     pinMode(roll_IN2, OUTPUT);
-     pinMode(roll_PWM, OUTPUT);
-
-     pinMode(pitch_IN1, OUTPUT);
-     pinMode(pitch_IN2, OUTPUT);
-     pinMode(pitch_PWM, OUTPUT);
+   
+   pinMode(sensor_el, INPUT);      // Set switch elevation as an input
+   pinMode(sensor_az, INPUT);      // Set switch azimuth as an input
 
   //accelerometer function setup
   accelerometer_setup();
   Calibration();
 
-  
-  
+  // Setting Satelite values, first time, wait for input (TESTING!)
+  WriteSateliteAnglesFirst;
+
 }
 
 void loop() {

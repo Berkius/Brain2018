@@ -4,6 +4,7 @@ void accelerometer_setup(){
  * 
  * Date: 2018-06-16
  */
+ Serial.println("Entering accelerometer_setup");
 
  acc.powerOn();
  
@@ -21,5 +22,6 @@ void accelerometer_setup(){
     aoffsetZ = (az + aoffsetZ) / 2;
   }
  }
+ Serial.println("Ending accelerometer_setup");
 }
 

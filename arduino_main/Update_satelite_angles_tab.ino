@@ -1,4 +1,5 @@
 void UpdateSateliteAngles(){
+  Serial.println("Entering UpdateSateliteAngles");
 
   serialEvent();                // Goes into the serial event function and saves the data in an array 
   
@@ -16,5 +17,8 @@ void UpdateSateliteAngles(){
      }
      //Serial.println(AZ_degree);
      //Serial.println(EL_degree);
+
+
+     Serial.println("Ending UpdateSateliteAngles");
   
 }

@@ -13,7 +13,8 @@ void delay_s(int total_delay){
 
     // If we hit a sensor, calibrate again
     if ((sensor_el==HIGH) && (sensor_az==HIGH)){
-      Calibration();
+      End_switches();
+      Serial.print("Switch activated while delayed");
       break;
       }
 
