@@ -1,6 +1,7 @@
 void End_switches(){
 /*
  This Function is to use the Brake when hiting the endswitches 
+ Looks at which switch was activated and which direction we we ran latest. Then update offset to motor angle
  */
 
  int safe_marg=1;
