@@ -36,13 +36,31 @@ int tol_coarse = 15; // How off the delta angle is okay to be before we run the 
 
 
 // Define pins for motorcontroller
-const int roll_IN1=12;
-const int roll_IN2=9;
-const int roll_PWM=3;
+const int sensor_el = A0; //Microswitches 
+const int sensor_az = A1; //Microswitches   
+const int roll_IN1=13;//12;      //Direction for motor conneced to channel A
+const int roll_IN2=8;//9;       //Break
+const int roll_PWM=11;//3;       //PWM, velocity for A
 
-const int pitch_IN1=13; // CHANGE
-const int pitch_IN2=8;
-const int pitch_PWM=11;
+const int pitch_IN1=12;//13;     //Direction for motor conneced to channel B
+const int pitch_IN2=9;//8;      //Break
+const int pitch_PWM=3;//11;     //PWM, velocity for B
+
+int sensorValue_1=0;        //         
+int sensorValue_2=0;        //
+int pushSpeed=100;
+int elevation_min=5;
+int elevation_max=85;
+int DelayVar=50;           //Delay in milliseconds
+int elevation_center=0;  
+int azimuth_min=0;  
+int azimuth_max=0;
+int azimuth_center=0;
+int offset_az=0;
+int offset_el=0; 
+int motor_direction=0; //A variable to know in which direction the motors are spinning, 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
+
+ 
 
 void setup() {
   // put your setup code here, to run once:
@@ -59,41 +77,46 @@ void setup() {
 
   //accelerometer function setup
   accelerometer_setup();
+  Calibration();
+  
 }
 
 void loop() {
-  serialEvent();                // Goes into the serial event function and saves the data in an array 
+      // I DONT THINK WE WILL EVER GET HERE CUZ WE CHECK THIS WHILE RUNNING THE MOTORS (in delay)
+      // If a switch is activated, run switch protocol
+      if ((sensor_el==HIGH) || (sensor_az==HIGH)){
+      End_switches();
+      }
+  
+    // Update the satelite angles from WX-track and make an convertion 
+    UpdateSateliteAngles();
+  
+    // Get angles for accelerometer
+    getCurrentAngles();
 
-// if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
-  if (stringComplete == true  && errorVariable == false) {
-    // HERE WE WANT TO SEND IN THE RIGHT DATA AND CREATE POINTERS 
-    Extract_Datas();
-    stringComplete = false;
-  }
-// if something is wrong with the the data length it will not go to the extract datas function and instead go here  
-  else if (stringComplete == true && errorVariable == true) {
-    stringComplete = false;
-    errorVariable = false;
-   }
-   //Serial.println(AZ_degree);
-   //Serial.println(EL_degree);
+    // Get the delta angle between motor position and satelite position
+    delta_roll = AZ_degree-rolldeg;                     // [degree]
+    delta_pitch = EL_degree-pitchdeg;                   // [degree]
 
-  // Get angles for accelerometer
-  getCurrentAngles();
+    // Do a coarse adjustment of the angles if the delta angle is large
+    if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
+  
+      // Make a coarse adjustment of the angle
+      Coarse_adjust_orientation();
+  
+      // Get angles for accelerometer
+      getCurrentAngles();
+  
+      // Moving angles for motors, tune
+      Tune_orientation();
+    }
 
-  delta_roll = AZ_degree-rolldeg;
-  delta_pitch = EL_degree-pitchdeg;
+    // Do a fine adjustment of the angles, if the delta angle is pretty small
+    else {
+      // Moving angles for motors, tune
+      Tune_orientation();    
+      }
 
-  if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
 
-    // Make a coarse adjustment of the angle
-    Coarse_adjust_orientation();
-
-    // Moving angles for motors, tune
-    Tune_orientation();
-  }
-  else {
-    // Moving angles for motors, tune
-    Tune_orientation();    }
-  }
-
+}
+   

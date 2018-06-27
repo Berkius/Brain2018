@@ -25,6 +25,6 @@ void getCurrentAngles() // input is two pointers to respectivly angle
   pitchdeg = 180*(atan(X/sqrt(Y*Y+Z*Z)))/PI; 
 
   // Print angles for debugging
-  //Serial.print("Pitch angle: ");
-  //Serial.println(pitchdeg);
+  Serial.print("Pitch angle: ");
+  Serial.println(pitchdeg);
 }

@@ -1,11 +1,10 @@
 /*
 -------------------------------------------------------------------------------------------------
 SerialEvent occurs whenever a new data comes in the hardware serial RX. 
-This routine is run between eash time loop() runs.
+(This routine is run between each time loop() runs in main)
 --------------------------------------------------------------------------------------------
 */
 void serialEvent(){
-  /*
   mySerial.listen();        //starts listening for data in the serialport mySerial
 
   char endMarker= '\r'; // carrier return
@@ -37,11 +36,7 @@ void serialEvent(){
         i++;                        
       }
     }
-    */
-
-    receivedChars = "AZ120.0 EL60.0 UPO \0";
   
-  //delay(2000);
   //Serial.println(receivedChars);
   //stringComplete = false;
 }

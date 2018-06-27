@@ -1,5 +1,5 @@
 void Extract_Datas() {
-/* Extract data and print the string when a newline arrives
+/* Extract data from SerialEvent_tab and update the satelite angles AZ_degree & EL_degree (and print the string when a newline arrives)
 -------------------------------------------------------------------------------------------------
 THe string received has the following form 
 AZ268.0 EL56.0 UP0 DN0.

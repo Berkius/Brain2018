@@ -9,23 +9,26 @@
 
  void Tune_orientation(){
 
-  // SHOULD WE UPDATE SATEOLITE POS EVERYTIME ASWELL?
+  // WE UPDATE SATEOLITE POS EVERYTIME ASWELL?
   
-  // Get angles for accelerometer
-    getCurrentAngles();
+    // Update angles motor, roll/pitch [degree]
+   getCurrentAngles();
+
+   // Update angles satelite, EL/AZ [degree]
+   Extract_Datas_tab();
+
+  // Get the delta angle between motor position and satelite position
+  delta_roll = AZ_degree-rolldeg;            // [degree]
+  delta_pitch = EL_degree-pitchdeg;          // [degree]
    
-  
-  delta_roll = AZ_degree-rolldeg;
-  delta_pitch = EL_degree-pitchdeg;
-  
   // Tolerance: How big is delta_roll/delta_pitch allowed to be
-  int tol = 0.5; // [degree] - CHANGE TO WANTED VALUE
+  int tol = 0.5;                             // [degree] - CHANGE TO WANTED VALUE
   
   // Speed of the motors, PWM setting 0-255
   int Speed = 100; // CHANGE VELOCITY
 
   int time_roll = 20; // How long to run the motor for roll [ms]
-  int time_pitch = 20; // How long to run the motor for roll [ms]
+  int time_pitch = 20; // How long to run the motor for pitch [ms]
   
   // Run roll motor while outside the tolerance
   while (delta_roll > tol){
@@ -48,8 +51,7 @@
     delta_roll = AZ_degree-rolldeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
-    //Serial.println(delta_roll);
-    //Serial.println('three');
+    Serial.println(delta_roll);
   }
   // Break roll velocity after reaching wanted orientation
   Pitch_Brake();
@@ -75,8 +77,7 @@
     delta_pitch = EL_degree-pitchdeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
-    //Serial.println('changing angle');
-    //Serial.println(delta_roll);
+    Serial.println(delta_roll);
   }
   // Break pitch velocity after reaching wanted orientation
   Pitch_Brake();
