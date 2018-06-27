@@ -9,12 +9,12 @@ void delay_s(int total_delay){
   int remaining_delay = total_delay;
 
   // Run ten ms when check switches
-  while remaining_delay > 9{
+  while (remaining_delay > 9){
     
-    delay(10) 
+    delay(10); 
 
     // If we hit a sensor, calibrate again
-    if (sensor_el==HIGH) && (sensor_az==HIGH){
+    if ((sensor_el==HIGH) && (sensor_az==HIGH)){
       Calibration();
       break;
       }

@@ -1,4 +1,4 @@
-void accelerometer_setup{
+void accelerometer_setup(){
 /*
  * Calibrate the accelerometer
  * 
