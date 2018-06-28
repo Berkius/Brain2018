@@ -2,6 +2,7 @@ void serialEvent(){
 /*
 -------------------------------------------------------------------------------------------------
 SerialEvent occurs whenever a new data comes in the hardware serial RX. 
+SerialEvent "returns" a string name receivedChars which looks something like: 
 (This routine is run between each time loop() runs in main)
 --------------------------------------------------------------------------------------------
 */

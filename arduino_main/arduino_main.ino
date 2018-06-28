@@ -23,23 +23,6 @@ int El_0, El_End;                   // Elevation, refering to the index in the s
 int AZ_degree, EL_degree;           // The values to be sent to the motors
 boolean errorVariable = false;      // error vaiable
 
-// ##############################################
-// Define varibales to acceleromter
-ADXL345 acc; //variable adxl is an instance of the ADXL345 library
-int ax,ay,az;  
-int rawX, rawY, rawZ;
-float X, Y, Z;
-float rollrad, pitchrad;
-float rolldeg, pitchdeg;
-float aoffsetX, aoffsetY, aoffsetZ;
-float delta_roll, delta_pitch;
-
-// ################################################
-
-int Az_move, El_move;
-
-
-
 // #################################################
 // DEFINE PINS FOR MICROCONTROLLER
 // Microswitches 
@@ -56,24 +39,27 @@ const int pitch_IN1=4;          // Motor pin A2, positive
 const int pitch_IN2=9;          // Motor pin B2, negative
 const int pitch_PWM=6;          // PWM, "velocity"
 
+// ##############################################
+// Define varibales to acceleromter
+ADXL345 acc;                            //variable adxl is an instance of the ADXL345 library
+
+int ax,ay,az;                           // Accelerometer values, used in getCurrentAngles and accelerometer_setup
+
+float rolldeg, pitchdeg;                // The angle of the motors [degree]
+float aoffsetX, aoffsetY, aoffsetZ;     // ??
+float delta_roll, delta_pitch;          // The offset between the aceelerometer value and the actual value (from switch)
+
+// Motor offset (from accelerometer)
+int offset_az=0;
+int offset_el=0; 
+
 // #################################################
 
 int sensorValue_1=0;        //         
 int sensorValue_2=0;        //
 int pushSpeed=100;
 
-// LOCATION OF SWITCHES (MIGHT WANNA DO LOCAL?!)
-int elevation_min=5;       // Elevation lower switch
-int elevation_max=85;      // Elevation upper switch
-  
-
-int DelayVar=50;           //Delay in milliseconds  
-int azimuth_min=0;  
-int azimuth_max=0;
-
-// Motor offset (from accelerometer)
-int offset_az=0;
-int offset_el=0; 
+int DelayVar=50;           //Delay in milliseconds  DONT WANT HERE
 
 // Which direction are we driving
 int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
@@ -82,7 +68,7 @@ int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward a
 // MOTOR SPEED
 //int fastSpeed = 200; 
 //int slowSpeed = 100;
-int setupSpeed=250;         //Speed between 0-255 // The motor speed in calibration and accelerometer_setup
+int setupSpeed=250;         //Speed between 0-255 // The motor speed in calibration and accelerometer_setup DONT WANT HERE
 
 // ##############################################
 // OTHER 
@@ -102,7 +88,7 @@ void setup() {
   Calibration();
 
   // Setting Satelite values, first time, wait for input (TESTING!)
-  WriteSateliteAnglesFirst;
+  WriteSateliteAnglesFirst();
 
 }
 

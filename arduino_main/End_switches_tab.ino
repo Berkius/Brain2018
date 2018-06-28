@@ -5,6 +5,12 @@ void End_switches(){
  */
  Serial.println("Entering End_switches");
 
+// Location of switches
+int azimuth_min=0;         // Azimuth left switch
+int azimuth_max=0;         // Azimuth right switch
+int elevation_min=5;       // Elevation lower switch
+int elevation_max=85;      // Elevation upper switch
+
  int safe_marg=1;
 
   Pitch_Brake();                

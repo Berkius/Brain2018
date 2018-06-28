@@ -6,6 +6,8 @@ void accelerometer_setup(){
  */
  Serial.println("Entering accelerometer_setup");
 
+  
+
  acc.powerOn();
  
  for (int i = 0; i <= 200; i++) {

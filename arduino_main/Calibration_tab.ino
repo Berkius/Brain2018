@@ -71,7 +71,7 @@ void Calibration(){
           delay_s(DelayVar);
           }
       Pitch_Brake();*/
-      Serial.println("Centering finnished");
+      Serial.println("Centering finished");
       
       /*  
       //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
