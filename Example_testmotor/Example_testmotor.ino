@@ -7,7 +7,7 @@ https://www.instructables.com/id/Arduino-Motor-Shield-Tutorial/
 
 *************************************************************/
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
-/*#include <Wire.h>
+#include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
 
 SoftwareSerial mySerial(10,11);   //RX, TX
@@ -56,7 +56,7 @@ int offset_el=0;
 int sensorPin = A0;
 int ledPin=13;
 int sensorValue = 0;
-*/
+
 
 void setup() {
   int i=0;
