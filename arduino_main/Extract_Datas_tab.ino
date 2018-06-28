@@ -8,6 +8,11 @@ We extract only the numbers to send to the motors
 */
 Serial.println("Entering Extract_Datas");
 
+// Define variables
+String inputString = "";            // String to save the input in 
+int Az_0, Az_End;                   // Aximuth, refering to the index in the string that you get, the first interesting number and the last
+int El_0, El_End;                   // Elevation, refering to the index in the string that you get, the first interesting number and the last
+
   if(receivedChars[0] != 'A') {
     Serial.println("ERROR: unknown data (no A)");
     //return;         // goes back to main loop if it doesn´t find an A
