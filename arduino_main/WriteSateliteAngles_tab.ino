@@ -9,12 +9,15 @@ void WriteSateliteAnglesFirst(){
   //Serial.println(Serial.available());
   
   // Do Absolutely Nothing until something is received over the serial port
-  while(Serial.available() == 0){}  //while(Serial.available() == 0x00)
+  while(Serial.available() == 0){
+    Serial.println("stay here");
+    delay(1000);
+    }  //while(Serial.available() == 0x00)
   
   receivedChars = Serial.read(); //Read user input and trigger appropriate function
 
   // Remake received satelite coordinates to elevation angle
-  Extract_Datas();
+  //Extract_Datas();
   Serial.println("Ending WriteSateliteAnglesFirst");
 }
 
