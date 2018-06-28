@@ -13,8 +13,8 @@ void WriteSateliteAnglesFirst(){
     receivedChars[i] = Serial.read(); //Read user input and trigger appropriate function
     i++;    
   }
-  receivedChars[i]='\0'
   if (i > 0){  
+    receivedChars[i]='\0';
     Extract_Datas();   // Remake received satelite coordinates to elevation angle    
     }
   
@@ -32,7 +32,7 @@ void WriteSateliteAngles(){
     receivedChars[i] = Serial.read(); //Read user input and trigger appropriate function
     i++;    
   }
-  receivedChars[i]='\0'
+  receivedChars[i]='\0';
   if (i > 0){  
     Extract_Datas();   // Remake received satelite coordinates to elevation angle    
     }

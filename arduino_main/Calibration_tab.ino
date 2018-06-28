@@ -9,14 +9,14 @@ void Calibration(){
   
   Serial.println("Entering Calibration");
    
-   if ((sensorValue_1==LOW) || (sensorValue_2=LOW)){      //If the end switches pins are low(not activated), so we do not start to drive in one direction when we are at an end swtich     
+   if ((digitalRead(sensor_el)==LOW) || (digitalRead(sensor_az)==LOW)){      //If the end switches pins are low(not activated), so we do not start to drive in one direction when we are at an end swtich     
       
       // Drive elevation motor until activated the switch, log offset value and drive back until switch is unactivated
 
       // Drive elevation motor until hitting switch
       Serial.println("Drive elevation motor until hitting switch..");         
       while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
-        Pitch_Positive(setupSpeed);                       //drive positive direetion
+        Pitch_Positive(fastSpeed);                       //drive positive direetion
         delay_s(DelayVar);                                //Was needed to know for how long to run
         getCurrentAngles();                               //gets the angles from accelerometer 
         //Serial.println("inside low loop ");
@@ -36,7 +36,7 @@ void Calibration(){
       Serial.println("Drive elevtation negative until switch is unactivated..");
       while(digitalRead(sensor_el)==HIGH){  
 
-        Pitch_Negative(setupSpeed);                  //Drive Backwards
+        Pitch_Negative(fastSpeed);                  //Drive Backwards
         delay_s(DelayVar);
         //Serial.println("inside high loop");
       }
@@ -46,7 +46,7 @@ void Calibration(){
        * 
        * FOR EVELEVATION SWITCH NO 2 (WE PROB DEONT NEED THIS)
       while(digitalRead(sensor_el)==LOW){           //When low again dirve backwards  
-        Pitch_Negative(setupSpeed);                 //Drive Backwards 
+        Pitch_Negative(fastSpeed);                 //Drive Backwards 
         delay(DelayVar);                    
         getCurrentAngles();                         //Get angles from accelerometer  
         }
@@ -66,7 +66,7 @@ void Calibration(){
       Serial.println("Centering the parabola");
       /*while(!((pitchdeg-offset_el)<=(elevation_center+2) && (pitchdeg-offset_el)>=(elevation_center-2))){         //As long as the angle is out of the interval keep on going
           getCurrentAngles();
-          Pitch_Positive(setupSpeed);
+          Pitch_Positive(fastSpeed);
           delay_s(DelayVar);
           }
       Pitch_Brake();*/
@@ -76,7 +76,7 @@ void Calibration(){
       //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
      
       while (sensorValue_2==LOW){
-        Roll_Negative(setupSpeed);
+        Roll_Negative(fastSpeed);
         delay(DelayVar);
         getCurrentAngles();
         delay(1000);
@@ -91,14 +91,14 @@ void Calibration(){
           }     
         azimuth_min=rolldeg-offset_az;                 //minimum degree for the parabola
         //Save the acc.meters value
-        Roll_Positive(setupSpeed);
+        Roll_Positive(fastSpeed);
         delay(DelayVar);
         Serial.println("second while");
         Serial.println("Print Offset");
         Serial.println(offset_az);
         }
       while(sensorValue_2==LOW){
-        Roll_Positive(setupSpeed);
+        Roll_Positive(fastSpeed);
         delay(DelayVar);
         getCurrentAngles();
         delay(1000);
@@ -109,14 +109,14 @@ void Calibration(){
         getCurrentAngles();            //Get current angle from the accelerometer
         delay(1000);
         azimuth_max=rolldeg-offset_az;
-        Roll_Positive(setupSpeed);
+        Roll_Positive(fastSpeed);
         delay(DelayVar);
         Serial.println("Last while");
         } 
         /*azimuth_center=(azimuth_min+azimuth_max)/2;   //Reletiv centered coordinate
       while(!(rolldeg<=(azimuth_center+2) && rolldeg>=(azimuth_center-2))){         //As long as the angle is out of the interval keep on going
           getCurrentAngles();
-          Roll_Positive(setupSpeed);
+          Roll_Positive(fastSpeed);
           delay(DelayVar);
           }   
        Roll_Brake(); 

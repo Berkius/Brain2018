@@ -19,7 +19,7 @@ void getCurrentAngles(){
   Z = rawZ/256.00; // used for angle calculations
   
   // calculated angle in degrees (OBS in calibration offset will be zero) 
-  rolldeg = 180*(atan(Y/sqrt(X*X+Z*Z)))/PI + offset_az; 
+  //rolldeg = 180*(atan(Y/sqrt(X*X+Z*Z)))/PI + offset_az; 
   pitchdeg = 180*(atan(X/sqrt(Y*Y+Z*Z)))/PI + offset_el; 
 
   //Serial.println("Ending getCurrentAngles");

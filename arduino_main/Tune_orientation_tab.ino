@@ -21,7 +21,7 @@
    Extract_Datas();
 
   // Get the delta angle between motor position and satelite position
-  delta_roll = AZ_degree-rolldeg;            // [degree]
+  //delta_roll = AZ_degree-rolldeg;            // [degree]
   delta_pitch = EL_degree-pitchdeg;          // [degree]
    
   // Tolerance: How big is delta_roll/delta_pitch allowed to be
@@ -49,7 +49,7 @@
     getCurrentAngles();
     
     // Calculate new delta roll angle
-    delta_roll = AZ_degree-rolldeg;
+    //delta_roll = AZ_degree-rolldeg;
   
     // Printing for debugging, delta_roll should be smaller every loop
     Serial.println(delta_roll);

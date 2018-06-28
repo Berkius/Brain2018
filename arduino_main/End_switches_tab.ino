@@ -12,14 +12,14 @@ void End_switches(){
   if (motor_direction==1){                                              //when going in Pitch positive
         offset_el=abs(elevation_min-pitchdeg);                          //Calibrate the offset after hitting the switch 
         while((pitchdeg-offset_el)!=(elevation_min+safe_marg)){         //Back up from the swtich, As long as the angle is out of the interval keep on going
-          Pitch_Negative(setupSpeed);
+          Pitch_Negative(fastSpeed);
           getCurrentAngles(); 
           }
         }
   if (motor_direction==2){                                              //when going in Pitch negative
         offset_el=abs(elevation_max-pitchdeg);                          //Calibrate the offset after hitting the switch 
         while((pitchdeg-offset_el)!=(elevation_max-safe_marg)){         //As long as the angle is out of the interval keep on going
-          Pitch_Positive(setupSpeed);                                    //Back up from the swtich, As long as the angle is out of the interval keep on going
+          Pitch_Positive(fastSpeed);                                    //Back up from the swtich, As long as the angle is out of the interval keep on going
           getCurrentAngles();  
           }
         } 
