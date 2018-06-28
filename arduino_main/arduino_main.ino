@@ -9,9 +9,10 @@
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 #include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
+#include <ITG3200.h>  // ITG3200 Gyro libary
 // #########################################
 
-SoftwareSerial mySerial(10,11);   //RX, TX
+SoftwareSerial mySerial(10,11);   //RX (green), TX (white)
 // #########################################
 // DEFINE VARIBALES RELATED TO EXTRACTING SATELITE COORDS FROM WX-TRACK
 boolean stringComplete = false;     // used to determine when the string is complete
@@ -40,22 +41,18 @@ const int pitch_PWM=6;          // PWM, "velocity"
 // Define varibales to acceleromter
 ADXL345 acc;                            //variable adxl is an instance of the ADXL345 library
 
-int ax,ay,az;                           // Accelerometer values, used in getCurrentAngles and accelerometer_setup
+int ax,ay,az;                           // Accelerometer values, used in getCurrentPitch and accelerometer_setup
 
-float pitchdeg;                         // The angle of the motors [degree]
+float rolldeg, pitchdeg;                         // The angle of the motors [degree]
 float aoffsetX, aoffsetY, aoffsetZ;     // ??
 float delta_roll, delta_pitch;          // The offset between the aceelerometer value and the actual value (from switch) [degree]
 
 // Motor offset (from accelerometer)
-int offset_az=0;
-int offset_el=0; 
+float offset_el=0; 
 
-// #################################################
-
-
-
-// Which direction are we driving
-int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
+// Define varibales to gyroscope
+ITG3200 gyro = ITG3200();
+float gx, gy, gz;                       // 
 
 // ##############################################
 // MOTOR SPEED
@@ -67,12 +64,19 @@ int fastSpeed = 255;          // Full speed
 int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
 
 // Location of switches
-int azimuth_min=0;         // Azimuth left switch
-int azimuth_max=0;         // Azimuth right switch
+int azimuth_min=5;         // Azimuth left switch
+int azimuth_max=355;       // Azimuth right switch
 int elevation_min=5;       // Elevation lower switch
 int elevation_max=85;      // Elevation upper switch
 
+// Which direction are we driving
+int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
+
+int PITCH_T = 90;
+int ROLL_T = 90;
+
 // ##############################################
+
 void setup() {
   // put your setup code here, to run once:
    Serial.begin(9600);             // opens serial port, sets data rate to 9600 bps
@@ -83,10 +87,17 @@ void setup() {
 
   //accelerometer function setup
   accelerometer_setup();
+
+  // Setup gyroscope 
+  Serial.print("Gyro setup..     ");
+  gyro.init(ITG3200_ADDR_AD0_LOW);
+  gyro.zeroCalibrate(2500, 2);    // 2 sample 2500 ms/sample
+  Serial.println("Gyro setup done");
+  
   Calibration();
 
   // Setting Satelite values, first time, wait for input (TESTING!)
-  WriteSateliteAnglesFirst();
+  // WriteSateliteAnglesFirst();
 
 }
 
@@ -94,28 +105,29 @@ void loop() {
       // I DONT THINK WE WILL EVER GET HERE CUZ WE CHECK THIS WHILE RUNNING THE MOTORS (in delay)
       // If a switch is activated, run switch protocol
       if ((sensor_el==HIGH) || (sensor_az==HIGH)){
-        End_switches();
+      End_switches();
       }
   
     // Update the satelite angles from WX-track and make an convertion 
-    //UpdateSateliteAngles();
-    WriteSateliteAngles();
+    UpdateSateliteAngles();
+    //WriteSateliteAngles();
   
     // Get angles for accelerometer
-    getCurrentAngles();
+    getCurrentPitch();
 
     // Get the delta angle between motor position and satelite position
     //delta_roll = AZ_degree-rolldeg;                     // [degree]
     delta_pitch = EL_degree-pitchdeg;                   // [degree]
 
     // Do a coarse adjustment of the angles if the delta angle is large
-    if (delta_roll > tol_coarse || delta_pitch > tol_coarse){
+    if (abs(delta_roll) > tol_coarse || abs(delta_pitch) > tol_coarse){
   
       // Make a coarse adjustment of the angle
-      Coarse_adjust_orientation();
+      //Coarse_adjust_orientation();
+      Serial.print("Skipping coarse");
   
       // Get angles for accelerometer
-      getCurrentAngles();
+      getCurrentPitch();
   
       // Moving angles for motors, tune
       Tune_orientation();

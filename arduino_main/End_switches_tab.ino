@@ -8,26 +8,46 @@ void End_switches(){
  int safe_marg=1;
 
   Pitch_Brake();                
-  getCurrentAngles();
-  if (motor_direction==1){                                              //when going in Pitch positive
-        offset_el=abs(elevation_min-pitchdeg);                          //Calibrate the offset after hitting the switch 
-        while((pitchdeg-offset_el)!=(elevation_min+safe_marg)){         //Back up from the swtich, As long as the angle is out of the interval keep on going
-          Pitch_Negative(fastSpeed);
-          getCurrentAngles(); 
+  getCurrentPitch();
+  if (motor_direction==1){                                                  //when going in Pitch positive
+      offset_el=elevation_max-pitchdeg;                                     //Calibrate the offset after hitting the switch 
+        getCurrentPitch();
+        while((elevation_max - pitchdeg) < safe_marg){                      //As long as the angle is out of the interval keep on going
+          Pitch_Negative(fastSpeed);                                        //Back up from the switch, As long as the angle is out of the interval keep on going
+          delay(50);
+          getCurrentPitch(); 
           }
-        }
-  if (motor_direction==2){                                              //when going in Pitch negative
-        offset_el=abs(elevation_max-pitchdeg);                          //Calibrate the offset after hitting the switch 
-        while((pitchdeg-offset_el)!=(elevation_max-safe_marg)){         //As long as the angle is out of the interval keep on going
-          Pitch_Positive(fastSpeed);                                    //Back up from the swtich, As long as the angle is out of the interval keep on going
-          getCurrentAngles();  
+          Pitch_Brake();
+      }
+  if (motor_direction==2){                                                  //when going in Pitch negative
+        offset_el=elevation_min-pitchdeg;                                   //Calibrate the offset after hitting the switch 
+        getCurrentPitch();  
+        while((elevation_min - pitchdeg) > safe_marg){                      //As long as the angle is out of the interval keep on going
+          Pitch_Positive(fastSpeed);                                        //Back up from the swtich, As long as the angle is out of the interval keep on going
+          delay(50);
+          getCurrentPitch();  
           }
-        } 
+          Pitch_Brake();
+      } 
   if (motor_direction==3){
-        //offset_az=abs(azimuth_min-rolldeg); Vad har vi för feedback i Azimuth 
+        rolldeg = azimuth_max;
+  
+        while((azimuth_max - rolldeg) < safe_marg){                          //As long as the angle is out of the interval keep on going
+          Roll_Negative(fastSpeed);                                         //Back up from the swtich, As long as the angle is out of the interval keep on going
+          delay(50);
+          getCurrentRoll(50); 
         }  
+        Roll_Brake();
+      }
   if (motor_direction==2){
-        //offset_az=abs(azimuth_max-rolldeg); Vad har vi för feedback i Azimuth
-        }
+        rolldeg = azimuth_max;
+  
+        while((azimuth_min - rolldeg) > safe_marg){                          //As long as the angle is out of the interval keep on going
+          Roll_Positive(fastSpeed);                                         //Back up from the swtich, As long as the angle is out of the interval keep on going
+          delay(50);
+          getCurrentRoll(50); 
+        }  
+        Roll_Brake();
+     }
    Serial.println("Ending End_switches");
 }
