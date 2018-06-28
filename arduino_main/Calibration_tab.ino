@@ -3,7 +3,6 @@ void Calibration(){
  *
  *
  */
-
   // Define variables
   int elevation_center = 0;
   int azimuth_center = 0;

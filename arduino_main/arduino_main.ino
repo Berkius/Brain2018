@@ -74,6 +74,12 @@ int setupSpeed=250;         //Speed between 0-255 // The motor speed in calibrat
 // OTHER 
 int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
 
+// Location of switches
+int azimuth_min=0;         // Azimuth left switch
+int azimuth_max=0;         // Azimuth right switch
+int elevation_min=5;       // Elevation lower switch
+int elevation_max=85;      // Elevation upper switch
+
 // ##############################################
 void setup() {
   // put your setup code here, to run once:
