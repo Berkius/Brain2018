@@ -18,16 +18,18 @@ void Calibration(){
       // Drive elevation motor until hitting switch
       Serial.println("Drive elevation motor until hitting switch..");         
       while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
-        Pitch_Positive(setupSpeed);                       //drive positive direetion
-        delay_s(DelayVar);                                //Was needed to know for how long to run
-        getCurrentAngles();                               //gets the angles from accelerometer 
+
+        Pitch_Positive(fastSpeed);                       //drive positive direetion
+        delay(DelayVar);                                //Was needed to know for how long to run
+        getCurrentPitch();                               //gets the angles from accelerometer 
+
         //Serial.println("inside low loop ");
         }
       Pitch_Brake();                                      //When Sensor_el turns to High, brake
       Serial.println("Switch activated");                   
 
       // Log offset value                                          
-      getCurrentAngles();                               //Get current angle from the accelerometer  
+      getCurrentPitch();                               //Get current angle from the accelerometer  
       if (elevation_min!=pitchdeg){                     //If they are not equal save the offset 
           offset_el=abs(elevation_min-pitchdeg);        
           }   
@@ -73,13 +75,13 @@ void Calibration(){
       Pitch_Brake();*/
       Serial.println("Centering finished");
       
-      Serial.println("Starting the Calibration for Azimuth angle")  
+Serial.println("Starting the Calibration for Azimuth angle");  
       //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
       Serial.println("Waiting for the switch to be pushed");
        while (digitalRead(sensor_az)==LOW){
-        Roll_Positive(setupSpeed);
+        Roll_Positive(fastSpeed);
         delay_s(DelayVar);                                //Was needed to know for how long to run, delay_s makes it possible to brake the drive in the middle of a command. 
-        getCurrentAngles();                               //Gets the angles from accelerometer 
+        getCurrentRoll(DelayVar);                               //Gets the angles from accelerometer 
         }
         Roll_Brake();                                      //When Sensor_el turns to High, brake
         Serial.println("Switch activated");                   
@@ -91,10 +93,11 @@ void Calibration(){
         Serial.println("Drive azimuthal motor negative until switch is unactivated..");
         while(digitalRead(sensor_az)==HIGH){  
   
-          Roll_Negative(setupSpeed);                  //Drive Backwards
+          Roll_Negative(fastSpeed);                  //Drive Backwards
           delay_s(DelayVar);
           //Serial.println("inside high loop");
         }
+        
         Serial.println("Switch unactivated");
 
       /*azimuth_center=(azimuth_min+azimuth_max)/2;   //Reletiv centered coordinate
