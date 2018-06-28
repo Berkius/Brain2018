@@ -6,6 +6,7 @@ void Calibration(){
   // Define variables
   int elevation_center = 0;
   int azimuth_center = 0;
+  int DelayVar=10;                  //Delay in milliseconds 
   
   Serial.println("Entering Calibration");
    
@@ -17,7 +18,7 @@ void Calibration(){
       Serial.println("Drive elevation motor until hitting switch..");         
       while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
         Pitch_Positive(fastSpeed);                       //drive positive direetion
-        delay_s(DelayVar);                                //Was needed to know for how long to run
+        delay(DelayVar);                                //Was needed to know for how long to run
         getCurrentAngles();                               //gets the angles from accelerometer 
         //Serial.println("inside low loop ");
         }
@@ -37,7 +38,7 @@ void Calibration(){
       while(digitalRead(sensor_el)==HIGH){  
 
         Pitch_Negative(fastSpeed);                  //Drive Backwards
-        delay_s(DelayVar);
+        delay(DelayVar);
         //Serial.println("inside high loop");
       }
       Serial.println("Switch unactivated");

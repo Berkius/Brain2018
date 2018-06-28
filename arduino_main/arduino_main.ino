@@ -12,14 +12,11 @@
 // #########################################
 
 SoftwareSerial mySerial(10,11);   //RX, TX
-
-// Define variables
-String inputString = "";            // String to save the input in 
+// #########################################
+// DEFINE VARIBALES RELATED TO EXTRACTING SATELITE COORDS FROM WX-TRACK
 boolean stringComplete = false;     // used to determine when the string is complete
 const byte numChars = 28;           // just to have a maximum of chars (normally 23 + extra zero)
 char receivedChars[numChars];       // array of chars to store the values in
-int Az_0, Az_End;                   // Aximuth, refering to the index in the string that you get, the first interesting number and the last
-int El_0, El_End;                   // Elevation, refering to the index in the string that you get, the first interesting number and the last
 int AZ_degree, EL_degree;           // The values to be sent to the motors
 boolean errorVariable = false;      // error vaiable
 
@@ -47,7 +44,7 @@ int ax,ay,az;                           // Accelerometer values, used in getCurr
 
 float pitchdeg;                         // The angle of the motors [degree]
 float aoffsetX, aoffsetY, aoffsetZ;     // ??
-float delta_roll, delta_pitch;          // The offset between the aceelerometer value and the actual value (from switch)
+float delta_roll, delta_pitch;          // The offset between the aceelerometer value and the actual value (from switch) [degree]
 
 // Motor offset (from accelerometer)
 int offset_az=0;
@@ -55,7 +52,7 @@ int offset_el=0;
 
 // #################################################
 
-int DelayVar=50;           //Delay in milliseconds  DONT WANT HERE
+
 
 // Which direction are we driving
 int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
