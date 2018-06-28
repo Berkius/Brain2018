@@ -5,7 +5,6 @@
  *
  *  Date: 2018-06-15
  */
-
  
  void Coarse_adjust_orientation(){
   Serial.println("Entering Coarse_adjust_orientation");
@@ -37,9 +36,9 @@
     else {
       Pitch_Negative(Speed);}
     
-    delay(time_pitch);
+    delay_s(time_pitch);
     Pitch_Brake();
-    delay(time_roll-time_pitch);
+    delay_s(time_roll-time_pitch);
     
     // Brake both motors
     Roll_Brake();
@@ -62,9 +61,9 @@
     else {
       Pitch_Negative(Speed);}
   
-    delay(time_roll);
+    delay_s(time_roll);
     Roll_Brake();
-    delay(time_pitch-time_roll);
+    delay_s(time_pitch-time_roll);
     
     // Brake both motors
     Roll_Brake();

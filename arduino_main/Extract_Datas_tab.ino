@@ -6,6 +6,7 @@ AZ268.0 EL56.0 UP0 DN0.
 We extract only the numbers to send to the motors
 --------------------------------------------------------------------------------------------
 */
+Serial.println("Entering Extract_Datas");
 
   if(receivedChars[0] != 'A') {
     Serial.println("ERROR: unknown data");
@@ -43,4 +44,5 @@ We extract only the numbers to send to the motors
    // converts strings to integer for motors later
   AZ_degree = Azimut.toInt();                           //makes int of the azimut
   EL_degree = El.toInt();                               //makes int of the elevation 
+  Serial.println("Ending Extract_Datas");
 }

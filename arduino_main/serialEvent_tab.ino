@@ -1,10 +1,12 @@
+void serialEvent(){
 /*
 -------------------------------------------------------------------------------------------------
 SerialEvent occurs whenever a new data comes in the hardware serial RX. 
 (This routine is run between each time loop() runs in main)
 --------------------------------------------------------------------------------------------
 */
-void serialEvent(){
+
+  Serial.println("Entering serialEvent");
   mySerial.listen();        //starts listening for data in the serialport mySerial
 
   char endMarker= '\r'; // carrier return
@@ -39,4 +41,6 @@ void serialEvent(){
   
   //Serial.println(receivedChars);
   //stringComplete = false;
+
+  Serial.println("Ending serialEvent");
 }

@@ -8,6 +8,7 @@
  */
 
  void Tune_orientation(){
+  Serial.println("Entering Tune_orientation");
 
    // Update satelite angles
    //UpdateSateliteAngles();
@@ -42,7 +43,7 @@
       Roll_Negative(time_roll);}
   
      // For how long time we should drive the roll motor before updating values
-     delay(100);
+     delay_s(100);
   
     // Update angles motor, roll/pitch [degree]
     getCurrentAngles();
@@ -67,7 +68,7 @@
       Roll_Negative(time_pitch);}
   
     // For how long time we should drive the pitch motor before updating values
-    delay(100);
+    delay_s(100);
     
   
     // Update roll angle, send in the adress for the pitchdeg and rolldeg
@@ -82,4 +83,5 @@
   // Break pitch velocity after reaching wanted orientation
   Pitch_Brake();
   delay(100);
+  Serial.println("Ending Tune_orientation");
 }
