@@ -12,9 +12,11 @@ void delay_s(int total_delay){
     delay(10);
 
     // If we hit a sensor, 
-    if ((sensor_el==HIGH) && (sensor_az==HIGH)){
-      End_switches();
+    if ((sensor_el==HIGH) || (sensor_az==HIGH)){
       Serial.print("Switch activated while delayed");
+      delay(3000); // TEST REMOVE LATER
+      End_switches();
+      
       break;
       }
 

@@ -9,12 +9,14 @@ We extract only the numbers to send to the motors
 Serial.println("Entering Extract_Datas");
 
   if(receivedChars[0] != 'A') {
-    Serial.println("ERROR: unknown data");
-    return;         // goes back to main loop if it doesn´t find an A
+    Serial.println("ERROR: unknown data (no A)");
+    //return;         // goes back to main loop if it doesn´t find an A
   }
   
   String str(receivedChars);      // makes the array of input chars to a string  
   inputString = receivedChars;    // change name on the received chars string
+
+  Serial.println(inputString);
 
 
   Az_0 = inputString.indexOf('Z');    // gets the index of the Z
@@ -23,7 +25,7 @@ Serial.println("Entering Extract_Datas");
 
   // prints the string from the serial port as it was sent
   Serial.println("-");
-  Serial.println("String = " + inputString + "\r"); // prints the string, end with carrier return 
+  Serial.println("String = " + inputString + "\r");       // prints the string, end with carrier return 
 
   // take out the AZIMUT value
   String Azimut = inputString.substring(Az_0+1,Az_End);   // extract azimut angle from string. substring: starting index is included but not the ending one  
