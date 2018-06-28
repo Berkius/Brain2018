@@ -76,7 +76,6 @@ void setup() {
      pinMode(roll_IN1, OUTPUT);
      pinMode(roll_IN2, OUTPUT);
      pinMode(roll_PWM, OUTPUT);
-
      pinMode(pitch_IN1, OUTPUT);
      pinMode(pitch_IN2, OUTPUT);
      pinMode(pitch_PWM, OUTPUT);
@@ -93,7 +92,7 @@ void loop() {
       // I DONT THINK WE WILL EVER GET HERE CUZ WE CHECK THIS WHILE RUNNING THE MOTORS (in delay)
       // If a switch is activated, run switch protocol
       if ((sensor_el==HIGH) || (sensor_az==HIGH)){
-      End_switches();
+        End_switches();
       }
   
     // Update the satelite angles from WX-track and make an convertion 
