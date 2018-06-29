@@ -10,16 +10,16 @@
 #include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
 #include <ITG3200.h>  // ITG3200 Gyro libary
+#include <avr/pgmspace.h>
 // #########################################
 
 SoftwareSerial mySerial(10,11);   //RX (green), TX (white)
 // #########################################
 // DEFINE VARIBALES RELATED TO EXTRACTING SATELITE COORDS FROM WX-TRACK
 boolean stringComplete = false;     // used to determine when the string is complete
-const byte numChars = 28;           // just to have a maximum of chars (normally 23 + extra zero)
-char receivedChars[numChars];       // array of chars to store the values in
+char receivedChars[28];       // array of chars to store the values in
 int AZ_degree, EL_degree;           // The values to be sent to the motors
-boolean errorVariable = false;      // error vaiable
+boolean errorVariable = false;      // error vaiable   RETURN FROM SERIAL EVENT
 
 // #################################################
 // DEFINE PINS FOR MICROCONTROLLER
@@ -61,8 +61,6 @@ int fastSpeed = 255;          // Full speed
 int slowSpeed = 100;          // Lower speed
 
 // ##############################################
-// OTHER 
-int tol_coarse = 15; // How off the delta angle is okay to be before we run the coarse driving program
 
 // Location of switches
 int azimuth_min=5;         // Azimuth left switch

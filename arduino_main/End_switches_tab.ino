@@ -3,7 +3,7 @@ void End_switches(){
  This Function is to use the Brake when hiting the endswitches 
  Looks at which switch was activated and which direction we we ran latest. Then update offset to motor angle
  */
- Serial.println("Entering End_switches");
+ //Serial.println(F("Entering End_switches"));
 
  int safe_marg=1;
 
@@ -49,5 +49,5 @@ void End_switches(){
         }  
         Roll_Brake();
      }
-   Serial.println("Ending End_switches");
+   //Serial.println(F("Ending End_switches"));
 }
