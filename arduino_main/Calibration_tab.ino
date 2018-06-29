@@ -11,7 +11,7 @@ void Calibration(){
   
   Serial.println("Entering Calibration");
    
-   if ((digitalRead(sensor_el)==LOW) || (digitalRead(sensor_az)=LOW)){      //If the end switches pins are low(not activated), so we do not start to drive in one direction when we are at an end swtich     
+   if ((digitalRead(sensor_el)==LOW) || (digitalRead(sensor_az)==LOW)){      //If the end switches pins are low(not activated), so we do not start to drive in one direction when we are at an end swtich     
       
       // Drive elevation motor until activated the switch, log offset value and drive back until switch is unactivated
 

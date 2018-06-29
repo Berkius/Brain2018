@@ -48,7 +48,8 @@ float aoffsetX, aoffsetY, aoffsetZ;     // ??
 float delta_roll, delta_pitch;          // The offset between the aceelerometer value and the actual value (from switch) [degree]
 
 // Motor offset (from accelerometer)
-float offset_el=0; 
+float offset_el=0;                      //The elevation offset measured from the elevation switch
+int switch_count_az=0;                  //Count number of laps the parabola have turned in a specific direction 
 
 // Define varibales to gyroscope
 ITG3200 gyro = ITG3200();

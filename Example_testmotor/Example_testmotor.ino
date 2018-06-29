@@ -9,7 +9,7 @@ https://www.instructables.com/id/Arduino-Motor-Shield-Tutorial/
 #include <SoftwareSerial.h> // used for serial communication through analouge pins and not the default ones
 #include <Wire.h>
 #include <ADXL345.h>  // ADXL345 Accelerometer Library
-
+#include <Time.h>
 SoftwareSerial mySerial(10,11);   //RX, TX
 
 // Define variables
@@ -60,10 +60,6 @@ int sensorValue = 0;
 
 void setup() {
   int i=0;
-  while (i<10){
-      i=i++;
-      Serial.println(i);
-      Serial.println("I am in");
     }
   /*Pitch_Brake();  
   delay(2000);

@@ -11,12 +11,15 @@ void delay_s(int total_delay){
   while (remaining_delay > 9){
 
     // If we hit a sensor, 
-    if ((digitalRead(sensor_el)==HIGH) || (digitalRead(sensor_az)==HIGH)){
-      Serial.println("Switch activated while delayed");
-      delay(3000); // TEST REMOVE LATER
-      End_switches();
-      break;
+    if (digitalRead(sensor_el)==HIGH){
+        Serial.println("Switch activated while delayed");
+        delay(3000); // TEST REMOVE LATER
+        End_switches();
+        break;
       }
+    if (digitalRead(sensor_az)==HIGH){
+        switch_count();       //Check how many laps it have turned and if it
+      }  
 
     // Remove 10ms from remaining delay
     remaining_delay -=  10;
