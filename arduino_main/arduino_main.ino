@@ -24,8 +24,8 @@ boolean errorVariable = false;      // error vaiable
 // #################################################
 // DEFINE PINS FOR MICROCONTROLLER
 // Microswitches 
-const int sensor_el = A2;        // Switch for elevtion
-const int sensor_az = A3;        // Switch for azimuth
+const int sensor_el = 2;         // Switch for elevtion
+const int sensor_az = 3;         // Switch for azimuth
 
 // Motor 1
 const int roll_IN1=7;            // Motor pin A1, positive
@@ -33,9 +33,9 @@ const int roll_IN2=8;            // Motor pin B1, positive
 const int roll_PWM=5;            // PWM, "velocity"
 
 // Motor 2
-const int pitch_IN1=4;          // Motor pin A2, positive
-const int pitch_IN2=9;          // Motor pin B2, negative
-const int pitch_PWM=6;          // PWM, "velocity"
+const int pitch_IN1=4;           // Motor pin A2, positive
+const int pitch_IN2=9;           // Motor pin B2, negative
+const int pitch_PWM=6;           // PWM, "velocity"
 
 // ##############################################
 // Define varibales to acceleromter

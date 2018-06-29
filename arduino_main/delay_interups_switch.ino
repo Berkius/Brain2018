@@ -10,9 +10,9 @@ void delay_s(int total_delay){
   // Run ten ms when check switches
   while (remaining_delay > 9){
 
-    // If we hit a sensor, 
+    // If we hit a sensor
     if (digitalRead(sensor_el)==HIGH){
-        Serial.println("Switch activated while delayed");
+        Serial.println("Pitch switch activated while delayed");
         delay(3000); // TEST REMOVE LATER
         End_switches();
         break;

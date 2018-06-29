@@ -14,7 +14,6 @@ int Check_angular_velocity_roll(){
 
   angular_velocity_roll = gx * sinPitch +gz * cosPitch;   // Rotation around veritcal axis
   
-  
   return angular_velocity_roll;
 }
 

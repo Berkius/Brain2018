@@ -10,7 +10,6 @@ void Calibration(){
  * Date: 2018-06-29
  */
 
-
   // Define variables
   int elevation_center = 0;
   int azimuth_center = 0;

@@ -1,6 +1,10 @@
 void IMU_setup(){
 /*
- * Calibrate the accelerometer
+ * Setup the IMU (accelerometer & gyroscope)
+ * 
+ * Setup accelerometer:  WRITE SOMETHING HERE !!!
+ * 
+ * Setup gyroscope: Have completly still for 5 sec to calibrate that angular velocity to zero
  * 
  * Date: 2018-06-16
  */
