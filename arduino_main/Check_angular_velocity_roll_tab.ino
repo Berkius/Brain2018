@@ -1,4 +1,10 @@
 int Check_angular_velocity_roll(){
+/*
+ * Calculate the angular velocity for the roll motor using the gyroscope
+ * 
+ * Date: 2018-06-29
+ */
+   
   float angular_velocity_roll;
 
   float cosPitch = cos(pitchdeg*PI/180);

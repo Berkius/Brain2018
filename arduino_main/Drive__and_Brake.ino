@@ -32,7 +32,6 @@ void Roll_Negative(int Speed) {
      digitalWrite(roll_IN2,LOW);  
      analogWrite(roll_PWM,Speed);
      //Serial.println("Ending Roll_Negative");
-     //ROLL_T--;
   }
   else{
     Serial.println("Roll reached minimum value");

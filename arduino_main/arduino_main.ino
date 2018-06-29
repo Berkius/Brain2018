@@ -58,7 +58,7 @@ float gx, gy, gz;                       //
 // ##############################################
 // MOTOR SPEED
 int fastSpeed = 255;          // Full speed
-//int slowSpeed = 100;        // 
+int slowSpeed = 100;          // Lower speed
 
 // ##############################################
 // OTHER 
@@ -73,9 +73,6 @@ int elevation_max=85;      // Elevation upper switch
 // Which direction are we driving
 int motor_direction=0; // 1=forward elevation, 2=backward elevation, 3=forward azimuth, 4=backwward azimuth  
 
-int PITCH_T = 90;
-int ROLL_T = 90;
-
 // ##############################################
 
 void setup() {
@@ -86,59 +83,27 @@ void setup() {
    pinMode(sensor_el, INPUT);      // Set switch elevation as an input
    pinMode(sensor_az, INPUT);      // Set switch azimuth as an input
 
-  //accelerometer function setup
-  accelerometer_setup();
+  // IMU function setup
+  IMU_setup();  
 
-  // Setup gyroscope 
-  Serial.print("Gyro setup..     ");
-  gyro.init(ITG3200_ADDR_AD0_LOW);
-  gyro.zeroCalibrate(2500, 2);    // 2 sample 2500 ms/sample
-  Serial.println("Gyro setup done");
-  
+  // Calibrate the IMU with the switches
   Calibration();
-
-  // Setting Satelite values, first time, wait for input (TESTING!)
-  // WriteSateliteAnglesFirst();
-
 }
 
 void loop() {
-      // I DONT THINK WE WILL EVER GET HERE CUZ WE CHECK THIS WHILE RUNNING THE MOTORS (in delay)
-      // If a switch is activated, run switch protocol
-      if ((sensor_el==HIGH) || (sensor_az==HIGH)){
-      End_switches();
-      }
-  
+
     // Update the satelite angles from WX-track and make an convertion 
     UpdateSateliteAngles();
-    //WriteSateliteAngles();
   
     // Get angles for accelerometer
-    getCurrentPitch();
+    //getCurrentPitch();
 
     // Get the delta angle between motor position and satelite position
-    //delta_roll = AZ_degree-rolldeg;                     // [degree]
-    delta_pitch = EL_degree-pitchdeg;                   // [degree]
+    //delta_roll = AZ_degree-rolldeg;                       // [degree]
+    //delta_pitch = EL_degree-pitchdeg;                     // [degree]
 
-    // Do a coarse adjustment of the angles if the delta angle is large
-    if (abs(delta_roll) > tol_coarse || abs(delta_pitch) > tol_coarse){
-  
-      // Make a coarse adjustment of the angle
-      //Coarse_adjust_orientation();
-      Serial.print("Skipping coarse");
-  
-      // Get angles for accelerometer
-      getCurrentPitch();
-  
-      // Moving angles for motors, tune
-      Tune_orientation();
-    }
-
-    // Do a fine adjustment of the angles, if the delta angle is pretty small
-    else {
-      // Moving angles for motors, tune
-      Tune_orientation();    
-      }
+    // Run the motor protocol
+    move_motor_protocol();
 
 
 }
