@@ -43,7 +43,7 @@
       getCurrentPitch();
   
       // Update angles motor, roll [degree]
-      getCurrentRoll(time_roll);
+      getCurrentRoll(time_drive);
   
       // Calculate new delta pitch angle
       delta_pitch = EL_degree-pitchdeg;
@@ -68,7 +68,7 @@
       if (delta_pitch > 0){
         Pitch_Positive(fastSpeed);}
       else{
-        Pitch_Negative(fastSpeed);}´
+        Pitch_Negative(fastSpeed);}
   
       // Drive the motor "time_drive" ms  before updating angles
       delay_s(time_drive);
@@ -96,13 +96,13 @@
       if (delta_roll > 0){
         Roll_Positive(fastSpeed);}
       else{
-        Roll_Negative(fastSpeed);}´
+        Roll_Negative(fastSpeed);}
   
       // Drive the motor "time_drive" ms  before updating angles
       delay_s(time_drive);
   
       // Update roll angle [degree]
-      getCurrentRoll();
+      getCurrentRoll(time_drive);
   
       // Calculate new delta roll angle
       delta_roll = AZ_degree-rolldeg;       

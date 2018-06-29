@@ -94,17 +94,8 @@ void loop() {
 
     // Update the satelite angles from WX-track and make an convertion 
     UpdateSateliteAngles();
-  
-    // Get angles for accelerometer
-    //getCurrentPitch();
-
-    // Get the delta angle between motor position and satelite position
-    //delta_roll = AZ_degree-rolldeg;                       // [degree]
-    //delta_pitch = EL_degree-pitchdeg;                     // [degree]
 
     // Run the motor protocol
     move_motor_protocol();
-
-
 }
    
