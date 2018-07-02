@@ -14,6 +14,8 @@ void IMU_setup(){
 // ACCELEROMETER SETUP
 
   Serial.println("Starting accelerometer setup..");
+
+ acc.powerOn();
  
  for (int i = 0; i <= 200; i++) {
   acc.readAccel(&ax, &ay, &az);
