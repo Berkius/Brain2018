@@ -16,7 +16,7 @@ SoftwareSerial mySerial(10,11);   //RX (green), TX (white) (WX track)
 // #########################################
 // DEFINE VARIBALES RELATED TO EXTRACTING SATELITE COORDS FROM WX-TRACK
 boolean stringComplete = false;     // used to determine when the string is complete
-char receivedChars[28];       // array of chars to store the values in
+char receivedChars[28];             // array of chars to store the values in
 int AZ_degree, EL_degree;           // The values to be sent to the motors
 boolean errorVariable = false;      // error vaiable   RETURN FROM SERIAL EVENT
 
