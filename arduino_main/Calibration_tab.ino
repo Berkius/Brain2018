@@ -19,22 +19,22 @@ void Calibration(){
       while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
         Pitch_Positive(fastSpeed);                       //drive positive direetion
         delay(DelayVar);                                //Was needed to know for how long to run
-        getCurrentAngles();                               //gets the angles from accelerometer 
+        getCurrentPitch();                               //gets the angles from accelerometer 
         //Serial.println("inside low loop ");
         }
       Pitch_Brake();                                      //When Sensor_el turns to High, brake
       Serial.println("Switch activated");                   
 
       // Log offset value                                          
-      getCurrentAngles();                               //Get current angle from the accelerometer  
+      getCurrentPitch();                               //Get current angle from the accelerometer  
       if (elevation_min!=pitchdeg){                     //If they are not equal save the offset 
-          offset_el=abs(elevation_min-pitchdeg);        
+          offset_el=elevation_min-pitchdeg;        
           }   
       Serial.print("offset_el: ");                //for testing purpose 
       Serial.println(offset_el);                  //for testing porpuse
 
-      // Drive elevtation negative until switch is unactivated
-      Serial.println("Drive elevtation negative until switch is unactivated..");
+      // Drive elevation negative until switch is unactivated
+      Serial.println("Drive elevation negative until switch is unactivated..");
       while(digitalRead(sensor_el)==HIGH){  
 
         Pitch_Negative(fastSpeed);                  //Drive Backwards
@@ -73,48 +73,31 @@ void Calibration(){
       Pitch_Brake();*/
       Serial.println("Centering finished");
       
-      /*  
+Serial.println("Starting the Calibration for Azimuth angle");  
       //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
-     
-      while (sensorValue_2==LOW){
-        Roll_Negative(fastSpeed);
-        delay(DelayVar);
-        getCurrentAngles();
-        delay(1000);
-        Serial.println("First While");
+      Serial.println("Waiting for the switch to be pushed");
+       while (digitalRead(sensor_az)==LOW){
+        Roll_Positive(fastSpeed);
+        delay_s(DelayVar);                                //Was needed to know for how long to run, delay_s makes it possible to brake the drive in the middle of a command. 
+        getCurrentRoll(DelayVar);                               //Gets the angles from accelerometer 
         }
-      while (sensorValue_1==HIGH){
-        Roll_Brake();
-        getCurrentAngles();              //Get current angle from the accelerometer
-        delay(1000);
-        if (rolldeg!=0){
-          offset_az=rolldeg;
-          }     
-        azimuth_min=rolldeg-offset_az;                 //minimum degree for the parabola
-        //Save the acc.meters value
-        Roll_Positive(fastSpeed);
-        delay(DelayVar);
-        Serial.println("second while");
-        Serial.println("Print Offset");
-        Serial.println(offset_az);
+        Roll_Brake();                                      //When Sensor_el turns to High, brake
+        Serial.println("Switch activated");                   
+  
+        // Log offset value                                          
+        rolldeg=0;                               //Get current angle from the rolldeg which is zero here   
+  
+        // Drive elevtation negative until switch is unactivated
+        Serial.println("Drive azimuthal motor negative until switch is unactivated..");
+        while(digitalRead(sensor_az)==HIGH){  
+  
+          Roll_Negative(fastSpeed);                  //Drive Backwards
+          delay_s(DelayVar);
+          //Serial.println("inside high loop");
         }
-      while(sensorValue_2==LOW){
-        Roll_Positive(fastSpeed);
-        delay(DelayVar);
-        getCurrentAngles();
-        delay(1000);
-        Serial.println("third while");
-        } 
-      while(sensorValue_2==HIGH){
-        Roll_Brake();
-        getCurrentAngles();            //Get current angle from the accelerometer
-        delay(1000);
-        azimuth_max=rolldeg-offset_az;
-        Roll_Positive(fastSpeed);
-        delay(DelayVar);
-        Serial.println("Last while");
-        } 
-        /*azimuth_center=(azimuth_min+azimuth_max)/2;   //Reletiv centered coordinate
+        Serial.println("Switch unactivated");
+
+      /*azimuth_center=(azimuth_min+azimuth_max)/2;   //Reletiv centered coordinate
       while(!(rolldeg<=(azimuth_center+2) && rolldeg>=(azimuth_center-2))){         //As long as the angle is out of the interval keep on going
           getCurrentAngles();
           Roll_Positive(fastSpeed);

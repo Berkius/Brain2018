@@ -32,19 +32,24 @@ class OpenReader():
 
 	def OpenProgram2(self): #Robustare än new program
 		
-		path_to_Hrpt_Reader = 'C:\\Tools\\Satsignal\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
-		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
-		path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
+		#path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
+		#path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
 		app = application.Application().start(path_to_Hrpt_Reader)					#Måste startas med denna
 		app.HRPT_Reader_from_David_Taylor.MenuSelect('File->Open')
 		# app.[window title].[control name]...
-		app.Öppna.Edit.SetText('MetopA_2012-09-22_113446')
-		app.Öppna.Öppna.Click()
-		app.Open.WaitNot('visible')			
-		
-		app['HRPT Reader - '].MenuSelect('File->Open')			#Programmet ändrar namn beroende på vilken fil som öppnas
-		app.Open.Edit.SetText('FY3B_2012-05-01_1419.C10')
+		app.Open.Edit.SetText('2012-09-22_1134_M02.hpt')
+		time.sleep(4)
 		app.Open.Open.Click()
+		pyautogui.press('enter')
+		#app.Confirm_ESS_HRPT_METOP_A_pass_2012_09_22_1134_M02_direction.Southbound.Click()
+		time.sleep(10)
+		app.top_window().MenuSelect('File->Open')	
+		print("inne")			
+		time.sleep(10)
+		app.Open.Edit.SetText('FY3B_2018-06-21_1335.C10')
+		app.Open.Open.Click()
+		pyautogui.press('enter')
 	def OpenNewFile(self):													#Hacksolution if time try to solve better 
 		
 		Xpos=806

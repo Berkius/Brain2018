@@ -15,8 +15,11 @@ void UpdateSateliteAngles(){
       stringComplete = false;
       errorVariable = false;
      }
-     //Serial.println(AZ_degree);
-     //Serial.println(EL_degree);
+     Serial.print("Az degree: ");
+     Serial.println(AZ_degree);
+
+     Serial.print("El degree: ");
+     Serial.println(EL_degree);
 
 
      Serial.println("Ending UpdateSateliteAngles");
