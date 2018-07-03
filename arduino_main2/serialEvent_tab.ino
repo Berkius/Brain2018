@@ -22,7 +22,7 @@ SerialEvent "returns" a string name receivedChars which looks something like:
     //inHex = mySerial.read();
     //if (inHex == 13){ // carrier return is the last caracter of the wxtrack string
     
-    if(i >= 28) {       // to not exceed the index
+    if(i >= numChars) {       // to not exceed the index
         i = 0;     
         Serial.println("ERROR: data exceed length of array");
         errorVariable = true;

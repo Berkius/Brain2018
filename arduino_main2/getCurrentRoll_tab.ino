@@ -12,8 +12,4 @@ void getCurrentRoll(int time_roll){
   Serial.print("roll angle: ");
   Serial.println(rolldeg);
   
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b

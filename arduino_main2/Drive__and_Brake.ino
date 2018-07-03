@@ -8,54 +8,34 @@
 // Create a positive roll motion (lower motor)
 void Roll_Positive(int Speed) {
   int safe_marg = 5;
-<<<<<<< HEAD
   if (rolldeg < azimuth_max - safe_marg){
-=======
-  if (rolldeg < 540 - safe_marg){
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
      //Serial.println("Entering Roll_Positive");
      motor_direction=3;  //drive forward roll
      digitalWrite(roll_IN1,HIGH); 
      digitalWrite(roll_IN2,LOW);  
      analogWrite(roll_PWM,Speed);
      //Serial.println("Ending Roll_Positive");
-<<<<<<< HEAD
      //ROLL_T++;
   }
   else{
     Serial.println("Roll reached maximum value");
-=======
-  }
-  else{
-    //Serial.println(F("Roll reached maximum value"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
     }
   }
 
 // Create a negative roll motion (lower motor)
 void Roll_Negative(int Speed) {    
   int safe_marg = 5;
-<<<<<<< HEAD
   if (rolldeg >= azimuth_min + safe_marg){
-=======
-  if (rolldeg >= -540 + safe_marg){
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
      //Serial.println("Entering Roll_Negative");
      motor_direction=4;  //drive backwards roll
      digitalWrite(roll_IN1,LOW); 
-     digitalWrite(roll_IN2,HIGH);  
+     digitalWrite(roll_IN2,LOW);  
      analogWrite(roll_PWM,Speed);
      //Serial.println("Ending Roll_Negative");
-<<<<<<< HEAD
      //ROLL_T--;
   }
   else{
     Serial.println("Roll reached minimum value");
-=======
-  }
-  else{
-    //Serial.println(F("Roll reached minimum value"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
   }
  }
 
@@ -80,11 +60,7 @@ void Pitch_Positive(int Speed) {
      //Serial.println("Ending Pitch_Positive");
   }
   else{
-<<<<<<< HEAD
     Serial.println("Pitch reached maximum value");
-=======
-    //Serial.println(F("Pitch reached maximum value"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
     }
 }
 
@@ -100,11 +76,7 @@ void Pitch_Negative(int Speed) {
      //Serial.println("Ending Pitch_Negative");
   }
   else{
-<<<<<<< HEAD
   Serial.println("Pitch reached minimum value");
-=======
-  //Serial.println(F("Pitch reached minimum value"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
   }
  }
 

@@ -19,9 +19,7 @@ void getCurrentPitch(){
   Z = rawZ/256.00; // used for angle calculations
   
   // calculated angle in degrees (OBS in calibration offset will be zero) 
-
   pitchdeg = 180*(atan(X/sqrt(Y*Y+Z*Z)))/PI + offset_el; 
- // pitchdeg = PITCH_T+offset_az;
 
   Serial.print("pitch angle: ");
   Serial.println(pitchdeg);

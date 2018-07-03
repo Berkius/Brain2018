@@ -27,11 +27,7 @@ void Extract_Datas() {
   El_0 = inputString.indexOf('L');    // gets the index of the L
 
   // prints the string from the serial port as it was sent
-<<<<<<< HEAD
   Serial.println("-");
-=======
-  Serial.println(F("-"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
   Serial.println("String = " + inputString + "\r");       // prints the string, end with carrier return
 
   // take out the AZIMUT value
@@ -53,7 +49,6 @@ void Extract_Datas() {
   // converts strings to integer for motors later
   AZ_degree = Azimut.toInt();                             //makes int of the azimut
   EL_degree = El.toInt();                                 //makes int of the elevation
-<<<<<<< HEAD
   Serial.print("Az degree: ");
   Serial.println(AZ_degree);
 
@@ -61,13 +56,4 @@ void Extract_Datas() {
   Serial.println(EL_degree);
 
   Serial.println("Ending Extract_Datas");
-=======
-  Serial.print(F("Az degree: "));
-  Serial.println(AZ_degree);
-
-  Serial.print(F("El degree: "));
-  Serial.println(EL_degree);
-
-  Serial.println(F("Ending Extract_Datas"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
 }
