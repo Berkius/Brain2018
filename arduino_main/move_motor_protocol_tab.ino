@@ -24,6 +24,7 @@
 
   // Calculate new delta roll angle
   delta_roll = AZ_degree-rolldeg;
+
   
   // Drive as long as any of the delta angles are outside the tolerance
   while((abs(delta_pitch) > tol) || (abs(delta_roll) > tol)){
@@ -115,7 +116,6 @@
   
       // Calculate new delta roll angle
       delta_roll = AZ_degree-rolldeg;       
-    }
 
       // See if the satalite angles should be updated
       currentMillis = millis();                                   // Get the current "time"
@@ -130,6 +130,7 @@
         Serial.print(F("Pitch angle: "));   
         Serial.println(pitchdeg); 
       }
+    }
   }
 
   if ((abs(delta_pitch) <= tol) || (abs(delta_roll) <= tol)){
@@ -139,7 +140,7 @@
 
   // Reset counter for nr of time az/roll switchen has been hitted in a row
   if (abs(delta_roll) <= tol){
-  switch_value_counter = 0;
+  switch_value_counter_az = 0;
   }
   //Serial.println("Ending move_motor_protocol");
 }

@@ -6,7 +6,7 @@ void Extract_Datas() {
     We extract only the numbers to send to the motors
     --------------------------------------------------------------------------------------------
   */
-  Serial.println("Entering Extract_Datas");
+  //Serial.println("Entering Extract_Datas");
 
   // Define variables
   String inputString = "";            // String to save the input in
@@ -27,12 +27,12 @@ void Extract_Datas() {
   El_0 = inputString.indexOf('L');    // gets the index of the L
 
   // prints the string from the serial port as it was sent
-  Serial.println(F("-"));
-  Serial.println("String = " + inputString + "\r");       // prints the string, end with carrier return
+  //Serial.println(F("-"));
+  //Serial.println("String = " + inputString + "\r");       // prints the string, end with carrier return
 
   // take out the AZIMUT value
   String Azimut = inputString.substring(Az_0 + 1, Az_End); // extract azimut angle from string. substring: starting index is included but not the ending one
-  Serial.println("Azimut = " + Azimut + "\r");            // prints the azimut
+  //erial.println("Azimut = " + Azimut + "\r");            // prints the azimut
 
   //take out the ELEVATION angle
   String Elevation = inputString.substring(El_0 + 1);     // extract only the elevation angle. substring without end takes from starting index and the rest of the string
@@ -40,7 +40,7 @@ void Extract_Datas() {
   El_End = Elevation.indexOf('.');                        // gets the point in the new elevation string
 
   String El = Elevation.substring(El_0 + 1, El_End);      // extract elevation angle from string. substring: starting index is included but not the ending one
-  Serial.println("Elevation = " + El + "\r");             // prints the elevation
+  //Serial.println("Elevation = " + El + "\r");             // prints the elevation
 
   // making the system ready to take a new value
   inputString = "";                                       // clear the string
@@ -49,11 +49,11 @@ void Extract_Datas() {
   // converts strings to integer for motors later
   AZ_degree = Azimut.toInt();                             //makes int of the azimut
   EL_degree = El.toInt();                                 //makes int of the elevation
-  Serial.print(F("Az degree: "));
-  Serial.println(AZ_degree);
+  //Serial.print(F("Az degree: "));
+  //Serial.println(AZ_degree);
 
-  Serial.print(F("El degree: "));
-  Serial.println(EL_degree);
+  //Serial.print(F("El degree: "));
+  //Serial.println(EL_degree);
 
-  Serial.println(F("Ending Extract_Datas"));
+  //Serial.println(F("Ending Extract_Datas"));
 }

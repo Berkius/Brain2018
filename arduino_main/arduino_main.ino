@@ -76,7 +76,9 @@ int motor_direction_1=0;                   // 1=forward elevation, 2=backward el
 int motor_direction_2=0;                   // 1=forward azimuth, 2=backwward azimuth
 
 int switch_pre_value = 0;                  // The previously value of the azimuth switch (to not get it to log multiple hits in one activation)
-int switch_value_counter = 0;              // Counter for nr of time az/roll switchen has been hitted in a row
+int switch_value_counter_az = 0;              // Counter for nr of time az/roll switchen has been hitted in a row
+
+int switch_value_counter_el = 0;              // Counter for nr of time el/pitch switchen has been hitted in a row
 // ##############################################
 
 void setup() {
