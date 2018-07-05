@@ -31,6 +31,7 @@ void IMU_setup(){
     aoffsetZ = (az + aoffsetZ) / 2;
   }
  }
+ 
  Serial.println("accelerometer setup done");
 
  // ###########################################
@@ -39,7 +40,7 @@ void IMU_setup(){
 // Setup gyroscope 
   Serial.print("Gyro setup..     ");
   gyro.init(ITG3200_ADDR_AD0_LOW);
-  gyro.zeroCalibrate(1000, 2);    // 2 sample 2500 ms/sample
+  gyro.zeroCalibrate(1000, 2);    // 1000 samples, 2ms per sample
   Serial.println("Gyro setup done");
  
 }

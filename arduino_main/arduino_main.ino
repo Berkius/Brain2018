@@ -23,22 +23,21 @@ boolean errorVariable = false;      // error vaiable   RETURN FROM SERIAL EVENT
 // #################################################
 // DEFINE PINS FOR MICROCONTROLLER
 // Microswitches 
-const int sensor_el = A2;         // Switch for elevtion
-const int sensor_az = A3;         // Switch for azimuth
+const int sensor_el = A3;         // Switch for elevtion
+const int sensor_az = A2;         // Switch for azimuth
 
 // Motor 1
-const int roll_IN1=7;            // Motor pin A1, positive
-const int roll_IN2=8;            // Motor pin B1, positive
-const int roll_PWM=5;            // PWM, "velocity"
+const int roll_IN1=4;            // Motor pin A1, positive
+const int roll_IN2=9;            // Motor pin B1, positive
+const int roll_PWM=6;            // PWM, "velocity"
 
 // Motor 2
-const int pitch_IN1=4;           // Motor pin A2, positive
-const int pitch_IN2=9;           // Motor pin B2, negative
-const int pitch_PWM=6;           // PWM, "velocity"
+const int pitch_IN1=7;           // Motor pin A2, positive
+const int pitch_IN2=8;           // Motor pin B2, negative
+const int pitch_PWM=5;           // PWM, "velocity"
 
 #define PITCH 0
 #define ROLL  1
-
 // ##############################################
 // Define varibales to acceleromter
 ADXL345 acc;                               //variable adxl is an instance of the ADXL345 libary
@@ -59,7 +58,7 @@ float gx, gy, gz;                          // Reserved storage slots for the gyr
 
 // ##############################################
 // MOTOR SPEED
-int fastSpeed = 255;                       // Full speed
+int fastSpeed = 200;                       // Full speed
 int slowSpeed = 100;                       // Lower speed
 
 // ##############################################
@@ -68,8 +67,8 @@ int slowSpeed = 100;                       // Lower speed
 // Location of switches
 int azimuth_min=5;                         // Azimuth left switch
 int azimuth_max=355;                       // Azimuth right switch
-int elevation_min=5;                       // Elevation lower switch
-int elevation_max=85;                      // Elevation upper switch
+int elevation_min=15;                       // Elevation lower switch
+int elevation_max=95;                      // Elevation upper switch
 
 // Which direction are we driving
 int motor_direction_1=0;                   // 1=forward elevation, 2=backward elevation 
@@ -77,8 +76,14 @@ int motor_direction_2=0;                   // 1=forward azimuth, 2=backwward azi
 
 int switch_pre_value = 0;                  // The previously value of the azimuth switch (to not get it to log multiple hits in one activation)
 int switch_value_counter_az = 0;              // Counter for nr of time az/roll switchen has been hitted in a row
-
 int switch_value_counter_el = 0;              // Counter for nr of time el/pitch switchen has been hitted in a row
+
+// For the calibration
+int switch_az_value_counter = 0;
+int switch_el_value_counter = 0;
+
+int safe_marg = 5;
+int calibration_done = 0;
 // ##############################################
 
 void setup() {
@@ -91,9 +96,6 @@ void setup() {
 
    Serial.println(F("STARTING SETUP OF IMU AND CALIBRATION OF ANGLES"));
 
-  // IMU function setup
-  IMU_setup();  
-
   // Calibrate the IMU with the switches
   Calibration();
 
@@ -105,14 +107,20 @@ void loop() {
 
     Serial.println(F("\n NEW LOOP (MAIN): "));
 
-    Serial.print(F("Roll angle: "));   
-    Serial.println(rolldeg); 
-
-    Serial.print(F("Pitch angle: "));   
-    Serial.println(pitchdeg); 
-
     // Update the satelite angles from WX-track and make an convertion 
     UpdateSateliteAngles();
+
+    Serial.print(F("Motor roll/AZ angle: "));   
+    Serial.println(rolldeg); 
+
+    Serial.print("Satelite roll/AZ angle: ");
+    Serial.println(AZ_degree);
+
+    Serial.print(F("Motor pitch/EL angle: "));   
+    Serial.println(pitchdeg); 
+
+    Serial.print("Satelite pitch/EL angle: ");
+    Serial.println(EL_degree);
 
     // Run the motor protocol
     move_motor_protocol();

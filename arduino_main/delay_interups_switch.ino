@@ -19,7 +19,7 @@ void delay_s(int total_delay){
     // Read value, then delay 5 ms bacause thats how long it takes to read value
     switch_value_az = digitalRead(sensor_az);
     switch_value_el = digitalRead(sensor_el);
-    delay(7);
+    delay(11);                                                            // A delay so it have time to read the values
     
     // If we reached HIGH value 3 times in a row, trust that value
     if (switch_value_az == HIGH){
@@ -32,7 +32,7 @@ void delay_s(int total_delay){
     switch_value_counter_el += 1;}
     else if (switch_value_el == LOW){
       switch_value_counter_el = 0;}
-
+    
     // If we hit a sensor
     if (switch_value_counter_el >= 3){
         Serial.println("Pitch switch activated when driving, start calibration of pitch offset");

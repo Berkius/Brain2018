@@ -14,7 +14,7 @@
   const unsigned long period = 1000;                                      // How often we should update [ms]
   startMillis = millis();                                                 // Initial start time
   
-  int tol = 10;                                                           // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
+  int tol = 5;                                                           // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
   int time_drive = 20;                                                    // How long to run the motors before updating angles      
 
   getCurrentPitch();                                                      // Get new pitch angle, (cant do this with roll)
@@ -59,11 +59,23 @@
         UpdateSateliteAngles();                                   // Update satelite angles
         startMillis = millis();                                   // Reset start time
 
-        Serial.print(F("Roll angle: "));   
+        Serial.print(F("Motor roll/AZ angle: "));   
         Serial.println(rolldeg); 
 
-        Serial.print(F("Pitch angle: "));   
+        Serial.print("Satelite roll/az angle: ");
+        Serial.println(AZ_degree);
+
+        Serial.print(F("Motor pitch/EL angle: "));   
         Serial.println(pitchdeg); 
+
+        Serial.print("Satelite pitch/el angle: ");
+        Serial.println(EL_degree);
+
+                Serial.print("The switch count: ");
+        Serial.println(switch_count_az);
+
+        Serial.print("The direction is ( pos==1, neg==2): ");
+        Serial.println(motor_direction_1);
       }
     }
     
@@ -74,7 +86,6 @@
 
       // See which direction is the shortest, and start driving that way
       drive_direction(delta_pitch, PITCH, fastSpeed);
-
       
       // Drive the motor "time_drive" ms  before updating angles
       delay_s(time_drive);
@@ -91,12 +102,24 @@
         Serial.println(F("\n DRIVING PITCH MOTOR"));
         UpdateSateliteAngles();                                   // Update satelite angles
         startMillis = millis();                                   // Reset start time
-        
-        Serial.print(F("Roll angle: "));   
+
+        Serial.print(F("Motor roll/AZ angle: "));   
         Serial.println(rolldeg); 
 
-        Serial.print(F("Pitch angle: "));   
+        Serial.print("Satelite roll/az angle: ");
+        Serial.println(AZ_degree);
+
+        Serial.print(F("Motor pitch/EL angle: "));   
         Serial.println(pitchdeg); 
+
+        Serial.print("Satelite pitch/el angle: ");
+        Serial.println(EL_degree);
+
+        Serial.print("The switch count: ");
+        Serial.println(switch_count_az);
+
+        Serial.print("The direction is ( pos==1, neg==2): ");
+        Serial.println(motor_direction_1);
       }
     }
 
@@ -124,11 +147,23 @@
         UpdateSateliteAngles();                                   // Update satelite angles
         startMillis = millis();                                   // Reset start time
 
-        Serial.print(F("Roll angle: "));   
+        Serial.print(F("Motor roll/AZ angle: "));   
         Serial.println(rolldeg); 
 
-        Serial.print(F("Pitch angle: "));   
+        Serial.print("Satelite roll/az angle: ");
+        Serial.println(AZ_degree);
+
+        Serial.print(F("Motor pitch/EL angle: "));   
         Serial.println(pitchdeg); 
+
+        Serial.print("Satelite pitch/el angle: ");
+        Serial.println(EL_degree);
+
+        Serial.print("The switch count: ");
+        Serial.println(switch_count_az);
+
+        Serial.print("The direction is ( pos (CW)==1, neg(CCW)==2): ");
+        Serial.println(motor_direction_1);
       }
     }
   }

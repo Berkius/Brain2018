@@ -1,4 +1,4 @@
-switches: A2, A3 + 5V
+switches: A2(azimuth), A3 (elevtion) + 5V
 
 seriel-adapter: white 11, green 10
 

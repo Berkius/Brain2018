@@ -5,7 +5,7 @@ void UpdateSateliteAngles(){
   
   // if everything is working and we get the right data and the right data length it will extract the AZIMUTH and ELEVATION 
     if (stringComplete == true  && errorVariable == false) {
-      Serial.println("error false");  
+      //Serial.println("error false");  
       // Remake received satelite coordinates to elevation angle
       Extract_Datas();
       stringComplete = false;
@@ -15,11 +15,7 @@ void UpdateSateliteAngles(){
       stringComplete = false;
       errorVariable = false;
      }
-     Serial.print("Satelite az angle: ");
-     Serial.println(AZ_degree);
 
-     Serial.print("Satelite el angle: ");
-     Serial.println(EL_degree);
 
 
      //Serial.println("Ending UpdateSateliteAngles");
