@@ -38,24 +38,29 @@ class OpenReader():
 		app = application.Application().start(path_to_Hrpt_Reader)					#Måste startas med denna
 		app.HRPT_Reader_from_David_Taylor.MenuSelect('File->Open')
 		# app.[window title].[control name]...
-		app.Open.Edit.SetText('2012-09-22_1134_M02.hpt')
+		app.Open.Edit.SetText('FY3B_2018-06-21_1335.C10')
 		time.sleep(4)
 		app.Open.Open.Click()
 		pyautogui.press('enter')
 		#app.Confirm_ESS_HRPT_METOP_A_pass_2012_09_22_1134_M02_direction.Southbound.Click()
-		time.sleep(10)
-		app.top_window().MenuSelect('File->Open')	
+		time.sleep(3)
+		app.top_window().MenuSelect('File->Save displayed image - JPEG')	
 		print("inne")			
-		time.sleep(10)
+		time.sleep(3)
 		app.Open.Edit.SetText('FY3B_2018-06-21_1335.C10')
 		app.Open.Open.Click()
 		pyautogui.press('enter')
+	
+	def SaveToJPEG(self):
+
+		app.top_window().MenuSelect('File->Save displayed image - JPEG')
+
 	def OpenNewFile(self):													#Hacksolution if time try to solve better 
 		
 		Xpos=806
 		Ypos=950
-		nmbr_tabs=10
 
+		nmbr_tabs=10
 
 		pyautogui.press('enter')
 
@@ -69,6 +74,7 @@ class OpenReader():
 
 if __name__ == '__main__':
 	try:
+		#os.startfile('Twitter')
 		openreader=OpenReader()
 		openreader.OpenProgram2()
 		#openreader.OpenNewFile()

@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 class EventHandler(FileSystemEventHandler):
-	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
+	patterns = ["*.jpg"]					#Which files to look for 
 
 	def set_globvar(self,globvar):				#for deciding if it is Metop or feng or noaa
 	    def trick(arg):							#A small function to set the global variable to the argument
@@ -63,7 +63,7 @@ class EventHandler(FileSystemEventHandler):
 	    	print(globvar)
 	    	self.set_globtemp(1)
 
-	    #print(event.src_path, event.event_type)  	# print now only for degug
+	    print(event.src_path, event.event_type)  	# print now only for degug
 
 	def on_modified(self, event):
 	    self.process(event)
@@ -73,11 +73,11 @@ class EventHandler(FileSystemEventHandler):
 
 	#def on_any_event(self,event):					#add if more information about the folder then just pattern files are needed
 		#self.process(event)    
-'''
+
 if __name__ == '__main__':
 	args = sys.argv[1:] 											#take argument as the second line in the system input
 	observer = Observer()											#create an observer object
-	observer.schedule(EventHandler(), path=args[0], recursive=False)	#take the first line in the argument as a path
+	observer.schedule(EventHandler(), path='C:\\Users\\Ruag\\Pictures\\Screenshots', recursive=False)	#take the first line in the argument as a path
 	observer.start()												#Start observing that folder
 
 	try:
@@ -87,4 +87,3 @@ if __name__ == '__main__':
 	    observer.stop()
 
 observer.join()
-'''
