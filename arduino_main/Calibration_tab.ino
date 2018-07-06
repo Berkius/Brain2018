@@ -11,140 +11,111 @@ void Calibration(){
  */
 
   // Define variables
-  int elevation_center = 0;
-  int azimuth_center = 0;
-  int DelayVar=100;
+  int DelayVar= 30;
+
+  int switch_az_value_counter = counter_az();
+  int switch_el_value_counter = counter_el();
   
-  Serial.println(F("Entering Calibration"));
+  //Serial.println(F("Entering Calibration"));
 
  // Starting the calibration if both sensor are unactivated    
- if ((digitalRead(sensor_el)==LOW) || (digitalRead(sensor_az)==LOW)){      
+ if ((switch_el_value_counter <= 3) || (switch_az_value_counter <= 3)){      
 
     // ##################################################
     // Calibration of accelerometer
+
+    Serial.println(F("Starting the Calibration for Elevation angle"));
     
-    // Drive pitch motor until hitting switch
-    Serial.println(F("Drive pitch motor until hitting switch.."));         
-    while (digitalRead(sensor_el)==LOW){                  // When the pitch switch is low 
-      Pitch_Positive(fastSpeed);                          // Drive positive direetion
-      delay(DelayVar);                                    // Was needed to know for how long to run
-      getCurrentPitch();                                  // Gets the angles from accelerometer 
+    // DRIVE PITCH MOTOR NEGATIVE UNTIL HITTING SWITCH
+    Serial.print(F("Drive pitch motor negative until hitting switch.."));         
+    while (switch_el_value_counter < 3){                             // When the pitch switch is low 
+      // Drive negative direction
+      Pitch_Negative(fastSpeed);                             
+      switch_el_value_counter = counter_el();
+      Serial.println(switch_el_value_counter);
+    }    
+    Pitch_Brake();  
+    // When Sensor_el turns to High, brake
+    Serial.println(F("Switch activated"));  
+
+     // ######################
+    // IMU FUNCTION SETUP
+    IMU_setup();  
+    // #######################
+    
+    getCurrentPitch();                                         // Gets the angles from accelerometer 
+    // LOG OFFSET VALUE                                       
+    getCurrentPitch();                                         // Get current angle from the accelerometer  
+    offset_el=elevation_min-pitchdeg;                          // Save value
+    getCurrentPitch();                                         // Get current angle from the accelerometer 
+    Serial.print(F("Pitch angle: "));   
+    Serial.println(pitchdeg);                 
+  
+    // DRIVE ELEVATION POSITIVE UNTIL SWITCH IS UNACTIVATED
+    Serial.print("Drive pitch positive until switch is unactivated and within safety margin..");
+    while(switch_el_value_counter >= 3){  
+      Pitch_Positive(slowSpeed);                              // Drive positive pitch
+      //delay(DelayVar);
+      switch_el_value_counter = counter_el();
     }
-      
-    Pitch_Brake();                                        // When Sensor_el turns to High, brake
-    Serial.println(F("Switch activated"));                   
 
-    // Log offset value                                          
-    getCurrentPitch();                                    // Get current angle from the accelerometer  
-    if (elevation_min!=pitchdeg){                         // If they are not equal save the offset 
-        offset_el=abs(elevation_min-pitchdeg);        
-        }   
-    //Serial.print(F("offset_el: "));                          // For testing purpose 
-    //Serial.println(F(offset_el));                            // For testing porpuse
-
-    // Drive elevtation negative until switch is unactivated
-    Serial.println("Drive elevtation negative until switch is unactivated..");
-    while(digitalRead(sensor_el)==HIGH){  
-
-<<<<<<< HEAD
-      // Drive elevation motor until hitting switch
-      Serial.println("Drive elevation motor until hitting switch..");         
-      while (digitalRead(sensor_el)==LOW){                //When the elevation switch is low 
-        Pitch_Positive(fastSpeed);                       //drive positive direetion
-        delay(DelayVar);                                //Was needed to know for how long to run
-        getCurrentPitch();                               //gets the angles from accelerometer 
-        //Serial.println("inside low loop ");
-        }
-      Pitch_Brake();                                      //When Sensor_el turns to High, brake
-      Serial.println("Switch activated");                   
-
-      // Log offset value                                          
-      getCurrentPitch();                               //Get current angle from the accelerometer  
-      if (elevation_min!=pitchdeg){                     //If they are not equal save the offset 
-          offset_el=elevation_min-pitchdeg;        
-          }   
-      Serial.print("offset_el: ");                //for testing purpose 
-      Serial.println(offset_el);                  //for testing porpuse
-
-      // Drive elevation negative until switch is unactivated
-      Serial.println("Drive elevation negative until switch is unactivated..");
-      while(digitalRead(sensor_el)==HIGH){  
-=======
-      Pitch_Negative(slowSpeed);                         // Drive negative pitch
+    // Run pitch positive until within safety margin
+    while(pitchdeg < safe_marg){
+       Pitch_Positive(slowSpeed);                              // Drive positive pitch
+      // LOG OFFSET VALUE                                       
       delay(DelayVar);
+      getCurrentPitch();       
     }
-    Serial.println(F("Switch unactivated"));
+    
+    Serial.println(F("Switch unactivated and without safety margin"));
+    Pitch_Brake();
 
     // ################################################################################
-    // Caliration of azimuth
-    
+    // Calibration of azimuth
+
     Serial.println(F("Starting the Calibration for Azimuth angle"));  
-    //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
-    Serial.println(F("Waiting for the switch to be pushed"));
-    while (digitalRead(sensor_az)==LOW){
-      Roll_Positive(fastSpeed);
-      delay(DelayVar);                                        // Was needed to know for how long to run, delay makes it possible to brake the drive in the middle of a command. 
-      getCurrentRoll(DelayVar);                                 // Gets the angles from accelerometer 
+
+    // DRIVE ROLL MOTOR NEGATIVE UNTIL HITTING SWITCH
+    Serial.print(F("Drive roll motor negative until hitting switch.."));
+    while (switch_az_value_counter < 3){
+      Roll_Negative(fastSpeed);
+      //delay(DelayVar);                                          // How long to run before checking switches 
+      getCurrentRoll(DelayVar);                                 // Gets the angles from gyroscope 
+      switch_az_value_counter = counter_az();
      }
-    Roll_Brake();                                               // When Sensor_el turns to High, brake
-    Serial.println(F("Switch activated"));                   
+    Roll_Brake();                                               // When Sensor_az turns to High, brake
+    Serial.println(F("Switch activated"));   
+    Serial.print(F("Roll angle: "));   
+    Serial.println(rolldeg);                
 
-    // Log offset value                                          
+    // LOG ROLL DEGREE                                         
     rolldeg=0;                                                  // Get current angle from the rolldeg which is zero here   
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
 
-    // Drive elevtation negative until switch is unactivated
-    Serial.println(F("Drive azimuthal motor negative until switch is unactivated.."));
-    while(digitalRead(sensor_az)==HIGH){  
-
-      Roll_Negative(fastSpeed);                                 // Drive Backwards
+    // DRIVE ROLL MOTOR POSITVE UTILL UNACTIVATED
+    Serial.print(F("Drive roll motor positive until switch is unactivated and without safety margin.."));
+    while(switch_az_value_counter >= 3){  
+      Roll_Positive(slowSpeed);                                 // Drive Backwards
+      //delay(DelayVar);
+      switch_az_value_counter = counter_az();
+    } 
+     // Run roll positive until within safety margin
+     while(rolldeg < safe_marg){
+       Roll_Positive(slowSpeed);                              // Drive positive pitch
+      // LOG OFFSET VALUE                                       
       delay(DelayVar);
+      getCurrentRoll(DelayVar);       
     }
-      
-<<<<<<< HEAD
-Serial.println("Starting the Calibration for Azimuth angle");  
-      //FOR THE LOWER MOTOR CONTROLLING THE AZIMUTH
-      Serial.println("Waiting for the switch to be pushed");
-       while (digitalRead(sensor_az)==LOW){
-        Roll_Positive(fastSpeed);
-        delay_s(DelayVar);                                //Was needed to know for how long to run, delay_s makes it possible to brake the drive in the middle of a command. 
-        getCurrentRoll(DelayVar);                               //Gets the angles from accelerometer 
-        }
-        Roll_Brake();                                      //When Sensor_el turns to High, brake
-        Serial.println("Switch activated");                   
-  
-        // Log offset value                                          
-        rolldeg=0;                               //Get current angle from the rolldeg which is zero here   
-  
-        // Drive elevtation negative until switch is unactivated
-        Serial.println("Drive azimuthal motor negative until switch is unactivated..");
-        while(digitalRead(sensor_az)==HIGH){  
-  
-          Roll_Negative(fastSpeed);                  //Drive Backwards
-          delay_s(DelayVar);
-          //Serial.println("inside high loop");
-        }
-        Serial.println("Switch unactivated");
-
-      /*azimuth_center=(azimuth_min+azimuth_max)/2;   //Reletiv centered coordinate
-      while(!(rolldeg<=(azimuth_center+2) && rolldeg>=(azimuth_center-2))){         //As long as the angle is out of the interval keep on going
-          getCurrentAngles();
-          Roll_Positive(fastSpeed);
-          delay(DelayVar);
-          }   
-       Roll_Brake(); 
-       azimuth_min=azimuth_min+2;
-       azimuth_max=azimuth_max-2;
-       elevation_min=elevation_min-2;
-       elevation_max=elevation_max-2; 
-    */   
-   }
-=======
-    Serial.println(F("Switch unactivated"));  
+    Roll_Brake();
+    Serial.println(F("Switch unactivated and without safety margin"));  
  }
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
+ else{
+    Serial.println(F("One of the switches are activated, can't run calibration"));
+ }
 
- Serial.println(F("Ending Calibration"));
+
+ calibration_done = 1;
+
+ //Serial.println(F("Ending Calibration"));
  
 }
 

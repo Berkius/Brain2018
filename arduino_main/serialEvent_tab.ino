@@ -7,7 +7,7 @@ SerialEvent "returns" a string name receivedChars which looks something like:
 --------------------------------------------------------------------------------------------
 */
 
-  Serial.println("Entering serialEvent");
+  //Serial.println("Entering serialEvent");
   mySerial.listen();        //starts listening for data in the serialport mySerial
 
   char endMarker= '\r'; // carrier return
@@ -43,5 +43,5 @@ SerialEvent "returns" a string name receivedChars which looks something like:
   //Serial.println(receivedChars);
   //stringComplete = false;
 
-  Serial.println("Ending serialEvent");
+  //Serial.println("Ending serialEvent");
 }

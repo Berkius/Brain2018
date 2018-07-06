@@ -1,29 +1,91 @@
-//A function to keep track of how many turns the parabola have made in certain directions
 void switch_count(){
-    
-    if ((motor_direction==3)&&(switch_count<=0)){           //If a switch is passed clockwise and its the first time it passes the switch clockwise  
-      switch_count_az++;                                    //Add 1 to switch count
+/*
+ * This function is keeping track of how many turns (in roll) the parabola have made
+ * When the parabola have turned one way too much it rotates back to initial position
+ * 
+ * Date_ 2018-07-03
+ * 
+ */
+    // Add or remove 1 from switch_count_az depending on driving direction
+    if (motor_direction_2==1){                                   // If a switch is passed positive (CW)
+      switch_count_az++;                                         // Add 1 to switch count
       }
-    if((motor_direction==4)&&(switch_count>=0)){            //If a switch is passed counter clockwise and its the first time it passes the switch counter clockwise    
-      switch_count_az--;                                    //Subtrack 1 from switch count  
+    if(motor_direction_2==2){                                    // If a switch is passed negative (CCW) 
+      switch_count_az--;                                         // Subtrack 1 from switch count  
       }
-    if ((motor_direction==3) && (switch_count_az>0)&& (abs(rolldeg)>=180)){      //clockwise direction hit of the switches, switch has been passed in one direction ones earlier and rolldeg is 180 degrees  
-        Roll_Brake();                                       //Brake
-        while(switch_count_az!=0){                          //Turn backwards until switch_count is resotred and the antenna is at zero again
-          Roll_Negative(slowSpeed);                          
-          }
-        Roll_Brake();                                       //Brake
-        rolldeg=0;                                          //Update rolldeg 
+
+    Serial.print(F("Azimutal switch activated, switch count has now the value: "));
+    Serial.println(switch_count_az);
+
+    // ######################################################################
+    // IF WE HAVE TURNED TOO MUCH, DRIVE AROUND AGAIN  
+
+    // If we have turned too much in positive direction
+    if (switch_count_az>= 1){     
+
+        Serial.println(F("The parabola have turned too much in positive roll (CW), it's now rotating back")); 
+        Serial.println(F("Waiting to switch to be activated to achive initial position.."));
+
+        Roll_Brake();                                                // Brake
+        Pitch_Brake();                                               // Brake
+      
+        // Run negative until switch is activated, i.e. run until hitting switch. Calibrate roll to that angle and then run positive until unactivated. 
+        // Run negative until hitting switch
+        while(digitalRead(sensor_az)==LOW){                               
+          Roll_Negative(fastSpeed);
+          delay(100);                                       // Normal delay 
+        }
+        Roll_Brake();                                       // Brake
+        rolldeg=0;                                          // Calibrate rolldeg
+
+        // Run positive until switch unactivated
+        while(digitalRead(sensor_az)==HIGH){                               
+          Roll_Positive(fastSpeed);
+          delay(100);                                       // Normal delay 
+        }
+        Roll_Brake();                                       // Brake
+        switch_count_az = 0;                                // Reset switch_count_az
+        Serial.println(F("Initial position achived, continuing program"));
+        return;
       }
-    if ((motor_direction==4)&&((switch_count_az)<=-1)&&(abs(rolldeg)>=180)){  //clockwise direction hit of the switches, switch has been passed in one direction ones earlier and rolldeg is 180 degrees
-        Roll_Brake();                                       //Brake
-        while(switch_count_az!=0){                          //Turn forwwards until switch_count is resotred and the antenna is at zero again
-          Roll_Positive(slowSpeed);                          
-          }
-        Roll_Brake();                                       //Brake
-        rolldeg=0;                                          //Update rolldeg 
+      
+    // If we have turned too much in negative direction
+    if (switch_count_az<= -2){ 
+        Serial.println(F("The parabola have turned too much in negative roll (CCW), it's now rotating back"));
+        Serial.println(F("Waiting for switch to pass to achive initial position.."));
+
+        Roll_Brake();                                                // Brake
+        Pitch_Brake();                                        // Brake
+      
+        // Run positive until switch is actiated and then unactivated, i.e. run past switch. Then alibrate roll to that angle. 
+        while(digitalRead(sensor_az)==LOW){                               
+          Roll_Positive(fastSpeed);
+          delay(100);                                       // Normal delay 
+        }
+        while(digitalRead(sensor_az)==HIGH){                               
+          Roll_Positive(fastSpeed);
+          delay(100);                                       // Normal delay 
+        }
+        Roll_Brake();                                       // Brake
+        rolldeg=0;                                          // Update rolldeg 
+        switch_count_az = 0;                                // Reset switch_count_az
+
+        Serial.println(F("Initial position achived, continuing program"));
+        return;
       }
-  Serial.print("Switchcount for az: ");
-  Serial.println(switch_count_az);
+
+   Serial.print(F("Updateing roll degree with +- 360.."));
+   Serial.print("old roll deg: ");
+   Serial.println(rolldeg);
+
+   if ((motor_direction_2==1) && (switch_count_az > -2)){                                 
+      rolldeg += 360;
+   }
+   if ((motor_direction_2==2) && (switch_count_az < 1)){                                 
+      rolldeg -= 360;
+   }
+
+   Serial.print("New roll deg: ");
+   Serial.println(rolldeg);
   
 }

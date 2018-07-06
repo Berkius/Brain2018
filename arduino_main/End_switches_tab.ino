@@ -1,57 +1,49 @@
 void End_switches(){
-/*
- This Function is to use the Brake when hiting the endswitches 
- Looks at which switch was activated and which direction we we ran latest. Then update offset to motor angle
+/* This code is runned when the elevation switch is hitted
+ * 
+ * Looks at which switch was activated and which direction we drove the motor latest. 
+ * Then update offset to motor angle and drive the motor until switch is unactivated
+ * 
+ * Date: 2018-07-03
  */
  //Serial.println(F("Entering End_switches"));
 
  int safe_marg=1;
 
-  Pitch_Brake();                
+  // Brake motors
+  Pitch_Brake(); 
+  Roll_Brake();
+  delay(1000);
+
+  Serial.println(F("Calibrating new pitch offset.."));
+
+  // Get pitch angle (cant get roll..)               
   getCurrentPitch();
-  if (motor_direction==1){                                                  //when going in Pitch positive
-      offset_el=elevation_max-pitchdeg;                                     //Calibrate the offset after hitting the switch 
-        getCurrentPitch();
-        while((elevation_max - pitchdeg) < safe_marg){                      //As long as the angle is out of the interval keep on going
-          Pitch_Negative(fastSpeed);                                        //Back up from the switch, As long as the angle is out of the interval keep on going
-          delay(50);
-          getCurrentPitch(); 
-          }
-          Pitch_Brake();
-      }
-  if (motor_direction==2){                                                  //when going in Pitch negative
-        offset_el=elevation_min-pitchdeg;                                   //Calibrate the offset after hitting the switch 
+
+  // When going in Pitch positive
+  if (motor_direction_1==1){                                                
+      offset_el = elevation_max - pitchdeg;                               // Calibrate the offset after hitting the switch 
+
+      // Drive motors until switch is unactivated
+      while((elevation_max - pitchdeg) < safe_marg){                
+        Pitch_Negative(fastSpeed);                                       
+        delay(50);
+        getCurrentPitch(); 
+        }      
+      Pitch_Brake();
+    }
+
+  // When going in Pitch negative
+  if (motor_direction_1==2){                                                
+      offset_el = elevation_min - pitchdeg;                               // Calibrate the offset after hitting the switch  
+
+      // Drive motors until switch is unactivated
+      while((pitchdeg-elevation_min) < safe_marg){                        
+        Pitch_Positive(fastSpeed);                                
+        delay(50);
         getCurrentPitch();  
-        while((elevation_min - pitchdeg) > safe_marg){                      //As long as the angle is out of the interval keep on going
-          Pitch_Positive(fastSpeed);                                        //Back up from the swtich, As long as the angle is out of the interval keep on going
-          delay(50);
-          getCurrentPitch();  
-          }
-          Pitch_Brake();
-      } 
-  if (motor_direction==3){
-        rolldeg = azimuth_max;
-  
-        while((azimuth_max - rolldeg) < safe_marg){                          //As long as the angle is out of the interval keep on going
-          Roll_Negative(fastSpeed);                                         //Back up from the swtich, As long as the angle is out of the interval keep on going
-          delay(50);
-          getCurrentRoll(50); 
-        }  
-        Roll_Brake();
-      }
-  if (motor_direction==2){
-        rolldeg = azimuth_max;
-  
-        while((azimuth_min - rolldeg) > safe_marg){                          //As long as the angle is out of the interval keep on going
-          Roll_Positive(fastSpeed);                                         //Back up from the swtich, As long as the angle is out of the interval keep on going
-          delay(50);
-          getCurrentRoll(50); 
-        }  
-        Roll_Brake();
-     }
-<<<<<<< HEAD
-   Serial.println("Ending End_switches");
-=======
-   //Serial.println(F("Ending End_switches"));
->>>>>>> 634baedf7ae2872d2d2e81165a4a4986bd97237b
+        }        
+      Pitch_Brake();
+    } 
+Serial.println(F("Calibrating done"));
 }
