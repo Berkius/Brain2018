@@ -34,19 +34,12 @@ if __name__ == '__main__':
 	path_to_FileExplorer="C:\\Users\\Ruag\\Pictures\\Screenshots\\explorer ."
 
 	eventhandler.set_globtemp(0)										#The temp variable for the alarming if there is a file zero in the beginning
-	#Start all the programs write a Init()
-	#open_reader.OpenProgram()				#Start seperatly instead as initialphase
-	#Open more programs here WXTrack?
-
+	#open_reader.OpenProgram()				
 	#Here the constant loop starts
 	observer.start()
-	update_time="11:34:00"				# Decided in task manager
 	app1 = application.Application().start(path_to_Hrpt_Reader)
 	try:
 		while True:
-
-			#if(strftime("%H:%M:%S")==update_time):						#Windows task  manager update
-				#timepause.pause_file()
 				
 			if (eventhandler.return_globtemp()==1):						#If new file
 				#Wait and delete files that comes in during the wait, can i in someway se when the file is done?
@@ -64,7 +57,7 @@ if __name__ == '__main__':
 
 				if (eventhandler.return_globvar()==2):					#For Fengyun
 					print('Jag är inne')
-					openmetfy.OpenForFengyun(global_path)							#Go to the right folder and choose the right file(idea as comment in method)
+					openmetfy.OpenForFengyun(global_path)				#Go to the right folder and choose the right file(idea as comment in method)
 					time.sleep(3)
 					open_reader.OpenNewFile()
 					delete_files.remove_previous(path_fengyun,global_path)
