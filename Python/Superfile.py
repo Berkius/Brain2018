@@ -354,7 +354,7 @@ class CheckFiles():
 				file_size_1=os.path.getsize(filepath)			#check files size, when they are equal keep on checking 
 				time.sleep(5)
 				file_size_2=os.path.getsize(filepath)
-				if (file_size_1==file_size_2):					#when they are not break Change to not equal before live!!!
+				if (file_size_1!=file_size_2):					#when they are not break Change to not equal before live!!!
 					break
 		except KeyboardInterrupt:
 			print('interrupted!')			
