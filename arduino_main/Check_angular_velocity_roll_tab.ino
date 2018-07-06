@@ -7,8 +7,8 @@ int Check_angular_velocity_roll(){
    
   float angular_velocity_roll;
 
-  float cosPitch = cos(pitchdeg*PI/180);
-  float sinPitch = sin(pitchdeg*PI/180);
+  float cosPitch = cos((pitchdeg-offset_el)*PI/180);
+  float sinPitch = sin((pitchdeg-offset_el)*PI/180);
 
   gyro.readGyro(&gx, &gy, &gz);                           // Read data from gyro
 

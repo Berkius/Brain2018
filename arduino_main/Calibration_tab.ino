@@ -30,13 +30,14 @@ void Calibration(){
     Serial.print(F("Drive pitch motor negative until hitting switch.."));         
     while (switch_el_value_counter < 3){                             // When the pitch switch is low 
       // Drive negative direction
-      Pitch_Negative(fastSpeed);                             
+      Pitch_Negative(slowSpeed);                             
       switch_el_value_counter = counter_el();
-      Serial.println(switch_el_value_counter);
     }    
     Pitch_Brake();  
     // When Sensor_el turns to High, brake
     Serial.println(F("Switch activated"));  
+
+   // while(1==1){}
 
      // ######################
     // IMU FUNCTION SETUP
@@ -60,7 +61,7 @@ void Calibration(){
     }
 
     // Run pitch positive until within safety margin
-    while(pitchdeg < safe_marg){
+    while(pitchdeg < safe_marg+elevation_min){
        Pitch_Positive(slowSpeed);                              // Drive positive pitch
       // LOG OFFSET VALUE                                       
       delay(DelayVar);
@@ -77,10 +78,11 @@ void Calibration(){
 
     // DRIVE ROLL MOTOR NEGATIVE UNTIL HITTING SWITCH
     Serial.print(F("Drive roll motor negative until hitting switch.."));
+    DrivingTimeStart = millis();                              // Starting time motors
     while (switch_az_value_counter < 3){
       Roll_Negative(fastSpeed);
       //delay(DelayVar);                                          // How long to run before checking switches 
-      getCurrentRoll(DelayVar);                                 // Gets the angles from gyroscope 
+      getCurrentRoll();                                          // Gets the angles from gyroscope 
       switch_az_value_counter = counter_az();
      }
     Roll_Brake();                                               // When Sensor_az turns to High, brake
@@ -92,6 +94,7 @@ void Calibration(){
     rolldeg=0;                                                  // Get current angle from the rolldeg which is zero here   
 
     // DRIVE ROLL MOTOR POSITVE UTILL UNACTIVATED
+    DrivingTimeStart = millis();                              // Starting time motors
     Serial.print(F("Drive roll motor positive until switch is unactivated and without safety margin.."));
     while(switch_az_value_counter >= 3){  
       Roll_Positive(slowSpeed);                                 // Drive Backwards
@@ -103,7 +106,7 @@ void Calibration(){
        Roll_Positive(slowSpeed);                              // Drive positive pitch
       // LOG OFFSET VALUE                                       
       delay(DelayVar);
-      getCurrentRoll(DelayVar);       
+      getCurrentRoll();       
     }
     Roll_Brake();
     Serial.println(F("Switch unactivated and without safety margin"));  

@@ -17,7 +17,7 @@ void IMU_setup(){
 
  acc.powerOn();
  
- for (int i = 0; i <= 200; i++) {
+/* for (int i = 0; i <= 200; i++) {
   acc.readAccel(&ax, &ay, &az);
   
   if (i == 0) {
@@ -30,7 +30,7 @@ void IMU_setup(){
     aoffsetY = (ay + aoffsetY) / 2;
     aoffsetZ = (az + aoffsetZ) / 2;
   }
- }
+ }*/
  
  Serial.println("accelerometer setup done");
 

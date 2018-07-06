@@ -27,11 +27,21 @@ void delay_s(int total_delay){
     else if (switch_value_az == LOW){
       switch_value_counter_az = 0;}
 
+      if (switch_value_az == LOW){
+    switch_value_counter_az_low += 1;}
+    else if (switch_value_az == HIGH){
+      switch_value_counter_az_low = 0;}
+
       // If we reached HIGH value 3 times in a row, trust that value
     if (switch_value_el == HIGH){
     switch_value_counter_el += 1;}
     else if (switch_value_el == LOW){
       switch_value_counter_el = 0;}
+
+      if (switch_value_el == LOW){
+    switch_value_counter_el_low += 1;}
+    else if (switch_value_el == HIGH){
+      switch_value_counter_el_low = 0;}
     
     // If we hit a sensor
     if (switch_value_counter_el >= 3){
@@ -49,7 +59,7 @@ void delay_s(int total_delay){
         switch_pre_value= 1;                  // Set switch value to activated 
       } 
     }
-    else if(switch_value_counter_az < 3){
+    else if(switch_value_counter_az_low >= 3){
       switch_pre_value = 0;                   // Set switch value to unactivated 
     }
 

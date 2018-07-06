@@ -14,7 +14,7 @@
   const unsigned long period = 1000;                                      // How often we should update [ms]
   startMillis = millis();                                                 // Initial start time
   
-  int tol = 5;                                                           // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
+  int tol = 2;                                                           // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
   int time_drive = 20;                                                    // How long to run the motors before updating angles      
 
   getCurrentPitch();                                                      // Get new pitch angle, (cant do this with roll)
@@ -27,11 +27,12 @@
 
   
   // Drive as long as any of the delta angles are outside the tolerance
-  while((abs(delta_pitch) > tol) || (abs(delta_roll) > tol)){
-    
-    // If both delta angles are outside tolerance, run both
-    while((abs(delta_pitch)) > tol && (abs(delta_roll) > tol)){
+  while(((abs(delta_pitch) > tol) || (abs(delta_roll) > tol)) && (tracking == HIGH)){
 
+    DrivingTimeStart = millis();                              // Starting time motors
+    // If both delta angles are outside tolerance, run both
+    while((abs(delta_pitch) > tol) && (abs(delta_roll) > tol) && (tracking == HIGH)){
+      
       // See which direction is the shortest, and start driving that way
       drive_direction(delta_pitch, PITCH, fastSpeed);
       drive_direction(delta_roll, ROLL, fastSpeed);
@@ -44,7 +45,7 @@
       getCurrentPitch(); // MAYBE ADD IF IMU AVALIABLE THING
   
       // Update angles motor, roll [degree]
-      getCurrentRoll(time_drive);
+      getCurrentRoll();
   
       // Calculate new delta pitch angle
       delta_pitch = EL_degree-pitchdeg;
@@ -71,16 +72,17 @@
         Serial.print("Satelite pitch/el angle: ");
         Serial.println(EL_degree);
 
-                Serial.print("The switch count: ");
+       /*         Serial.print("The switch count: ");
         Serial.println(switch_count_az);
 
         Serial.print("The direction is ( pos==1, neg==2): ");
-        Serial.println(motor_direction_1);
+        Serial.println(motor_direction_1);*/
       }
     }
-    
+
+    DrivingTimeStart = millis();                              // Starting time motors
     // If only the delta angle for pitch is outside tolerance, run pitch motor
-    while((abs(delta_pitch) > tol) && (abs(delta_roll) <= tol)){
+    while((abs(delta_pitch) > tol) && (abs(delta_roll) <= tol) && (tracking == HIGH)){
       // Brake the roll motor
       Roll_Brake();
 
@@ -115,16 +117,17 @@
         Serial.print("Satelite pitch/el angle: ");
         Serial.println(EL_degree);
 
-        Serial.print("The switch count: ");
+        /*Serial.print("The switch count: ");
         Serial.println(switch_count_az);
 
-        Serial.print("The direction is ( pos==1, neg==2): ");
-        Serial.println(motor_direction_1);
+        //Serial.print("The direction is ( pos==1, neg==2): ");
+        //Serial.println(motor_direction_1);*/
       }
     }
-
+    
+    DrivingTimeStart = millis();                              // Starting time motors
     // If only the delta angle for roll is outside tolerance, run roll motor
-    while((abs(delta_roll) > tol) && (abs(delta_pitch) <= tol)){
+    while((abs(delta_roll) > tol) && (abs(delta_pitch) <= tol) && (tracking == HIGH)){
       // Brake the pitch motor
       Pitch_Brake();
 
@@ -135,7 +138,7 @@
       delay_s(time_drive);
   
       // Update roll angle [degree]
-      getCurrentRoll(time_drive);
+      getCurrentRoll();
   
       // Calculate new delta roll angle
       delta_roll = AZ_degree-rolldeg;       
@@ -159,11 +162,11 @@
         Serial.print("Satelite pitch/el angle: ");
         Serial.println(EL_degree);
 
-        Serial.print("The switch count: ");
+        /*Serial.print("The switch count: ");
         Serial.println(switch_count_az);
 
         Serial.print("The direction is ( pos (CW)==1, neg(CCW)==2): ");
-        Serial.println(motor_direction_1);
+        Serial.println(motor_direction_1);*/
       }
     }
   }

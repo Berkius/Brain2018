@@ -67,8 +67,8 @@ int slowSpeed = 100;                       // Lower speed
 // Location of switches
 int azimuth_min=5;                         // Azimuth left switch
 int azimuth_max=355;                       // Azimuth right switch
-int elevation_min=15;                       // Elevation lower switch
-int elevation_max=95;                      // Elevation upper switch
+int elevation_min=20;                       // Elevation lower switch
+int elevation_max=92;                      // Elevation upper switch
 
 // Which direction are we driving
 int motor_direction_1=0;                   // 1=forward elevation, 2=backward elevation 
@@ -76,14 +76,27 @@ int motor_direction_2=0;                   // 1=forward azimuth, 2=backwward azi
 
 int switch_pre_value = 0;                  // The previously value of the azimuth switch (to not get it to log multiple hits in one activation)
 int switch_value_counter_az = 0;              // Counter for nr of time az/roll switchen has been hitted in a row
+int switch_value_counter_az_low = 0;  
 int switch_value_counter_el = 0;              // Counter for nr of time el/pitch switchen has been hitted in a row
+int switch_value_counter_el_low = 0; 
 
 // For the calibration
 int switch_az_value_counter = 0;
 int switch_el_value_counter = 0;
 
-int safe_marg = 5;
+int safe_marg = 8;
 int calibration_done = 0;
+
+// See if a satelite is avaliable(/if we are tracking)
+int tracking;
+int tracky;
+
+// Time keeping track on how often we should update satalite angles
+unsigned long startMillisTrack;                                              // Starting time
+unsigned long currentMillisTrack;                                            // Current time
+
+// How long time we are driving
+unsigned long DrivingTimeStart;                                              // Starting time
 // ##############################################
 
 void setup() {
@@ -100,6 +113,9 @@ void setup() {
   Calibration();
 
   Serial.println(F("\n SETUP AND CALIBRATION DONE. STARTING MAIN LOOP"));
+
+
+  startMillisTrack = millis();                                                 // Initial start time
 
 }
 
@@ -122,7 +138,14 @@ void loop() {
     Serial.print("Satelite pitch/EL angle: ");
     Serial.println(EL_degree);
 
-    // Run the motor protocol
-    move_motor_protocol();
+  if (tracking == LOW){
+        Pitch_Brake();
+        Roll_Brake();
+        Serial.println("No satellite is available");
+      } else {
+        // Run the motor protocol
+        Serial.println("Tracking satellite");
+        move_motor_protocol();
+     } 
 }
    

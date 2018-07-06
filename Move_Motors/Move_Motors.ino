@@ -25,7 +25,6 @@
 
 short usSpeed = 150;  //default motor speed
 unsigned short usMotor_Status = BRAKE;
- 
 void setup()                         
 {
   pinMode(MOTOR_A1_PIN, OUTPUT);

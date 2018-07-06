@@ -14,8 +14,9 @@ SerialEvent "returns" a string name receivedChars which looks something like:
   char inChar;          // char for input 
   uint8_t inHex;        // HEX for input
   int i=0;              // index for looping array
-  
-  while (mySerial.available() > 0 && stringComplete == false){
+
+  tracky = mySerial.available();
+  while (tracky > 0 && stringComplete == false){
     inChar = mySerial.read();     // read char from mySerial
 
     // if reading in HEX is neede
