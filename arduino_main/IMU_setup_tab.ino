@@ -2,7 +2,7 @@ void IMU_setup(){
 /*
  * Setup the IMU (accelerometer & gyroscope)
  * 
- * Setup accelerometer:  WRITE SOMETHING HERE !!!
+ * Setup accelerometer:  power on the accelerometer, the calibration of the horizontal plane is turned off 
  * 
  * Setup gyroscope: Have completly still for 5 sec to calibrate that angular velocity to zero
  * 

@@ -1,4 +1,9 @@
  int counter_az(){
+/*
+ * Counts the number of times in a row the az sensor has been high
+ *  
+ * Date: 2018-07-08
+ */
 
   int switch_az_value;
  
@@ -17,8 +22,13 @@
   return switch_az_value_counter;
  }
 
-
+// ###############################################
 int counter_el(){
+/*
+ * Counts the number of times in a row the az sensor has been high
+ * 
+ * Date: 2018-07-08
+ */
 
   int switch_el_value;
 

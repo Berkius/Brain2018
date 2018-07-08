@@ -36,67 +36,76 @@ const int pitch_IN1=7;           // Motor pin A2, positive
 const int pitch_IN2=8;           // Motor pin B2, negative
 const int pitch_PWM=5;           // PWM, "velocity"
 
+// Define the string PITCH as 0 and ROLL as 1
 #define PITCH 0
 #define ROLL  1
 // ##############################################
-// Define varibales to acceleromter
-ADXL345 acc;                               //variable adxl is an instance of the ADXL345 libary
+// IMU 
+// define variables for acceleromter
+ADXL345 acc;                               // variable adxl is an instance of the ADXL345 libary
 
 int ax,ay,az;                              // Reserved storage slots for the accelerometer libary 
-
-float rolldeg, pitchdeg;                         // The angle of the motors [degree]
 float aoffsetX, aoffsetY, aoffsetZ;        // ??
-float delta_roll, delta_pitch;             // The offset between the aceelerometer value and the actual value (from switch) [degree]
 
-// Motor offset (from accelerometer)
-float offset_el=0;                         // The elevation offset measured from the elevation switch
-int switch_count_az=0;                     // Count number of laps the parabola have turned in a specific direction 
-
-// Define varibales to gyroscope
+// Define variables to gyroscope
 ITG3200 gyro = ITG3200();
 float gx, gy, gz;                          // Reserved storage slots for the gyroscope libary 
 
+// other IMU related
+float rolldeg, pitchdeg;                   // The angle of the motors [degree]
+float delta_roll, delta_pitch;             // The offset between the aceelerometer value and the actual value (from switch) [degree]
+
+float offset_el=0;                         // The elevation offset measured from the elevation switch
+
+
+// #############################################
+// SWITCH VARIBALES
+
+int switch_count_az=0;                     // Count number of laps the parabola have turned in a specific direction 
+
+int switch_pre_value = 0;                  // The previously value of the azimuth switch (to not get it to log multiple hits in one activation)
+int switch_value_counter_az = 0;           // Counter for nr of time az/roll switchen has been hitted in a row
+int switch_value_counter_az_low = 0;       // Counter for nr of time az/roll switchen has NOT been hitted in a row
+int switch_value_counter_el = 0;           // Counter for nr of time el/pitch switchen has been hitted in a row
+int switch_value_counter_el_low = 0;       // Counter for nr of time el/pitch switchen has NOT been hitted in a row
+
+// Times in a row there has been a high value for switch (used in calibration)
+int switch_az_value_counter = 0;
+int switch_el_value_counter = 0;
+
+// Location of switches
+int elevation_min=20;                      // Elevation lower switch
+int elevation_max=92;                      // Elevation upper switch
+
 // ##############################################
 // MOTOR SPEED
-int fastSpeed = 200;                       // Full speed
-int slowSpeed = 100;                       // Lower speed
+int fastSpeed = 200;                       // High speed, used the first time adjusting to new satelite and when going back to initial pos
+int slowSpeed = 100;                       // Low speed, used while tracking 
 
 // ##############################################
 // OTHER
-
-// Location of switches
-int azimuth_min=5;                         // Azimuth left switch
-int azimuth_max=355;                       // Azimuth right switch
-int elevation_min=20;                       // Elevation lower switch
-int elevation_max=92;                      // Elevation upper switch
 
 // Which direction are we driving
 int motor_direction_1=0;                   // 1=forward elevation, 2=backward elevation 
 int motor_direction_2=0;                   // 1=forward azimuth, 2=backwward azimuth
 
-int switch_pre_value = 0;                  // The previously value of the azimuth switch (to not get it to log multiple hits in one activation)
-int switch_value_counter_az = 0;              // Counter for nr of time az/roll switchen has been hitted in a row
-int switch_value_counter_az_low = 0;  
-int switch_value_counter_el = 0;              // Counter for nr of time el/pitch switchen has been hitted in a row
-int switch_value_counter_el_low = 0; 
-
-// For the calibration
-int switch_az_value_counter = 0;
-int switch_el_value_counter = 0;
-
-int safe_marg = 8;
-int calibration_done = 0;
+int safe_marg = 8;                         // How close to the switch we allow the parabola to go
+int calibration_done = 0;                  // If the calibration is compleated, so safe margin is ingored during calibration (implemented in Drive_and_Brake)
 
 // See if a satelite is avaliable(/if we are tracking)
-int tracking;
-int tracky;
+int tracking;                              // If we are tracking right now
+int coordinates_obtained;                  // If we obtained coordinates from WX-track
+int satelite_is_available = LOW;           // If we have obtained coordinateds in the last 10s
+
+int fast_adjustment = 1;                   // First time it tries to adjust to a new satlite we want to drive fast
 
 // Time keeping track on how often we should update satalite angles
-unsigned long startMillisTrack;                                              // Starting time
-unsigned long currentMillisTrack;                                            // Current time
+unsigned long startMillisTrack;             // Starting time
+unsigned long currentMillisTrack;           // Current time
 
 // How long time we are driving
-unsigned long DrivingTimeStart;                                              // Starting time
+unsigned long DrivingTimeStart;             // Starting time
+
 // ##############################################
 
 void setup() {
@@ -114,9 +123,7 @@ void setup() {
 
   Serial.println(F("\n SETUP AND CALIBRATION DONE. STARTING MAIN LOOP"));
 
-
-  startMillisTrack = millis();                                                 // Initial start time
-
+  startMillisTrack = millis();              // Initial start time for how often we update satelite angles
 }
 
 void loop() {
@@ -126,25 +133,28 @@ void loop() {
     // Update the satelite angles from WX-track and make an convertion 
     UpdateSateliteAngles();
 
-    Serial.print(F("Motor roll/AZ angle: "));   
-    Serial.println(rolldeg); 
-
-    Serial.print("Satelite roll/AZ angle: ");
-    Serial.println(AZ_degree);
-
-    Serial.print(F("Motor pitch/EL angle: "));   
-    Serial.println(pitchdeg); 
-
-    Serial.print("Satelite pitch/EL angle: ");
-    Serial.println(EL_degree);
 
   if (tracking == LOW){
-        Pitch_Brake();
-        Roll_Brake();
-        Serial.println("No satellite is available");
+        //Pitch_Brake();
+        //Roll_Brake();
+        Serial.println("No satellite is available, going back to initial position");
+        initial_pos();
+        fast_adjustment = 1;
       } else {
+        
+        Serial.print(F("Motor roll/AZ angle: "));   
+        Serial.println(rolldeg); 
+    
+        Serial.print("Satelite roll/AZ angle: ");
+        Serial.println(AZ_degree);
+    
+        Serial.print(F("Motor pitch/EL angle: "));   
+        Serial.println(pitchdeg); 
+    
+        Serial.print("Satelite pitch/EL angle: ");
+        Serial.println(EL_degree);
+    
         // Run the motor protocol
-        Serial.println("Tracking satellite");
         move_motor_protocol();
      } 
 }

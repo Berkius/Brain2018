@@ -1,4 +1,11 @@
 void getCurrentRoll(){
+/*
+ * Updates the roll angle of the motors
+ * 
+ * It does this by taking the angular velocity of the motors (from the gyroscope, IMU) and the time the motors have been driving to calculate the angle the motors should have
+ * 
+ * Date: 2018-07-08
+ */
 
   float change_in_roll;
 

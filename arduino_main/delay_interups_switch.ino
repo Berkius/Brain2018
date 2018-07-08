@@ -2,7 +2,7 @@ void delay_s(int total_delay){
 /*
  * A delay function which can be intrupted by the switches
  * 
- *
+ * Date: 2018-07-08
  */
 
   unsigned long startMillis;                                              // Starting time

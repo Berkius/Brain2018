@@ -14,10 +14,16 @@
   const unsigned long period = 1000;                                      // How often we should update [ms]
   startMillis = millis();                                                 // Initial start time
   
-  int tol = 2;                                                           // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
+  int tol = 2;                                                            // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
   int time_drive = 20;                                                    // How long to run the motors before updating angles      
 
-  getCurrentPitch();                                                      // Get new pitch angle, (cant do this with roll)
+  // The speed we want to run the motor on, (depending if its the first time we run this code or not)
+  int Speed;                                                     
+  if (fast_adjustment == 1){
+    Speed = fastSpeed;}
+  else{
+    Speed = slowSpeed;
+  }
      
   // Calculate new delta pitch angle
   delta_pitch = EL_degree-pitchdeg;
@@ -34,8 +40,8 @@
     while((abs(delta_pitch) > tol) && (abs(delta_roll) > tol) && (tracking == HIGH)){
       
       // See which direction is the shortest, and start driving that way
-      drive_direction(delta_pitch, PITCH, fastSpeed);
-      drive_direction(delta_roll, ROLL, fastSpeed);
+      drive_direction(delta_pitch, PITCH, Speed);
+      drive_direction(delta_roll, ROLL, Speed);
 
       
       // Drive the motors "time_drive" ms  before updating angles
@@ -87,7 +93,7 @@
       Roll_Brake();
 
       // See which direction is the shortest, and start driving that way
-      drive_direction(delta_pitch, PITCH, fastSpeed);
+      drive_direction(delta_pitch, PITCH, Speed);
       
       // Drive the motor "time_drive" ms  before updating angles
       delay_s(time_drive);
@@ -132,7 +138,7 @@
       Pitch_Brake();
 
       // See which direction is the shortest, and start driving that way
-      drive_direction(delta_roll, ROLL, fastSpeed);
+      drive_direction(delta_roll, ROLL, Speed);
   
       // Drive the motor "time_drive" ms  before updating angles
       delay_s(time_drive);
@@ -181,5 +187,8 @@
   switch_value_counter_az = 0;
   }
   //Serial.println("Ending move_motor_protocol");
+
+  // Next tie we run we want to have slow speed
+  fast_adjustment = 0;
 }
 

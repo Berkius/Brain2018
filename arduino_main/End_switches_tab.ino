@@ -15,8 +15,7 @@ void End_switches(){
   Roll_Brake();
   delay(1000);
 
-  
-
+ 
   // Get pitch angle (cant get roll..)               
   getCurrentPitch();
 
