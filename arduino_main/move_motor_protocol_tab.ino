@@ -147,7 +147,7 @@
       getCurrentRoll();
   
       // Calculate new delta roll angle
-      delta_roll = AZ_degree-rolldeg;       
+      delta_roll = AZ_degree- rolldeg;       
 
       // See if the satalite angles should be updated
       currentMillis = millis();                                   // Get the current "time"

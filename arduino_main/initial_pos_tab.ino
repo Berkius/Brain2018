@@ -11,6 +11,12 @@ void initial_pos(){
 
  int Droll = roll-rolldeg;
  int Dpitch = pitch-pitchdeg;
+
+ Serial.print("Delta roll init: ");
+ Serial.println(Droll);
+
+  Serial.print("Delta pitch init: ");
+ Serial.println(Dpitch);
  
 
  DrivingTimeStart = millis();                              // Starting time motors
@@ -23,7 +29,7 @@ while (switch_count_az == -1){
   }
 
 // Drive roll motor to right pos
-while (abs(Droll) < 5){
+while (abs(Droll) >= 5){
   if (Droll > 0){
     Roll_Positive(fastSpeed);
     }
@@ -36,7 +42,7 @@ while (abs(Droll) < 5){
   }
 
 // Drive pitch motor to right pos
-while (abs(Dpitch) < 5){
+while (abs(Dpitch) >= 5){
   if (Dpitch > 0){
     Pitch_Positive(fastSpeed);
     }

@@ -7,22 +7,26 @@
 
   int switch_az_value;
  
- for(int i=0; i<=3; i++){
+ for(int i=0; i<counter_max; i++){
     switch_az_value = digitalRead(sensor_az);
     delay(10);
-
+    
     if (switch_az_value == HIGH){
-      switch_az_value_counter += 1; 
+      switch_value_counter_az += 1; 
+      switch_value_counter_az_low = 0;
     }
-    else{
-      switch_az_value_counter = 0;
+    else if (switch_az_value == LOW){
+      switch_value_counter_az = 0;
+      switch_value_counter_az_low += 1; 
     }
-  }
 
-  return switch_az_value_counter;
+   // Serial.print("az HIGH value: ");
+   // Serial.println(switch_value_counter_az);
+  }
  }
 
 // ###############################################
+
 int counter_el(){
 /*
  * Counts the number of times in a row the az sensor has been high
@@ -32,18 +36,29 @@ int counter_el(){
 
   int switch_el_value;
 
-  for(int i=0; i<=3; i++){
+  for(int i=0; i<counter_max; i++){
       switch_el_value = digitalRead(sensor_el);
       delay(10);
   
       if (switch_el_value == HIGH){
-        switch_el_value_counter += 1;     
+        switch_value_counter_el += 1;
+        switch_value_counter_el_low = 0;     
       }
-      else{
-        switch_el_value_counter = 0;
+      else if(switch_el_value == LOW){
+        switch_value_counter_el = 0;
+        switch_value_counter_el_low += 1; 
       }
-      
-    return switch_el_value_counter;
+
   
-   }
+  }
 }
+// ###############################################
+
+void reset_counters(){
+
+  switch_value_counter_az = 0;
+  switch_value_counter_az_low = 0;
+  switch_value_counter_el = 0;
+  switch_value_counter_el_low = 0;
+  
+  }
