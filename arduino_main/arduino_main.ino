@@ -69,13 +69,11 @@ int switch_value_counter_az_low = 0;       // Counter for nr of time az/roll swi
 int switch_value_counter_el = 0;           // Counter for nr of time el/pitch switchen has been hitted in a row
 int switch_value_counter_el_low = 0;       // Counter for nr of time el/pitch switchen has NOT been hitted in a row
 
-// Times in a row there has been a high value for switch (used in calibration)
-int switch_az_value_counter = 0;
-int switch_el_value_counter = 0;
-
 // Location of switches
 int elevation_min=20;                      // Elevation lower switch
 int elevation_max=92;                      // Elevation upper switch
+
+int counter_max = 4;                                                    // how many times we need to have a high or low in a row
 
 // ##############################################
 // MOTOR SPEED
@@ -93,7 +91,7 @@ int safe_marg = 8;                         // How close to the switch we allow t
 int calibration_done = 0;                  // If the calibration is compleated, so safe margin is ingored during calibration (implemented in Drive_and_Brake)
 
 // See if a satelite is avaliable(/if we are tracking)
-int tracking;                              // If we are tracking right now
+int tracking = LOW;                        // If we are tracking right now
 int coordinates_obtained;                  // If we obtained coordinates from WX-track
 int satelite_is_available = LOW;           // If we have obtained coordinateds in the last 10s
 
@@ -104,6 +102,7 @@ unsigned long startMillisTrack;             // Starting time
 unsigned long currentMillisTrack;           // Current time
 
 // How long time we are driving
+
 unsigned long DrivingTimeStart;             // Starting time
 
 // ##############################################
@@ -135,12 +134,19 @@ void loop() {
 
 
   if (tracking == LOW){
-        //Pitch_Brake();
-        //Roll_Brake();
+        Pitch_Brake();
+        Roll_Brake();
+        
+        // Reset counters
+        reset_counters();
+        
         Serial.println("No satellite is available, going back to initial position");
-        initial_pos();
+        //initial_pos();
         fast_adjustment = 1;
       } else {
+
+        // Reset counters
+        reset_counters();
         
         Serial.print(F("Motor roll/AZ angle: "));   
         Serial.println(rolldeg); 
@@ -156,6 +162,8 @@ void loop() {
     
         // Run the motor protocol
         move_motor_protocol();
+
+        
      } 
 }
    

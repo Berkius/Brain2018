@@ -35,9 +35,9 @@ const unsigned long periodTrack = 5000;
     // If satelite coords is obtained set satelite_is_available to high and start tracking (tracking == HIGH)
     if (coordinates_obtained > 0){
       satelite_is_available = HIGH;
-      tracking == HIGH; 
+      tracking = HIGH; 
     }
-
+      
       // See if the there hase'nt been any updates of the coords for the last 5s
       currentMillisTrack = millis();                                             // Get the current "time"
       if (currentMillisTrack - startMillisTrack >= periodTrack){                 // Test whether the period has elapsed, if true update satelite angles 

@@ -13,13 +13,13 @@ void Calibration(){
   // Define variables
   int DelayVar= 30;
 
-  int switch_az_value_counter = counter_az();
-  int switch_el_value_counter = counter_el();
+  counter_az();
+  counter_el();
   
   //Serial.println(F("Entering Calibration"));
 
  // Starting the calibration if both sensor are unactivated    
- if ((switch_el_value_counter <= 3) || (switch_az_value_counter <= 3)){      
+ if ((switch_value_counter_el <= counter_max) || (switch_value_counter_az <= counter_max)){      
 
     // ##################################################
     // Calibration of accelerometer
@@ -28,10 +28,10 @@ void Calibration(){
     
     // DRIVE PITCH MOTOR NEGATIVE UNTIL HITTING SWITCH
     Serial.print(F("Drive pitch motor negative until hitting switch.."));         
-    while (switch_el_value_counter < 3){                             // When the pitch switch is low 
+    while (switch_value_counter_el < counter_max){                             // When the pitch switch is low 
       // Drive negative direction
       Pitch_Negative(slowSpeed);                             
-      switch_el_value_counter = counter_el();
+      counter_el();
     }    
     Pitch_Brake();  
     // When Sensor_el turns to High, brake
@@ -54,10 +54,10 @@ void Calibration(){
   
     // DRIVE ELEVATION POSITIVE UNTIL SWITCH IS UNACTIVATED
     Serial.print("Drive pitch positive until switch is unactivated and within safety margin..");
-    while(switch_el_value_counter >= 3){  
+    while(switch_value_counter_el >= counter_max){  
       Pitch_Positive(slowSpeed);                              // Drive positive pitch
       //delay(DelayVar);
-      switch_el_value_counter = counter_el();
+      counter_el();
     }
 
     // Run pitch positive until within safety margin
@@ -79,11 +79,11 @@ void Calibration(){
     // DRIVE ROLL MOTOR NEGATIVE UNTIL HITTING SWITCH
     Serial.print(F("Drive roll motor negative until hitting switch.."));
     DrivingTimeStart = millis();                              // Starting time motors
-    while (switch_az_value_counter < 3){
+    while (switch_value_counter_az < counter_max){
       Roll_Negative(fastSpeed);
       //delay(DelayVar);                                          // How long to run before checking switches 
       getCurrentRoll();                                          // Gets the angles from gyroscope 
-      switch_az_value_counter = counter_az();
+      counter_az();
      }
     Roll_Brake();                                               // When Sensor_az turns to High, brake
     Serial.println(F("Switch activated"));   
@@ -96,10 +96,10 @@ void Calibration(){
     // DRIVE ROLL MOTOR POSITVE UTILL UNACTIVATED
     DrivingTimeStart = millis();                              // Starting time motors
     Serial.print(F("Drive roll motor positive until switch is unactivated and without safety margin.."));
-    while(switch_az_value_counter >= 3){  
+    while(switch_value_counter_az >= counter_max){  
       Roll_Positive(slowSpeed);                                 // Drive Backwards
       //delay(DelayVar);
-      switch_az_value_counter = counter_az();
+      counter_az();
     } 
      // Run roll positive until within safety margin
      while(rolldeg < safe_marg){
@@ -119,6 +119,10 @@ void Calibration(){
  calibration_done = 1;
 
  //Serial.println(F("Ending Calibration"));
+  safe_marg = 3;
+
+  switch_value_counter_az = 0;
+  switch_value_counter_el = 0;
  
 }
 

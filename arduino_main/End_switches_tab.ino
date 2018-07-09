@@ -8,8 +8,6 @@ void End_switches(){
  */
  //Serial.println(F("Entering End_switches"));
 
- int safe_marg=3;
-
   // Brake motors
   Pitch_Brake(); 
   Roll_Brake();
@@ -25,11 +23,12 @@ void End_switches(){
       offset_el = elevation_max - (pitchdeg - offset_el);                               // Calibrate the offset after hitting the switch 
 
     // Drive motors until switch is unactivated
-    switch_el_value_counter = 10;
-    while(switch_el_value_counter >= 3){  
+    switch_value_counter_el = 10;
+    while(switch_value_counter_el_low >= counter_max){  
       Pitch_Negative(slowSpeed);                              // Drive negative pitch
-      switch_el_value_counter = counter_el();
+      counter_el();
     }
+    switch_value_counter_el_low = 0;
     
       while(pitchdeg > (elevation_max - safe_marg) ){                
         Pitch_Negative(slowSpeed);                                       
@@ -45,10 +44,10 @@ void End_switches(){
       offset_el = elevation_min - (pitchdeg - offset_el);                               // Calibrate the offset after hitting the switch 
 
     // Drive motors until switch is unactivated
-    switch_el_value_counter = 10;
-    while(switch_el_value_counter >= 3){  
+    switch_value_counter_el = 10;
+    while(switch_value_counter_el >= counter_max){  
       Pitch_Positive(slowSpeed);                              // Drive negative pitch
-      switch_el_value_counter = counter_el();
+      counter_el();
     }
 
       // Drive motors until switch is unactivated
