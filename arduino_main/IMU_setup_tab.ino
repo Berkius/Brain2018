@@ -40,7 +40,7 @@ void IMU_setup(){
 // Setup gyroscope 
   Serial.print("Gyro setup..     ");
   gyro.init(ITG3200_ADDR_AD0_LOW);
-  gyro.zeroCalibrate(1000, 2);    // 1000 samples, 2ms per sample
+  gyro.zeroCalibrate(2500, 2);    // 1000 samples, 2ms per sample
   Serial.println("Gyro setup done");
  
 }

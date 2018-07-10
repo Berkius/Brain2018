@@ -10,10 +10,11 @@ void getCurrentRoll(){
   float change_in_roll;
 
   // Check rotation speed
-  float angular_velocity_roll = Check_angular_velocity_roll();
+  angular_velocity_roll = Check_angular_velocity_roll();
 
   int time_roll =  millis() - DrivingTimeStart;                 // Time since we started the motors
   DrivingTimeStart = millis();                              // Restarting time motors
+  DrivingTimeStartBrake = millis();
   
   change_in_roll = time_roll*0.001 * angular_velocity_roll;
   
