@@ -239,14 +239,14 @@ class EventHandler(FileSystemEventHandler):
 class OpenMetFy():
 
 	nmbr_tabs=8				#Numbers of tabs for the metfy
-	X_file=256					#Coordinates for file tab
-	Y_file=167					#Coordinates for file tab
-	X_proc=718					#Coordinates for the process button	
-	Y_proc=214					#Coordinates for the process button	
-	X_deRand=527				#Coordinates for DeRandomizer alternativ box
-	Y_deRand=185				#Coordinates for DeRandomizer alternativ box
-	X_ReedSolomon=572			#Coordinates for ReedSolomon alternativ box
-	Y_ReedSolomon=225			#Coordinates for ReedSolomon alternativ box
+	X_file=251					#Coordinates for file tab
+	Y_file=165					#Coordinates for file tab
+	X_proc=730					#Coordinates for the process button	
+	Y_proc=210					#Coordinates for the process button	
+	X_deRand=570				#Coordinates for DeRandomizer alternativ box
+	Y_deRand=192				#Coordinates for DeRandomizer alternativ box
+	X_ReedSolomon=569				#Coordinates for ReedSolomon alternativ box
+	Y_ReedSolomon=224				#Coordinates for ReedSolomon alternativ box
 	pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
 	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
@@ -358,13 +358,17 @@ class CheckFiles():
 	def check_file_size(self,filepath):
 
 		try:
+		#if (filepath!=0)
 			print(filepath)
+			#if filepath is not the default value...
 			while True:
 				file_size_1=os.path.getsize(filepath)			#check files size, when they are equal keep on checking 
 				time.sleep(5)
 				file_size_2=os.path.getsize(filepath)
 				if (file_size_1!=file_size_2):					#when they are not break Change to not equal before live!!!
+					print('file changed size')
 					break
+
 		except KeyboardInterrupt:
 			print('interrupted!')			
 class TimePause():
