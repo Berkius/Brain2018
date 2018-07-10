@@ -214,15 +214,17 @@ class EventHandler(FileSystemEventHandler):
 	        path/to/observed/file
 	    """
 	    # the file will be processed there
-	    if 'Metop' in event.src_path and event.event_type=='created':
-	    	print('METOP')
-	    	self.set_globvar(1)
-	    	#print(globvar)
-	    	self.set_globtemp(1)
-	    	self.set_globPath(event.src_path)
-	    	while (self.return_globtemp()==1):
-	    		pass
-	    	#self.set_globtemp(0)
+	    if 'Metop' in event.src_path:
+	    	if 'bin' in event.src_path:	
+	    		if (event.event_type=='created'):
+			    	print('METOP')
+			    	self.set_globvar(1)
+			    	#print(globvar)
+			    	self.set_globtemp(1)
+			    	self.set_globPath(event.src_path)
+			    	while (self.return_globtemp()==1):
+			    		pass
+	    			#self.set_globtemp(0)
 	    	print("Nu är vi ute ur whle i watchdog Metop och globtemp Metop=")
 	    	print(globtemp)	
 
@@ -267,25 +269,32 @@ class EventHandler(FileSystemEventHandler):
 class OpenMetFy():
 
 	nmbr_tabs=8				#Numbers of tabs for the metfy
-	X_file=214					#Coordinates for file tab
-	Y_file=159					#Coordinates for file tab
-	X_proc=692					#Coordinates for the process button	
-	Y_proc=186					#Coordinates for the process button	
+	X_file=256					#Coordinates for file tab
+	Y_file=167					#Coordinates for file tab
+	X_proc=718					#Coordinates for the process button	
+	Y_proc=214					#Coordinates for the process button	
 	X_deRand=527				#Coordinates for DeRandomizer alternativ box
 	Y_deRand=185				#Coordinates for DeRandomizer alternativ box
-
+	X_ReedSolomon=572			#Coordinates for ReedSolomon alternativ box
+	Y_ReedSolomon=225			#Coordinates for ReedSolomon alternativ box
 	pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
 	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
 	def OpenForMetop(self,glob_file_path):
 		#TEST NYA LÖSNINGEN
+		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'
 		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
 		path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		print("time to open")
 		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
-		app.MetFY3x_Processor_v.MenuSelect('File->Open')
+		app.MetFY3x_Processor_.MenuSelect('File->Open')
+		app.Open.Edit.SetText("C:\\Ruag_program\\xhrpt_decoder")
+		app.Open.Open.Click()
 		app.Open.Edit.SetText(glob_file_path)
 		app.Open.Open.Click()
+		app.MetFY3x_Processor_v.derandomize.Click()
+		app.MetFY3x_Processor_v.ReedSalomon.Click()
 		app.MetFY3x_Processor_v.Process.Click()
 		time.sleep(20)
 		app.kill()
@@ -294,8 +303,6 @@ class OpenMetFy():
 
 		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
 
-		#This part underneeth needs to be more developed and fitted to the final computer when we get real files in  
-		
 		time.sleep(5)
 		pyautogui.click(self.X_file, self.Y_file)
 
@@ -320,18 +327,20 @@ class OpenMetFy():
 
 		time.sleep(3)
 		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
-
+		pyautogui.click(self.X_ReedSolomon, self.Y_ReedSolomon)
 		time.sleep(30)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill() 									#kills the MetFY program
-		'''
-	def OpenForFengyun(self,glob_file_path):
 		
+	def OpenForFengyun(self,glob_file_path):
+		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'
 		#path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
 		#path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
 		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
 		app.MetFY3x_Processor_v.MenuSelect('File->Open')
+		app.Open.Edit.SetText("C:\\Ruag_program\\xhrpt_decoder")
+		app.Open.Open.Click()
 		app.Open.Edit.SetText(glob_file_path)
 		app.Open.Open.Click()
 		app.MetFY3x_Processor_v.derandomize.Click()
@@ -367,13 +376,13 @@ class OpenMetFy():
 		pyautogui.press('enter')
 
 		time.sleep(3)
-		pyautogui.click(self.X_deRand,self.Y_deRand)
+		#pyautogui.click(self.X_deRand,self.Y_deRand)
 		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
 
-		time.sleep(30)								#Adjust depending on process time could be different long depending on file
+		time.sleep(60)								#Adjust depending on process time could be different long depending on file
 		
 		p.kill()	
-		'''
+		
 class CheckFiles():
 
 	def check_file_size(self,filepath):

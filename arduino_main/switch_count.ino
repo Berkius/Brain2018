@@ -24,7 +24,7 @@ void switch_count(){
     if (switch_count_az>= 1){     
 
         Serial.println(F("The parabola have turned too much in positive roll (CW), it's now rotating back")); 
-        Serial.println(F("Waiting to switch to be activated to achive initial position.."));
+        Serial.println(F("Waiting to switch to be activated to achive zero position.."));
 
         Roll_Brake();                                                // Brake
         Pitch_Brake();                                               // Brake
@@ -45,14 +45,14 @@ void switch_count(){
         }
         Roll_Brake();                                       // Brake
         switch_count_az = 0;                                // Reset switch_count_az
-        Serial.println(F("Initial position achived, continuing program"));
+        Serial.println(F("Zero position achived, continuing program"));
         return;
       }
       
     // If we have turned too much in negative direction
     if (switch_count_az<= -2){ 
         Serial.println(F("The parabola have turned too much in negative roll (CCW), it's now rotating back"));
-        Serial.println(F("Waiting for switch to pass to achive initial position.."));
+        Serial.println(F("Waiting for switch to pass to achive zero position.."));
 
         Roll_Brake();                                                // Brake
         Pitch_Brake();                                        // Brake
@@ -70,7 +70,7 @@ void switch_count(){
         rolldeg=0;                                          // Update rolldeg 
         switch_count_az = 0;                                // Reset switch_count_az
 
-        Serial.println(F("Initial position achived, continuing program"));
+        Serial.println(F("zero position achived, continuing program"));
         return;
       }
 
