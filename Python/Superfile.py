@@ -202,7 +202,8 @@ class EventHandler(FileSystemEventHandler):
 		return globvar    
 
 	def set_globPath(self,globPath):			#A function to set the global variable globPath to the argument used in the function call	
-	    def trick(arg):							
+	    def trick(arg):
+	    	global globPath							
 	        globPath = arg
 	    trick(globPath)
 
