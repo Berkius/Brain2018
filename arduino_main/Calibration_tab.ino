@@ -59,6 +59,7 @@ void Calibration(){
       //delay(DelayVar);
       counter_el();
     }
+   
 
     // Run pitch positive until within safety margin
     while(pitchdeg < safe_marg+elevation_min){
@@ -92,6 +93,8 @@ void Calibration(){
 
     // LOG ROLL DEGREE                                         
     rolldeg=0;                                                  // Get current angle from the rolldeg which is zero here   
+   //
+   //while(1==1){}
 
     // DRIVE ROLL MOTOR POSITVE UTILL UNACTIVATED
     DrivingTimeStart = millis();                              // Starting time motors

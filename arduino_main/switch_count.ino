@@ -79,15 +79,18 @@ void switch_count(){
    Serial.println(rolldeg);
 
    if ((motor_direction_2==1) && (switch_count_az > -2)){ 
-      rolldeg = rolldeg - 360; 
+      //rolldeg = rolldeg - 360; 
+      rolldeg = 10;
    }
    
    if ((motor_direction_2==2) && (switch_count_az < 1)){   
-    if (rolldeg > 0){                              
+    /*if (rolldeg > 0){                              
       rolldeg = 360 - rolldeg;
     } else {
       rolldeg = 360 + rolldeg;
     }
+   }*/
+   rolldeg = 360;
    }
 
    Serial.print("New roll deg: ");
