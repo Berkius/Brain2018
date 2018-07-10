@@ -55,8 +55,9 @@ if __name__ == '__main__':
 				
 			if (eventhandler.return_globtemp()==1):							#If new file is created in the folder the observer is watching 
 				global_path=eventhandler.return_globPath()					#The path of the created file
+				print(global_path)
 				checkfiles.check_file_size(eventhandler.return_globPath()) 	#Checks the size of the file and when it changes its done and we keep on going 
-
+				print('Out of checked files')	
 				if (eventhandler.return_globvar()==1):						#If it is a Metop satellite thats been tracked	
 					openmetfy.OpenForMetop(global_path)						#Opens the extra process program that is needed to be able to display the picture->
 					time.sleep(3)											#and chooses the most recently created file.	
