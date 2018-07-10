@@ -38,7 +38,6 @@ if __name__ == '__main__':
 	observer = Observer()												
 	observer.schedule(EventHandler(), path='C:\\Ruag_program\\xhrpt_decoder', recursive=False)	#The path to which folder the observer will check for new created files 
 	eventhandler=EventHandler()																	#EventHandler Object 
-	timepause=TimePause()
 	tweet=Tweet()
 
 	path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'						#Path to the program that display the images

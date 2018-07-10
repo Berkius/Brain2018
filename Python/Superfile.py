@@ -50,17 +50,22 @@ class OpenReader():
 
 	def OpenNewFile(self):																	#Opens up a new file in Hrpt Reader, hardcoded button presses 
 
-		pyautogui.press('enter')															#Presses the by default marked Open button  
-		time.sleep(2)																		#Waits two seconds for the open window to pop up
+		try:
+			pyautogui.press('enter')															#Presses the by default marked Open button  
+			time.sleep(2)																		#Waits two seconds for the open window to pop up
 
-		for x in range(1,self.nmbr_tabs):													#This loop and the lines underneeth tabs its way to the most recently added file  
-			pyautogui.press('tab')															#virtual tab
+			for x in range(1,self.nmbr_tabs):													#This loop and the lines underneeth tabs its way to the most recently added file  
+				pyautogui.press('tab')															#virtual tab
 
-		pyautogui.press('down')																#Move marker down
-		pyautogui.press('up')																#Move marker up
-		pyautogui.press('enter')															#opens the marked file 
-		pyautogui.press('left')																#Southbound or Northbound. When "left" then Southbound is choosen, when "Right" the Northbound is choosen
-		pyautogui.press('enter')															#pushes north- or southbound 
+			pyautogui.press('down')																#Move marker down
+			pyautogui.press('up')																#Move marker up
+			pyautogui.press('enter')															#opens the marked file 
+			pyautogui.press('left')																#Southbound or Northbound. When "left" then Southbound is choosen, when "Right" the Northbound is choosen
+			pyautogui.press('enter')															#pushes north- or southbound 
+
+		except KeyboardInterrupt:
+			print('interrupted!')
+				
 
 #---------------------------------------------------------------#
 
@@ -204,7 +209,7 @@ class EventHandler(FileSystemEventHandler):
 	def return_globPath(self):					#This function returns the globPath 
 		return globPath    	
 
-	def process(self, event):						#Check the API for the watchdog for more information
+	def process(self, event):								#This function logs specific events in specific folders. For mor info check the API for the watchdog for more information
 	    """
 	    event.event_type 
 	        'modified' | 'created' | 'moved' | 'deleted'
@@ -213,42 +218,42 @@ class EventHandler(FileSystemEventHandler):
 	    event.src_path
 	        path/to/observed/file
 	    """
-	    # the file will be processed there
-	    if 'Metop' in event.src_path:
-	    	if 'bin' in event.src_path:	
-	    		if (event.event_type=='created'):
+	    #When a file is created the processing starts here
+	    if 'Metop' in event.src_path:						#If Metop is in the Path name of the file thats been created 	
+	    	if 'bin' in event.src_path:						#If bin is in the Path name of the file thats been created 	
+	    		if (event.event_type=='created'):			#And the event type is created
 			    	print('METOP')
-			    	self.set_globvar(1)
+			    	self.set_globvar(1)						#globvar is set to 1 for the program to know that it is a Metop thats been tracked
 			    	#print(globvar)
-			    	self.set_globtemp(1)
-			    	self.set_globPath(event.src_path)
-			    	while (self.return_globtemp()==1):
+			    	self.set_globtemp(1)					#globtemp is set to 1 so the observer dosen't detect new file during the time it processing another one
+			    	self.set_globPath(event.src_path)		#Sets gloPath to the path of the created file 
+			    	while (self.return_globtemp()==1):		#Locks the observer until everything in the main loop and procceising is done 
 			    		pass
 	    			#self.set_globtemp(0)
-	    	print("Nu är vi ute ur whle i watchdog Metop och globtemp Metop=")
-	    	print(globtemp)	
+	    			print("Nu är vi ute ur whle i watchdog Metop och globtemp Metop=")
+	    			print(globtemp)	
 
-	    if 'FY' in event.src_path:
-	    	if 'bin' in event.src_path:	
-	    		if (event.event_type=='created'):
+	    if 'FY' in event.src_path:							#If FY is in the Path name of the file thats been created 	
+	    	if 'bin' in event.src_path:						#If bin is in the Path name of the file thats been created 	
+	    		if (event.event_type=='created'):			#And the event type is created
 			    	print('FENG')
-			    	self.set_globvar(2)
+			    	self.set_globvar(2)						#globvar is set to 2 for the program to know that it is a Fengyun thats been tracked
 			    	#print(globvar)
-			    	self.set_globtemp(1)
-			    	self.set_globPath(event.src_path)
-			    	while (self.return_globtemp()==1):
+			    	self.set_globtemp(1)					#globtemp is set to 1 so the observer dosen't detect new file during the time it processing another one
+			    	self.set_globPath(event.src_path)		#Sets gloPath to the path of the created file 
+			    	while (self.return_globtemp()==1):		#Locks the observer until everything in the main loop and procceising is done 
 			    		pass
 			    	#self.set_globtemp(0)
 			    	print("Nu är vi ute ur whle i watchdog Fengyun och globtemp=")
 			    	print(globtemp)	
 		    
-	    if 'NO' in event.src_path and event.event_type=='created':
+	    if 'NO' in event.src_path and event.event_type=='created':		#If NO is in the Path name of the file thats been created and the event is created	
 	    	print('NOAA')
-	    	self.set_globvar(3)
+	    	self.set_globvar(3)											#globvar is set to 3 for the program to know that it is a Fengyun thats been tracked
 	    	#print(globvar)
-	    	self.set_globtemp(1)
-	    	self.set_globPath(event.src_path)
-	    	while (self.return_globtemp()==1):
+	    	self.set_globtemp(1)										#globtemp is set to 1 so the observer dosen't detect new file during the time it processing another one
+	    	self.set_globPath(event.src_path)							#Sets gloPath to the path of the created file 
+	    	while (self.return_globtemp()==1):							#Locks the observer until everything in the main loop and procceising is done 
 	    		pass
 	    	#self.set_globtemp(0)
 	    	print("Nu är vi ute ur whle i watchdog NOAA och globtemp=")
@@ -257,18 +262,29 @@ class EventHandler(FileSystemEventHandler):
 	    print("end process")	
 	    #print(event.src_path, event.event_type)  	# print now only for degug
 
-	def on_modified(self, event):
+	def on_modified(self, event):										#If something in the folder is modified this functions sets the event to modified, used it in the beginning but not in this current version
 	    self.process(event)
 
-	def on_created(self, event):
+	def on_created(self, event):										#If something in the folder is created this functions sets the event to modified
 	    self.process(event)
 
-	#def on_any_event(self,event):					#add if more information about the folder then just pattern files are needed
+	#def on_any_event(self,event):										#add if more information about the folder then just pattern files are needed
 		#self.process(event)    
+
+#---------------------------------------------------------------#
+
+	#OPENMETFY()
+
+	#The OpenMetFy class conatins code for depending on which
+	#satellite is tracked open the extra process program
+	#MetFy3x and adjust settings for the specific files 
+
+#---------------------------------------------------------------#
+
 
 class OpenMetFy():
 
-	nmbr_tabs=8				#Numbers of tabs for the metfy
+	nmbr_tabs=8					#Numbers of tabs for the metfy
 	X_file=256					#Coordinates for file tab
 	Y_file=167					#Coordinates for file tab
 	X_proc=718					#Coordinates for the process button	
@@ -280,14 +296,16 @@ class OpenMetFy():
 	pyautogui.PAUSE = 0.5		#Wait 1 second pause after each function call	
 	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
 
-	def OpenForMetop(self,glob_file_path):
-		#TEST NYA LÖSNINGEN
+	def OpenForMetop(self,glob_file_path):											#This function puts in the specific settings in MetFy3x for metop files
+		
+		#This outcommented code only worked on the MetFy3x v0.3.3 unfortunately 
+
 		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'
 		path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
 		path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
 		print("time to open")
-		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
+		app = application.Application().start(path_to_MetFy3x)						
 		app.MetFY3x_Processor_.MenuSelect('File->Open')
 		app.Open.Edit.SetText("C:\\Ruag_program\\xhrpt_decoder")
 		app.Open.Open.Click()
@@ -299,45 +317,51 @@ class OpenMetFy():
 		time.sleep(20)
 		app.kill()
 		'''
-		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader CHANGE THIS
+		try:
+			path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
-		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
+			p=subprocess.Popen([path_to_MetFy3x]) 									#Opens a subprocess, starts MetFy3x and then goes directly to the next line in the code
 
-		time.sleep(5)
-		pyautogui.click(self.X_file, self.Y_file)
+			time.sleep(5)															#To give Metfy time to start up 
+			pyautogui.click(self.X_file, self.Y_file)								#Click on the file option in the menubar
 
-		time.sleep(3)
-		#pyautogui.click(Xopen, Yopen)
-		pyautogui.press('down')
-		pyautogui.press('enter')
+			time.sleep(1)															#Gives the program time to open dialog window
+			#pyautogui.click(Xopen, Yopen)
+			pyautogui.press('down')													#Choose the open choise by pushing down and enter
+			pyautogui.press('enter')												
 
-		time.sleep(3)
+			time.sleep(3)															#Give the program time to open the Open option 
 
-		for x in range(1,self.nmbr_tabs):
-			pyautogui.press('tab')
-		
-		pyautogui.press('down')
-		pyautogui.press('up')
-		pyautogui.press('enter')	
+			for x in range(1,self.nmbr_tabs):										#This loop tabs it way in the MetFy to a specific spot in the program so the program can access the files
+				pyautogui.press('tab')
 			
-		time.sleep(3)
-		#pyautogui.click(Xbin, Ybin)
+			pyautogui.press('down')													#Push down and then up to mark the most recent added file  
+			pyautogui.press('up')
+			pyautogui.press('enter')												#Push enter to choose the specific file to process		
+				
+			time.sleep(3)															 
+			#pyautogui.click(Xbin, Ybin)
 
-		pyautogui.press('enter')
+			pyautogui.press('enter')												#presses enter to Open the file 
 
-		time.sleep(3)
-		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
-		pyautogui.click(self.X_ReedSolomon, self.Y_ReedSolomon)
-		time.sleep(30)								#Adjust depending on process time could be different long depending on file
+			time.sleep(3)															#Gives time for the program to close the Open Window
+			pyautogui.click(self.X_proc, self.Y_proc)								#Mouse click on the Process button
+			pyautogui.click(self.X_ReedSolomon, self.Y_ReedSolomon)					#Mouse click in the ReedSolomon box
+			time.sleep(60)															#Adjust depending on process time could be different long depending on the file size
+			
+			p.kill() 																#kills the subprocess aka the MetFY program
+		except KeyboardInterrupt:
+			print('interrupted!')	
+
+	def OpenForFengyun(self,glob_file_path):										#This function puts in the specific settings in MetFy3x for Fengyun files	
 		
-		p.kill() 									#kills the MetFY program
-		
-	def OpenForFengyun(self,glob_file_path):
+		#This outcommented code only worked on the MetFy3x v0.3.3 unfortunately 
+
 		'''
 		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'
 		#path_to_file1 = 'C:\\Ruag_program\\pictures\\2012-09-22_1134_M02.hpt'		#Path to the processed file 
 		#path_to_file2 = 'C:\\Ruag_program\\pictures\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
-		app = application.Application().start(path_to_MetFy3x)						#Måste startas med denna
+		app = application.Application().start(path_to_MetFy3x)						
 		app.MetFY3x_Processor_v.MenuSelect('File->Open')
 		app.Open.Edit.SetText("C:\\Ruag_program\\xhrpt_decoder")
 		app.Open.Open.Click()
@@ -348,57 +372,63 @@ class OpenMetFy():
 		time.sleep(20)
 		app.kill()
 		'''
-		
-		path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
+		try:
+			path_to_MetFy3x = 'C:\\Ruag_program\\MetFy3x'							#Path to the HRPT Reader
 
-		p=subprocess.Popen([path_to_MetFy3x]) 			#Opens a subprocess and then goes directly to the next line in the code
+			p=subprocess.Popen([path_to_MetFy3x]) 									#Opens a subprocess, starts MetFy3x and then goes directly to the next line in the code
 
-		time.sleep(5)
-		pyautogui.click(self.X_file, self.Y_file)
+			time.sleep(5)															#To give Metfy time to start up 
+			pyautogui.click(self.X_file, self.Y_file)								#Click on the file option in the menubar
 
-		time.sleep(3)
-		#pyautogui.click(Xopen, Yopen)
-		pyautogui.press('down')
-		pyautogui.press('enter')
+			time.sleep(1)															#Gives the program time to open dialog window	
+			#pyautogui.click(Xopen, Yopen)
+			pyautogui.press('down')													#Choose the open choise by pushing down and enter
+			pyautogui.press('enter')													
 
-		time.sleep(3)
+			time.sleep(3)															#Give the program time to open the Open option 
 
-		for x in range(1,self.nmbr_tabs):
-			pyautogui.press('tab')
-		
-		pyautogui.press('down')
-		pyautogui.press('up')
-		pyautogui.press('enter')	
+			for x in range(1,self.nmbr_tabs):										#This loop tabs it way in the MetFy to a specific spot in the program so the program can access the files
+				pyautogui.press('tab')
 			
-		time.sleep(3)
-		#pyautogui.click(Xbin, Ybin)
+			pyautogui.press('down')													#Push down and then up to mark the most recent added file  
+			pyautogui.press('up')
+			pyautogui.press('enter')												#Push enter to choose the specific file to process		
+				
+			time.sleep(3)															
+			#pyautogui.click(Xbin, Ybin)
 
-		pyautogui.press('enter')
+			pyautogui.press('enter')												#presses enter to Open the file 
 
-		time.sleep(3)
-		#pyautogui.click(self.X_deRand,self.Y_deRand)
-		pyautogui.click(self.X_proc, self.Y_proc)				#Mouse click for 
+			time.sleep(3)															#Gives time for the program to close the Open Window	
+			pyautogui.click(self.X_proc, self.Y_proc)								#Mouse click on the Process button
 
-		time.sleep(60)								#Adjust depending on process time could be different long depending on file
-		
-		p.kill()	
-		
+			time.sleep(60)															#Adjust depending on process time could be different long depending on the file size
+			
+			p.kill()																#Kills the subprocess aka the MetFY program
+
+		except KeyboardInterrupt:
+			print('interrupted!')	
+
+
+#---------------------------------------------------------------#
+
+	#CHECKFILES()
+
+	#The CheckFiles class contains code to check the file size.
+	#When the file size change it means the decoder is finished
+
+#---------------------------------------------------------------#
+
 class CheckFiles():
 
-	def check_file_size(self,filepath):
+	def check_file_size(self,filepath):							#This function check the file size and if it changes it lets to of the main program and the imageprocessing starts 
 
 		try:
-			print(filepath)
 			while True:
-				file_size_1=os.path.getsize(filepath)			#check files size, when they are equal keep on checking 
-				time.sleep(5)
-				file_size_2=os.path.getsize(filepath)
-				if (file_size_1!=file_size_2):					#when they are not break Change to not equal before live!!!
+				file_size_1=os.path.getsize(filepath)			#Check file size and wait 5 seconds 
+				time.sleep(5)										
+				file_size_2=os.path.getsize(filepath)			#Check file size again
+				if (file_size_1!=file_size_2):					#Compare if they are equal it means the tracker and processing is done and it breaks the loop
 					break
 		except KeyboardInterrupt:
 			print('interrupted!')			
-class TimePause():
-
-	def pause_file(self):
-		time.sleep(4)
-		print("testing")
