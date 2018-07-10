@@ -105,6 +105,10 @@ unsigned long currentMillisTrack;           // Current time
 
 unsigned long DrivingTimeStart;             // Starting time
 
+unsigned long DrivingTimeStartBrake = 0;                        // Starting time motors
+
+float angular_velocity_roll;                // Velocity of the azimuth motor, from gyro
+
 // ##############################################
 
 void setup() {

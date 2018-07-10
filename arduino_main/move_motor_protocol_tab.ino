@@ -15,7 +15,9 @@
   startMillis = millis();                                                 // Initial start time
   
   int tol = 2;                                                            // Tolerance: How big is delta_roll/delta_pitch allowed to be [degree]
-  int time_drive = 20;                                                    // How long to run the motors before updating angles      
+  int time_drive = 15;                                                    // How long to run the motors before updating angles      
+
+  int from_both_to_roll = 0;
 
   // The speed we want to run the motor on, (depending if its the first time we run this code or not)
   int Speed;                                                     
@@ -34,6 +36,8 @@
   
   // Drive as long as any of the delta angles are outside the tolerance
   while(((abs(delta_pitch) > tol) || (abs(delta_roll) > tol)) && (tracking == HIGH)){
+
+    from_both_to_roll = 1;                                    // in both motors
 
     DrivingTimeStart = millis();                              // Starting time motors
     // If both delta angles are outside tolerance, run both
@@ -89,8 +93,17 @@
     DrivingTimeStart = millis();                              // Starting time motors
     // If only the delta angle for pitch is outside tolerance, run pitch motor
     while((abs(delta_pitch) > tol) && (abs(delta_roll) <= tol) && (tracking == HIGH)){
+
+      from_both_to_roll = 0;                                    // NOT in both motors
       // Brake the roll motor
       Roll_Brake();
+
+      if (DrivingTimeStartBrake != 0){
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+         rolldeg = rolldeg + change_in_roll;
+         DrivingTimeStartBrake = 0;
+      }
+  
 
       // See which direction is the shortest, and start driving that way
       drive_direction(delta_pitch, PITCH, Speed);
@@ -100,7 +113,7 @@
   
       // Update pitch angle [degree]
       getCurrentPitch();
-  
+
       // Calculate new delta pitch angle
       delta_pitch = EL_degree-pitchdeg;  
 
@@ -136,6 +149,13 @@
     while((abs(delta_roll) > tol) && (abs(delta_pitch) <= tol) && (tracking == HIGH)){
       // Brake the pitch motor
       Pitch_Brake();
+
+      if ((DrivingTimeStartBrake != 0) && (from_both_to_roll == 1)){
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+         rolldeg = rolldeg + change_in_roll;
+         DrivingTimeStartBrake = 0;
+         from_both_to_roll = 0;
+      }
 
       // See which direction is the shortest, and start driving that way
       drive_direction(delta_roll, ROLL, Speed);
@@ -179,6 +199,11 @@
 
   if ((abs(delta_pitch) <= tol) || (abs(delta_roll) <= tol)){
     Roll_Brake();
+      if (DrivingTimeStartBrake != 0){
+       float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+       rolldeg = rolldeg + change_in_roll;
+       DrivingTimeStartBrake = 0;
+    }
     Pitch_Brake();
     }
 
