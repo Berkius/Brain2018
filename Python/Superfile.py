@@ -1,3 +1,14 @@
+#----------------------------------------------------------------#
+	
+	#SUPERFILE.PY
+
+	#This File contians all the relevant classes and functions
+	#used to be able to run the image processing automatically. 
+	#The only class used outside this file is the class Tweet()
+	#in the file twitter_bot.py. 
+
+#----------------------------------------------------------------#
+
 import os 
 import subprocess
 import time
@@ -8,170 +19,189 @@ import sys
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
+
+#----------------------------------------------------------------#
+	
+	#OPENREADER()
+
+	#OpenReader class cantains code for opening the program 
+	#HRPT Reader if needed and also code to open new files in 
+	#this program. 
+
+#----------------------------------------------------------------#		
+
 class OpenReader():
 	
-	nmbr_tabs=10
-	pyautogui.PAUSE = 0.01			#Wait 1 second pause after each function call	
-	pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+	nmbr_tabs=10					#Number of tabs to get to the most recent image when opening a new file
+	pyautogui.PAUSE = 0.01			#Wait 0.01 second after each pyautogui function call	
+	pyautogui.FAILSAFE = True 		#Move the mouse far up to the left corner will stopp the pyautogui program
 
-	def OpenProgram(self):
-		#Xpos=806
-		#Ypos=950
-		#nmbr_tabs=10
+	def OpenProgram(self):																	#Function to Open the HRPT Reader 
 
-		#pyautogui.PAUSE = 0.5			#Wait 1 second pause after each function call	
-		#pyautogui.FAILSAFE = True 	#move the mouse far up to the left corner will crash the program
+		path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'				#Path to the HRPT Reader
+		path_to_file1 = 'C:\\Ruag_program\\xhrpt_decode\\NOAA-18_HRPT_20180704_080843'		#Path to a processed file, only to put up a picture when the program is started   
 
-		path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'		#Path to the HRPT Reader
-		path_to_file1 = 'C:\\Ruag_program\\xhrpt_decode\\NOAA-18_HRPT_20180704_080843'		#Path to the processed file 
-		#path_to_file2 = 'C:\\Users\\Rickard\\Downloads\\FY3B_2012-05-01_1419.C10'		#Path to the processed file 
+		p=subprocess.Popen([path_to_Hrpt_Reader, path_to_file1]) 							#Opens a subprocess and then goes directly to the next line in the code
 
+		time.sleep(5)																		#Pause the program so the HRPT Reader gets time to pop up 
+		pyautogui.press('enter')															#Press Enter 
 
-		p=subprocess.Popen([path_to_Hrpt_Reader, path_to_file1]) 			#Opens a subprocess and then goes directly to the next line in the code
+		time.sleep(2)																		
 
-		time.sleep(5)
-		pyautogui.press('enter')
+	def OpenNewFile(self):																	#Opens up a new file in Hrpt Reader, hardcoded button presses 
 
-		time.sleep(2)
+		pyautogui.press('enter')															#Presses the by default marked Open button  
+		time.sleep(2)																		#Waits two seconds for the open window to pop up
 
-	def OpenNewFile(self):													#Opens up a new file in Hrpt Reader, hardcoded button presses 
+		for x in range(1,self.nmbr_tabs):													#This loop and the lines underneeth tabs its way to the most recently added file  
+			pyautogui.press('tab')															#virtual tab
 
-		pyautogui.press('enter')
-		time.sleep(2)
+		pyautogui.press('down')																#Move marker down
+		pyautogui.press('up')																#Move marker up
+		pyautogui.press('enter')															#opens the marked file 
+		pyautogui.press('left')																#Southbound or Northbound. When "left" then Southbound is choosen, when "Right" the Northbound is choosen
+		pyautogui.press('enter')															#pushes north- or southbound 
 
-		for x in range(1,self.nmbr_tabs):
-			pyautogui.press('tab')
+#---------------------------------------------------------------#
 
-		pyautogui.press('down')
-		pyautogui.press('up')
-		pyautogui.press('enter')
-		pyautogui.press('left')
-		pyautogui.press('enter')
+	#DELETEFILES()
 
+	#The DeleteFiles class conatins code for deleting previous 
+	#files and also extra files created by MetFy3x. 
+
+#---------------------------------------------------------------#
 
 class DeleteFiles():
 	
-	def remove_previous(self, path, globpath):
+	def remove_previous(self, path, globpath):												#This function checks if the previous file is of the same type as the new one and if it is it removes the old one
 		
-		pathlist=glob.glob(path) 				
-		print(pathlist)
-		length_of_pathlist=len(pathlist)
-		print(length_of_pathlist)
+		pathlist=glob.glob(path) 															#Creates a list of specific file types decieded by path in a specific folder 
+		length_of_pathlist=len(pathlist)													#Check the length of the list
 
-		if (length_of_pathlist>1):									
-			for x in range(0,length_of_pathlist):
+		if (length_of_pathlist>1):															#If there is more then one file of a specific type 											
+			for x in range(0,length_of_pathlist):											#loop over these files 
 				
-				if(pathlist[x]!=globpath):
-					os.remove(pathlist[x])
+				if(pathlist[x]!=globpath):													#If the file checked is not equal to the most recent file 
+					os.remove(pathlist[x])													#Remove it 
 					
-	def remove_when_metop(self):
+	def remove_when_metop(self):															#Removes all files thats unneccesary after the processing of a metop file is done and olde picture files 
 
-		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
-		  os.remove(BIN)
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):						#glob.glob creates a list, with the specified file name
+		  os.remove(BIN)																	#Remove al files with that specific ending. 
 
-		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):		
+		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):					#all loop works the same as described above
 		  os.remove(RAW16)
 
-		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):		
+		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):						#--
 		  os.remove(C10)
 
-		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):						#--
 		  os.remove(RS)
 
-		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
-		  os.remove(VCD)
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):						#--
+		  os.remove(VCD)																
 
-		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):						#--	
 		  os.remove(PN)
 
-		for PKT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PKT"):	
+		for PKT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PKT"):						#--	
 		  os.remove(PKT)
 
-		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):						#--
 		  os.remove(MPD) 
 
 
-	def remove_when_fengyun(self):
+	def remove_when_fengyun(self):															#Removes all files thats unneccesary after the processing of a Fengyun file is done and old picture files  
 		
-		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
-		  os.remove(BIN)
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):						#glob.glob creates a list, with the specified file name
+		  os.remove(BIN)																	#Remove all files with that specific ending.
 
-		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):		
+		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):					#all loop works the same as described above
 		  os.remove(RAW16)
 
-		for HPT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):		
-		  os.remove(HPT)
+		for HPT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):						#--
+		  os.remove(HPT)	
 
-		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):						#--	
 		  os.remove(RS)
 
-		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):						#--
 		  os.remove(VCD)
 
-		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):						#--
 		  os.remove(PN)
 
-		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):						#--
 		  os.remove(MPD)
 
-		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):		
+		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):						#--
 		  os.remove(FY3)  
 
+	def remove_when_noaa(self):																#Removes all files thats unneccesary after the processing of a NOAA file is done and old picture files
 
-	def remove_when_noaa(self):
+		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):						#glob.glob creates a list, with the specified file name
+		  os.remove(BIN)																	#Remove all files with that specific ending.
 
-		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):		#glob.glob creates a list, with the specified file name
-		  os.remove(BIN)
-
-		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):		
+		for C10 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.C10"):						#all loop works the same as described above
 		  os.remove(C10)
 		
-		for HPT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):		
+		for HPT in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.HPT"):						#--
 		  os.remove(HPT)
 
-		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):		
+		for RS in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RS"):						#--	
 		  os.remove(RS)
 
-		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):		
+		for VCD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.VCD"):						#--
 		  os.remove(VCD)
 
-		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):		
+		for PN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.PN"):						#--
 		  os.remove(PN)
 
-		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):		
+		for MPD in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.MPD"):						#--
 		  os.remove(MPD)
 
-		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):		
+		for FY3 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.FY3"):						#--
 		  os.remove(FY3)  
 
-class EventHandler(FileSystemEventHandler):
-	patterns = ["*.raw16", "*.bin"]					#Which files to look for 
 
-	def set_globtemp(self,globtemp):
-	    def trick(arg):							#A small function to set the global variable to the argument
+#---------------------------------------------------------------#
+
+	#EVENTHANDLER()
+
+	#The Eventhandler class conatins code for detecting if a
+	#specific event occured or if something  changed in a 
+	#specific folder
+
+#---------------------------------------------------------------#
+
+
+class EventHandler(FileSystemEventHandler):
+	patterns = ["*.raw16", "*.bin"]			 	#The pattern the observer looks for 
+
+	def set_globtemp(self,globtemp):			#A function to set the global variable globtemp to the argument used in the function call
+	    def trick(arg):							
 	        global globtemp
 	        globtemp = arg
 	    trick(globtemp)
 
-	def return_globtemp(self):
+	def return_globtemp(self):					#This function returns the value of globtemp
 		return globtemp    
 
-	def set_globvar(self,globvar):
-	    def trick(arg):							#A small function to set the global variable to the argument
+	def set_globvar(self,globvar):				#A function to set the global variable globvar to the argument used in the function call	
+	    def trick(arg):				
 	        global globvar
 	        globvar = arg
 	    trick(globvar)
 
-	def return_globvar(self):
+	def return_globvar(self):					#This function returns the value of globtemp
 		return globvar    
 
-	def set_globPath(self,globPath):
-	    def trick(arg):							#A small function to set the global variable to the argument
-	        global globPath
+	def set_globPath(self,globPath):			#A function to set the global variable globPath to the argument used in the function call	
+	    def trick(arg):							
 	        globPath = arg
 	    trick(globPath)
 
-	def return_globPath(self):
+	def return_globPath(self):					#This function returns the globPath 
 		return globPath    	
 
 	def process(self, event):						#Check the API for the watchdog for more information
