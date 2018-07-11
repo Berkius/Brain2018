@@ -58,24 +58,24 @@ if __name__ == '__main__':
 				global_path=eventhandler.return_globPath()					#The path of the created file
 				checkfiles.check_file_size(eventhandler.return_globPath()) 	#Checks the size of the file and when it changes its done and we keep on going 
 
-				if (eventhandler.return_globvar()==1):						#If it is a Metop satellite thats been tracked	
+				if (eventhandler.return_globvar()==1):						#If it is a Metop satellite thats been tracked
 					openmetfy.OpenForMetop(global_path)						#Opens the extra process program that is needed to be able to display the picture->
 					time.sleep(3)											#and chooses the most recently created file.	
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileMetopNOAA()						#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_metop,global_path)	#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_metop()						#Delete old files and the extra one created in the process
 					time.sleep(2)
 
-				if (eventhandler.return_globvar()==2):						#If it is a Fengyun satelite thats been tracked
+				if (eventhandler.return_globvar()==2):						#If it is a Fengyun satelite thats been tracked 
 					openmetfy.OpenForFengyun(global_path)					#Opens the extra process program that is needed to be able to display the picture->
 					time.sleep(3)											#and chooses the most recently created file.	
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileFENG()								#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_fengyun,global_path)	#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_fengyun()						#Delete old files and the extra one created in the process
 					time.sleep(2)
 
 				if (eventhandler.return_globvar()==3):						#If it is a NOAA satelite thats been tracked
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileMetopNOAA()								#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_noaa,global_path)		#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_noaa()							#Delete old files and the extra one created in the process
 					time.sleep(2)
