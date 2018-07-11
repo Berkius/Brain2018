@@ -38,6 +38,7 @@ if __name__ == '__main__':
 	observer = Observer()												
 	observer.schedule(EventHandler(), path='C:\\Ruag_program\\xhrpt_decoder', recursive=False)	#The path to which folder the observer will check for new created files 
 	eventhandler=EventHandler()																	#EventHandler Object 
+	timepause=TimePause()
 	tweet=Tweet()
 
 	path_to_Hrpt_Reader = 'C:\\Ruag_program\\hrpt-reader.3.0.8\\ReadHRPT'						#Path to the program that display the images
@@ -55,27 +56,26 @@ if __name__ == '__main__':
 				
 			if (eventhandler.return_globtemp()==1):							#If new file is created in the folder the observer is watching 
 				global_path=eventhandler.return_globPath()					#The path of the created file
-				print(global_path)
 				checkfiles.check_file_size(eventhandler.return_globPath()) 	#Checks the size of the file and when it changes its done and we keep on going 
-				print('Out of checked files')	
-				if (eventhandler.return_globvar()==1):						#If it is a Metop satellite thats been tracked	
+
+				if (eventhandler.return_globvar()==1):						#If it is a Metop satellite thats been tracked
 					openmetfy.OpenForMetop(global_path)						#Opens the extra process program that is needed to be able to display the picture->
 					time.sleep(3)											#and chooses the most recently created file.	
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileMetopNOAA()						#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_metop,global_path)	#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_metop()						#Delete old files and the extra one created in the process
 					time.sleep(2)
 
-				if (eventhandler.return_globvar()==2):						#If it is a Fengyun satelite thats been tracked
+				if (eventhandler.return_globvar()==2):						#If it is a Fengyun satelite thats been tracked 
 					openmetfy.OpenForFengyun(global_path)					#Opens the extra process program that is needed to be able to display the picture->
 					time.sleep(3)											#and chooses the most recently created file.	
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileFENG()								#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_fengyun,global_path)	#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_fengyun()						#Delete old files and the extra one created in the process
 					time.sleep(2)
 
 				if (eventhandler.return_globvar()==3):						#If it is a NOAA satelite thats been tracked
-					open_reader.OpenNewFile()								#Opens the new file in the HRTP reader
+					open_reader.OpenNewFileMetopNOAA()								#Opens the new file in the HRTP reader
 					delete_files.remove_previous(path_noaa,global_path)		#If the previous satellite was of the same kind and to not remove the wrong files 
 					delete_files.remove_when_noaa()							#Delete old files and the extra one created in the process
 					time.sleep(2)
