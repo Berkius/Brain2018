@@ -92,7 +92,7 @@ class DeleteFiles():
 	def remove_when_metop(self):															#Removes all files thats unneccesary after the processing of a metop file is done and olde picture files 
 
 		for BIN in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.BIN"):						#glob.glob creates a list, with the specified file name
-		  os.remove(BIN)																	#Remove al files with that specific ending. 
+		  os.remove(BIN)																	#Remove alls files with that specific ending. 
 
 		for RAW16 in glob.glob("C:\\Ruag_program\\xhrpt_decoder\\*.RAW16"):					#all loop works the same as described above
 		  os.remove(RAW16)
