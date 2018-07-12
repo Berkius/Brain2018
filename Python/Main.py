@@ -1,6 +1,9 @@
 #----------------------------------------------------------------------------#
 	#BRAINS 2018 
 
+	#The files used in this project is Main.py, Superfile.py 
+	#and twitter_bot.py
+
 	#This is the file that contains the automation program
 	#for the decoding programs but it will also save as JPG
 	#the picture from HRTP reader and upload it on Twitter.
