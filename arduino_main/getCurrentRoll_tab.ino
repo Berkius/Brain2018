@@ -17,6 +17,8 @@ void getCurrentRoll(){
   DrivingTimeStartBrake = millis();
   
   change_in_roll = time_roll*0.001 * angular_velocity_roll;
+  Serial.print("Time roll: ");
+  Serial.println(time_roll);
   
   rolldeg = rolldeg + change_in_roll;
 

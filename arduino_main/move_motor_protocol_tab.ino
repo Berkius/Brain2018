@@ -42,7 +42,9 @@
     DrivingTimeStart = millis();                              // Starting time motors
     // If both delta angles are outside tolerance, run both
     while((abs(delta_pitch) > tol) && (abs(delta_roll) > tol) && (tracking == HIGH)){
-      
+      if (abs(delta_roll) > 5){
+        Speed = fastSpeed;
+      }
       // See which direction is the shortest, and start driving that way
       drive_direction(delta_pitch, PITCH, Speed);
       drive_direction(delta_roll, ROLL, Speed);
@@ -99,7 +101,9 @@
       Roll_Brake();
 
       if (DrivingTimeStartBrake != 0){
-         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
+         // Just do a piece of this part, so we don't underdoo the azimuth rotation when small increments 
+         // no compensation here and no compensation in angularvelocity will make it precise on small increments (but bad at large incrememnts)
          rolldeg = rolldeg + change_in_roll;
          DrivingTimeStartBrake = 0;
       }
@@ -149,9 +153,11 @@
     while((abs(delta_roll) > tol) && (abs(delta_pitch) <= tol) && (tracking == HIGH)){
       // Brake the pitch motor
       Pitch_Brake();
-
+      if (abs(delta_roll) > 5){
+        Speed = fastSpeed;
+      }
       if ((DrivingTimeStartBrake != 0) && (from_both_to_roll == 1)){
-         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
          rolldeg = rolldeg + change_in_roll;
          DrivingTimeStartBrake = 0;
          from_both_to_roll = 0;
@@ -200,7 +206,7 @@
   if ((abs(delta_pitch) <= tol) || (abs(delta_roll) <= tol)){
     Roll_Brake();
       if (DrivingTimeStartBrake != 0){
-       float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll;
+       float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
        rolldeg = rolldeg + change_in_roll;
        DrivingTimeStartBrake = 0;
     }

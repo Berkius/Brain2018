@@ -78,7 +78,7 @@ int counter_max = 4;                                                    // how m
 // ##############################################
 // MOTOR SPEED
 int fastSpeed = 200;                       // High speed, used the first time adjusting to new satelite and when going back to initial pos
-int slowSpeed = 100;                       // Low speed, used while tracking 
+int slowSpeed = 130;                       // Low speed, used while tracking 
 
 // ##############################################
 // OTHER
