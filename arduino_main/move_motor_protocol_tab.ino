@@ -101,7 +101,7 @@
       Roll_Brake();
 
       if (DrivingTimeStartBrake != 0){
-         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.2;
          // Just do a piece of this part, so we don't underdoo the azimuth rotation when small increments 
          // no compensation here and no compensation in angularvelocity will make it precise on small increments (but bad at large incrememnts)
          rolldeg = rolldeg + change_in_roll;
@@ -157,7 +157,7 @@
         Speed = fastSpeed;
       }
       if ((DrivingTimeStartBrake != 0) && (from_both_to_roll == 1)){
-         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
+         float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.2;
          rolldeg = rolldeg + change_in_roll;
          DrivingTimeStartBrake = 0;
          from_both_to_roll = 0;
@@ -206,7 +206,7 @@
   if ((abs(delta_pitch) <= tol) || (abs(delta_roll) <= tol)){
     Roll_Brake();
       if (DrivingTimeStartBrake != 0){
-       float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.4;
+       float change_in_roll = (millis() - DrivingTimeStartBrake)*0.001 * angular_velocity_roll * 0.2;
        rolldeg = rolldeg + change_in_roll;
        DrivingTimeStartBrake = 0;
     }

@@ -138,8 +138,6 @@ void loop() {
 
 
   if (tracking == LOW){
-        Pitch_Brake();
-        Roll_Brake();
         
         // Reset counters
         reset_counters();

@@ -12,7 +12,7 @@ int Check_angular_velocity_roll(){
 
   gyro.readGyro(&gx, &gy, &gz);                           // Read data from gyro
 
-  angular_velocity_roll = (gx * (-sinPitch) +gz * (-cosPitch)) * 1.08;   // Rotation around vertical axis
+  angular_velocity_roll = (gx * (-sinPitch) +gz * (-cosPitch)) * 1.07;   // Rotation around vertical axis
   // Add about 10% to compensate for too low values from gyroscope (or time issue)
   // no compensation here will make it bad at large increments
   
