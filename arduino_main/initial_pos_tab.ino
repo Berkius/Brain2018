@@ -1,56 +1,32 @@
 void initial_pos(){
 /*
- * Drives the parabola back to initial position
+ * Drives the parabola back to initial position and calibrate
  * 
  * Date: 2018-07-08
  */
 
-// Init pos
- int roll = 10;
- int pitch = 40;
+  Pitch_Brake();
+  Roll_Brake();
 
- int Droll = roll-rolldeg;
- int Dpitch = pitch-pitchdeg;
-
- Serial.print("Delta roll init: ");
- Serial.println(Droll);
-
-  Serial.print("Delta pitch init: ");
- Serial.println(Dpitch);
- 
-
- DrivingTimeStart = millis();                              // Starting time motors
-
-// Rotate past switch if needed
-while (switch_count_az == -1){
-  Roll_Positive(fastSpeed);
-  delay_s(100);
-  getCurrentRoll();
-  }
-
-// Drive roll motor to right pos
-while (abs(Droll) >= 5){
-  if (Droll > 0){
+  DrivingTimeStart = millis();                              // Starting time motors
+  
+  // Rotate past switch if needed
+  while (switch_count_az == -1){
     Roll_Positive(fastSpeed);
+    delay_s(100);
+    getCurrentRoll();
     }
-  else {
-    Roll_Negative(fastSpeed);
-    }
-  delay_s(100);
-  getCurrentRoll();
-  Droll = roll-rolldeg;
-  }
+  
+  // DRIVE ROLL MOTOR POSITVE UTILL UNACTIVATED
+  DrivingTimeStart = millis();                                // Starting time motors
+  Serial.print(F("Drive roll motor positive until switch is unactivated and without safety margin.."));
+  while(switch_value_counter_az >= counter_max){  
+    Roll_Positive(slowSpeed);                                 // Drive Backwards
+    //delay(DelayVar);
+    counter_az();
+  } 
+  Roll_Brake();
 
-// Drive pitch motor to right pos
-while (abs(Dpitch) >= 5){
-  if (Dpitch > 0){
-    Pitch_Positive(fastSpeed);
-    }
-  else {
-    Pitch_Negative(fastSpeed);
-    }
-  delay_s(100);
-  getCurrentPitch();
-  Dpitch = pitch-pitchdeg;
-  }
+  Calibration();
+
 }
